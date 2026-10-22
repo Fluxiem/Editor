@@ -1,0 +1,1148 @@
+{
+ "duration": 31.54,
+ "target": [
+  30,
+  45
+ ],
+ "cuts": [
+  {
+   "clip": "C6805.MP4",
+   "in": 40.62,
+   "out": 43.06,
+   "reason": "hook: These events can't happen without the help and the support"
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 43.2,
+   "out": 45.62,
+   "reason": "mudex: from the both users as well as our other supporters"
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 0.62,
+   "out": 3.18,
+   "reason": "intro: So that time of year again we've got driftability on"
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 12.78,
+   "out": 14.56,
+   "reason": "soldout: it's 2nd of November,"
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 14.84,
+   "out": 16.14,
+   "reason": "soldout: sold out event already."
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 52.74,
+   "out": 58.22,
+   "reason": "noms: It's pretty easy to do AI, I kept an eye on those nominations when you opened them up and they were gone straight away."
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 67.9,
+   "out": 70.52,
+   "reason": "help: we can't help everybody but we do as much as we can."
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 75.86,
+   "out": 78.26,
+   "reason": "proud: It's a great event, we're really proud to be part of it"
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 79.0,
+   "out": 82.2,
+   "reason": "easy: what we do is the easy part and what you guys do is the hard part."
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 85.16,
+   "out": 89.42,
+   "reason": "bigger: as it gets bigger and better we'll hopefully be able to do a bit more and maybe do a couple of events a year."
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 90.28,
+   "out": 91.68,
+   "reason": "cards: it's certainly something on the cards"
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 100.02,
+   "out": 101.7,
+   "reason": "end: thank you very much and looking forward to it."
+  }
+ ],
+ "removed": [
+  {
+   "clip": "C6805.MP4",
+   "in": 6.08,
+   "out": 6.46,
+   "reason": "not chosen",
+   "text": "It has."
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 8.74,
+   "out": 11.7,
+   "reason": "not chosen",
+   "text": "We've had a couple of little things that have tripped us up but we're here."
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 14.44,
+   "out": 14.9,
+   "reason": "pause 0.46s",
+   "text": ""
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 16.52,
+   "out": 17.28,
+   "reason": "not chosen",
+   "text": "Yep very quickly."
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 17.66,
+   "out": 25.44,
+   "reason": "not chosen",
+   "text": "Yeah and unfortunately this year we had to break tradition, we couldn't get one of the cars to come and do some burnouts so Darren's gonna get out and just push bike and try and smoke that up later on."
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 25.44,
+   "out": 28.32,
+   "reason": "not chosen",
+   "text": "We'll go 200 series a bit later, we'll see that in action."
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 28.58,
+   "out": 31.26,
+   "reason": "not chosen",
+   "text": "Blow all the diffs and everything like that so you know."
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 31.9,
+   "out": 32.56,
+   "reason": "not chosen",
+   "text": "We're all good."
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 33.88,
+   "out": 39.62,
+   "reason": "not chosen",
+   "text": "Yeah look I guess as always you know the help that you guys give us is is massively appreciated."
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 58.22,
+   "out": 58.78,
+   "reason": "not chosen",
+   "text": "Oh yeah insane."
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 58.78,
+   "out": 64.76,
+   "reason": "not chosen",
+   "text": "To see that you know it gets utilised so quickly and I think you've got a waiting list just as long as we do."
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 67.38,
+   "out": 67.96,
+   "reason": "false start",
+   "text": "we"
+  },
+  {
+   "clip": "C6805.MP4",
+   "in": 70.5,
+   "out": 73.3,
+   "reason": "not chosen",
+   "text": "It's the only disappointing thing about the event is we've got a waiting list out there."
+  }
+ ],
+ "takes": [
+  {
+   "seg": "hook",
+   "role": "hook",
+   "clip": "C6805.MP4",
+   "in": 40.62,
+   "out": 43.06,
+   "at": 0.0,
+   "dur": 2.44,
+   "focus": 0.49,
+   "words": [
+    {
+     "w": "These",
+     "t0": 0.06,
+     "t1": 0.5,
+     "prob": 0.949
+    },
+    {
+     "w": "events",
+     "t0": 0.5,
+     "t1": 0.78,
+     "prob": 0.999
+    },
+    {
+     "w": "can't",
+     "t0": 0.78,
+     "t1": 1.02,
+     "prob": 0.997
+    },
+    {
+     "w": "happen",
+     "t0": 1.02,
+     "t1": 1.18,
+     "prob": 0.998
+    },
+    {
+     "w": "without",
+     "t0": 1.18,
+     "t1": 1.42,
+     "prob": 0.999
+    },
+    {
+     "w": "the",
+     "t0": 1.42,
+     "t1": 1.6,
+     "prob": 0.997
+    },
+    {
+     "w": "help",
+     "t0": 1.6,
+     "t1": 1.76,
+     "prob": 0.999
+    },
+    {
+     "w": "and",
+     "t0": 1.76,
+     "t1": 1.92,
+     "prob": 0.993
+    },
+    {
+     "w": "the",
+     "t0": 1.92,
+     "t1": 2.06,
+     "prob": 0.996
+    },
+    {
+     "w": "support",
+     "t0": 2.06,
+     "t1": 2.32,
+     "prob": 1.0
+    }
+   ]
+  },
+  {
+   "seg": "mudex",
+   "role": "body",
+   "clip": "C6805.MP4",
+   "in": 43.2,
+   "out": 45.62,
+   "at": 2.44,
+   "dur": 2.42,
+   "focus": 0.49,
+   "words": [
+    {
+     "w": "from",
+     "t0": 2.5,
+     "t1": 2.66,
+     "prob": 0.558
+    },
+    {
+     "w": "Mudex",
+     "t0": 2.66,
+     "t1": 3.18,
+     "prob": 1.0
+    },
+    {
+     "w": "as",
+     "t0": 3.18,
+     "t1": 3.78,
+     "prob": 0.917
+    },
+    {
+     "w": "well",
+     "t0": 3.78,
+     "t1": 3.88,
+     "prob": 0.999
+    },
+    {
+     "w": "as",
+     "t0": 3.88,
+     "t1": 4.0,
+     "prob": 0.998
+    },
+    {
+     "w": "our",
+     "t0": 4.0,
+     "t1": 4.16,
+     "prob": 0.99
+    },
+    {
+     "w": "other",
+     "t0": 4.16,
+     "t1": 4.38,
+     "prob": 0.975
+    },
+    {
+     "w": "supporters",
+     "t0": 4.38,
+     "t1": 4.74,
+     "prob": 0.999
+    }
+   ]
+  },
+  {
+   "seg": "intro",
+   "role": "body",
+   "clip": "C6805.MP4",
+   "in": 0.62,
+   "out": 3.18,
+   "at": 4.86,
+   "dur": 2.56,
+   "focus": 0.69,
+   "words": [
+    {
+     "w": "So",
+     "t0": 4.92,
+     "t1": 5.28,
+     "prob": 0.721
+    },
+    {
+     "w": "that",
+     "t0": 5.28,
+     "t1": 5.48,
+     "prob": 0.802
+    },
+    {
+     "w": "time",
+     "t0": 5.48,
+     "t1": 5.7,
+     "prob": 0.996
+    },
+    {
+     "w": "of",
+     "t0": 5.7,
+     "t1": 5.84,
+     "prob": 0.973
+    },
+    {
+     "w": "year",
+     "t0": 5.84,
+     "t1": 5.94,
+     "prob": 0.989
+    },
+    {
+     "w": "again",
+     "t0": 5.94,
+     "t1": 6.2,
+     "prob": 0.972
+    },
+    {
+     "w": "we've",
+     "t0": 6.2,
+     "t1": 6.46,
+     "prob": 0.688
+    },
+    {
+     "w": "got",
+     "t0": 6.46,
+     "t1": 6.54,
+     "prob": 0.996
+    },
+    {
+     "w": "driftability",
+     "t0": 6.54,
+     "t1": 6.98,
+     "prob": 0.794
+    },
+    {
+     "w": "on",
+     "t0": 6.98,
+     "t1": 7.3,
+     "prob": 0.991
+    }
+   ]
+  },
+  {
+   "seg": "soldout",
+   "role": "body",
+   "clip": "C6805.MP4",
+   "in": 12.78,
+   "out": 14.56,
+   "at": 7.42,
+   "dur": 1.78,
+   "focus": 0.69,
+   "words": [
+    {
+     "w": "it's",
+     "t0": 7.48,
+     "t1": 8.24,
+     "prob": 0.88
+    },
+    {
+     "w": "2nd",
+     "t0": 8.24,
+     "t1": 8.56,
+     "prob": 0.761
+    },
+    {
+     "w": "of",
+     "t0": 8.56,
+     "t1": 8.66,
+     "prob": 0.926
+    },
+    {
+     "w": "November,",
+     "t0": 8.66,
+     "t1": 9.08,
+     "prob": 0.992
+    }
+   ]
+  },
+  {
+   "seg": "soldout",
+   "role": "body",
+   "clip": "C6805.MP4",
+   "in": 14.84,
+   "out": 16.14,
+   "at": 9.2,
+   "dur": 1.3,
+   "focus": 0.69,
+   "words": [
+    {
+     "w": "sold",
+     "t0": 9.26,
+     "t1": 9.52,
+     "prob": 0.854
+    },
+    {
+     "w": "out",
+     "t0": 9.52,
+     "t1": 9.72,
+     "prob": 0.831
+    },
+    {
+     "w": "event",
+     "t0": 9.72,
+     "t1": 9.98,
+     "prob": 0.982
+    },
+    {
+     "w": "already.",
+     "t0": 9.98,
+     "t1": 10.38,
+     "prob": 0.991
+    }
+   ]
+  },
+  {
+   "seg": "noms",
+   "role": "body",
+   "clip": "C6805.MP4",
+   "in": 52.74,
+   "out": 58.22,
+   "at": 10.5,
+   "dur": 5.48,
+   "focus": 0.3,
+   "words": [
+    {
+     "w": "It's",
+     "t0": 10.56,
+     "t1": 10.56,
+     "prob": 0.925
+    },
+    {
+     "w": "pretty",
+     "t0": 10.56,
+     "t1": 10.56,
+     "prob": 0.99
+    },
+    {
+     "w": "easy",
+     "t0": 10.56,
+     "t1": 10.78,
+     "prob": 0.999
+    },
+    {
+     "w": "to",
+     "t0": 10.78,
+     "t1": 10.94,
+     "prob": 0.997
+    },
+    {
+     "w": "see why",
+     "t0": 10.94,
+     "t1": 11.44,
+     "prob": 1.0
+    },
+    {
+     "w": "I",
+     "t0": 11.64,
+     "t1": 11.64,
+     "prob": 0.908
+    },
+    {
+     "w": "kept",
+     "t0": 11.64,
+     "t1": 11.88,
+     "prob": 0.72
+    },
+    {
+     "w": "an",
+     "t0": 11.88,
+     "t1": 12.06,
+     "prob": 0.007
+    },
+    {
+     "w": "eye",
+     "t0": 12.06,
+     "t1": 12.2,
+     "prob": 0.997
+    },
+    {
+     "w": "on",
+     "t0": 12.2,
+     "t1": 12.42,
+     "prob": 0.993
+    },
+    {
+     "w": "those",
+     "t0": 12.42,
+     "t1": 12.84,
+     "prob": 0.979
+    },
+    {
+     "w": "nominations",
+     "t0": 12.84,
+     "t1": 14.0,
+     "prob": 0.866
+    },
+    {
+     "w": "when",
+     "t0": 14.0,
+     "t1": 14.26,
+     "prob": 0.91
+    },
+    {
+     "w": "you",
+     "t0": 14.26,
+     "t1": 14.36,
+     "prob": 0.994
+    },
+    {
+     "w": "opened",
+     "t0": 14.36,
+     "t1": 14.56,
+     "prob": 0.349
+    },
+    {
+     "w": "them",
+     "t0": 14.56,
+     "t1": 14.68,
+     "prob": 0.974
+    },
+    {
+     "w": "up",
+     "t0": 14.68,
+     "t1": 14.82,
+     "prob": 0.994
+    },
+    {
+     "w": "and",
+     "t0": 14.82,
+     "t1": 14.94,
+     "prob": 0.818
+    },
+    {
+     "w": "they",
+     "t0": 14.94,
+     "t1": 15.06,
+     "prob": 0.846
+    },
+    {
+     "w": "were",
+     "t0": 15.06,
+     "t1": 15.14,
+     "prob": 0.936
+    },
+    {
+     "w": "gone",
+     "t0": 15.14,
+     "t1": 15.34,
+     "prob": 0.866
+    },
+    {
+     "w": "straight",
+     "t0": 15.34,
+     "t1": 15.58,
+     "prob": 0.986
+    },
+    {
+     "w": "away.",
+     "t0": 15.58,
+     "t1": 15.86,
+     "prob": 0.808
+    }
+   ]
+  },
+  {
+   "seg": "help",
+   "role": "body",
+   "clip": "C6805.MP4",
+   "in": 67.9,
+   "out": 70.52,
+   "at": 15.98,
+   "dur": 2.62,
+   "focus": 0.49,
+   "words": [
+    {
+     "w": "we",
+     "t0": 16.04,
+     "t1": 16.28,
+     "prob": 0.466
+    },
+    {
+     "w": "can't",
+     "t0": 16.28,
+     "t1": 16.48,
+     "prob": 0.999
+    },
+    {
+     "w": "help",
+     "t0": 16.48,
+     "t1": 16.62,
+     "prob": 1.0
+    },
+    {
+     "w": "everybody",
+     "t0": 16.62,
+     "t1": 17.02,
+     "prob": 0.999
+    },
+    {
+     "w": "but",
+     "t0": 17.02,
+     "t1": 17.28,
+     "prob": 0.972
+    },
+    {
+     "w": "we",
+     "t0": 17.28,
+     "t1": 17.54,
+     "prob": 0.997
+    },
+    {
+     "w": "do",
+     "t0": 17.54,
+     "t1": 17.78,
+     "prob": 0.764
+    },
+    {
+     "w": "as",
+     "t0": 17.78,
+     "t1": 17.94,
+     "prob": 0.999
+    },
+    {
+     "w": "much",
+     "t0": 17.94,
+     "t1": 18.08,
+     "prob": 1.0
+    },
+    {
+     "w": "as",
+     "t0": 18.08,
+     "t1": 18.2,
+     "prob": 0.998
+    },
+    {
+     "w": "we",
+     "t0": 18.2,
+     "t1": 18.34,
+     "prob": 0.999
+    },
+    {
+     "w": "can.",
+     "t0": 18.34,
+     "t1": 18.48,
+     "prob": 0.998
+    }
+   ]
+  },
+  {
+   "seg": "proud",
+   "role": "body",
+   "clip": "C6805.MP4",
+   "in": 75.86,
+   "out": 78.26,
+   "at": 18.6,
+   "dur": 2.4,
+   "focus": 0.69,
+   "words": [
+    {
+     "w": "It's",
+     "t0": 18.66,
+     "t1": 19.02,
+     "prob": 0.52
+    },
+    {
+     "w": "a",
+     "t0": 19.02,
+     "t1": 19.06,
+     "prob": 0.577
+    },
+    {
+     "w": "great",
+     "t0": 19.06,
+     "t1": 19.22,
+     "prob": 0.982
+    },
+    {
+     "w": "event,",
+     "t0": 19.22,
+     "t1": 19.46,
+     "prob": 0.993
+    },
+    {
+     "w": "we're",
+     "t0": 19.62,
+     "t1": 19.72,
+     "prob": 0.941
+    },
+    {
+     "w": "really",
+     "t0": 19.72,
+     "t1": 19.96,
+     "prob": 0.995
+    },
+    {
+     "w": "proud",
+     "t0": 19.96,
+     "t1": 20.22,
+     "prob": 0.979
+    },
+    {
+     "w": "to",
+     "t0": 20.22,
+     "t1": 20.32,
+     "prob": 0.998
+    },
+    {
+     "w": "be",
+     "t0": 20.32,
+     "t1": 20.46,
+     "prob": 0.999
+    },
+    {
+     "w": "part",
+     "t0": 20.46,
+     "t1": 20.68,
+     "prob": 0.983
+    },
+    {
+     "w": "of",
+     "t0": 20.68,
+     "t1": 20.8,
+     "prob": 0.999
+    },
+    {
+     "w": "it",
+     "t0": 20.8,
+     "t1": 20.88,
+     "prob": 0.997
+    }
+   ]
+  },
+  {
+   "seg": "easy",
+   "role": "body",
+   "clip": "C6805.MP4",
+   "in": 79.0,
+   "out": 82.2,
+   "at": 21.0,
+   "dur": 3.2,
+   "focus": 0.69,
+   "words": [
+    {
+     "w": "what",
+     "t0": 21.06,
+     "t1": 21.26,
+     "prob": 0.902
+    },
+    {
+     "w": "we",
+     "t0": 21.26,
+     "t1": 21.42,
+     "prob": 1.0
+    },
+    {
+     "w": "do",
+     "t0": 21.42,
+     "t1": 21.56,
+     "prob": 0.999
+    },
+    {
+     "w": "is",
+     "t0": 21.56,
+     "t1": 21.66,
+     "prob": 0.995
+    },
+    {
+     "w": "the",
+     "t0": 21.66,
+     "t1": 21.8,
+     "prob": 0.997
+    },
+    {
+     "w": "easy",
+     "t0": 21.8,
+     "t1": 22.04,
+     "prob": 0.997
+    },
+    {
+     "w": "part",
+     "t0": 22.04,
+     "t1": 22.4,
+     "prob": 0.998
+    },
+    {
+     "w": "and",
+     "t0": 22.4,
+     "t1": 22.56,
+     "prob": 0.969
+    },
+    {
+     "w": "what",
+     "t0": 22.56,
+     "t1": 22.74,
+     "prob": 0.973
+    },
+    {
+     "w": "you",
+     "t0": 22.74,
+     "t1": 22.9,
+     "prob": 0.789
+    },
+    {
+     "w": "guys",
+     "t0": 22.9,
+     "t1": 23.14,
+     "prob": 0.978
+    },
+    {
+     "w": "do",
+     "t0": 23.14,
+     "t1": 23.34,
+     "prob": 0.998
+    },
+    {
+     "w": "is",
+     "t0": 23.34,
+     "t1": 23.46,
+     "prob": 0.994
+    },
+    {
+     "w": "the",
+     "t0": 23.46,
+     "t1": 23.6,
+     "prob": 0.998
+    },
+    {
+     "w": "hard",
+     "t0": 23.6,
+     "t1": 23.78,
+     "prob": 0.999
+    },
+    {
+     "w": "part.",
+     "t0": 23.78,
+     "t1": 24.08,
+     "prob": 0.256
+    }
+   ]
+  },
+  {
+   "seg": "bigger",
+   "role": "body",
+   "clip": "C6805.MP4",
+   "in": 85.16,
+   "out": 89.42,
+   "at": 24.2,
+   "dur": 4.26,
+   "focus": 0.69,
+   "words": [
+    {
+     "w": "as",
+     "t0": 24.26,
+     "t1": 24.46,
+     "prob": 0.794
+    },
+    {
+     "w": "it",
+     "t0": 24.46,
+     "t1": 24.58,
+     "prob": 0.999
+    },
+    {
+     "w": "gets",
+     "t0": 24.58,
+     "t1": 24.72,
+     "prob": 0.998
+    },
+    {
+     "w": "bigger",
+     "t0": 24.72,
+     "t1": 24.96,
+     "prob": 0.997
+    },
+    {
+     "w": "and",
+     "t0": 24.96,
+     "t1": 25.12,
+     "prob": 0.995
+    },
+    {
+     "w": "better",
+     "t0": 25.12,
+     "t1": 25.3,
+     "prob": 0.998
+    },
+    {
+     "w": "we'll",
+     "t0": 25.3,
+     "t1": 25.48,
+     "prob": 0.498
+    },
+    {
+     "w": "hopefully",
+     "t0": 25.48,
+     "t1": 25.66,
+     "prob": 0.875
+    },
+    {
+     "w": "be",
+     "t0": 25.66,
+     "t1": 25.78,
+     "prob": 0.825
+    },
+    {
+     "w": "able",
+     "t0": 25.78,
+     "t1": 25.86,
+     "prob": 0.975
+    },
+    {
+     "w": "to",
+     "t0": 25.86,
+     "t1": 25.92,
+     "prob": 0.971
+    },
+    {
+     "w": "do",
+     "t0": 25.92,
+     "t1": 26.0,
+     "prob": 0.991
+    },
+    {
+     "w": "a",
+     "t0": 26.0,
+     "t1": 26.08,
+     "prob": 0.993
+    },
+    {
+     "w": "bit",
+     "t0": 26.08,
+     "t1": 26.18,
+     "prob": 0.996
+    },
+    {
+     "w": "more",
+     "t0": 26.18,
+     "t1": 26.48,
+     "prob": 0.999
+    },
+    {
+     "w": "and",
+     "t0": 26.48,
+     "t1": 26.82,
+     "prob": 0.879
+    },
+    {
+     "w": "maybe",
+     "t0": 26.82,
+     "t1": 27.28,
+     "prob": 0.591
+    },
+    {
+     "w": "do",
+     "t0": 27.28,
+     "t1": 27.58,
+     "prob": 0.404
+    },
+    {
+     "w": "a",
+     "t0": 27.58,
+     "t1": 27.72,
+     "prob": 0.966
+    },
+    {
+     "w": "couple",
+     "t0": 27.72,
+     "t1": 27.82,
+     "prob": 0.977
+    },
+    {
+     "w": "of",
+     "t0": 27.82,
+     "t1": 27.92,
+     "prob": 0.522
+    },
+    {
+     "w": "events",
+     "t0": 27.92,
+     "t1": 28.1,
+     "prob": 0.936
+    },
+    {
+     "w": "a",
+     "t0": 28.1,
+     "t1": 28.22,
+     "prob": 0.778
+    },
+    {
+     "w": "year.",
+     "t0": 28.22,
+     "t1": 28.34,
+     "prob": 0.998
+    }
+   ]
+  },
+  {
+   "seg": "cards",
+   "role": "body",
+   "clip": "C6805.MP4",
+   "in": 90.28,
+   "out": 91.68,
+   "at": 28.46,
+   "dur": 1.4,
+   "focus": 0.49,
+   "words": [
+    {
+     "w": "it's",
+     "t0": 28.52,
+     "t1": 28.72,
+     "prob": 0.992
+    },
+    {
+     "w": "certainly",
+     "t0": 28.72,
+     "t1": 28.88,
+     "prob": 0.982
+    },
+    {
+     "w": "something",
+     "t0": 28.88,
+     "t1": 29.18,
+     "prob": 0.999
+    },
+    {
+     "w": "on",
+     "t0": 29.18,
+     "t1": 29.32,
+     "prob": 0.999
+    },
+    {
+     "w": "the",
+     "t0": 29.32,
+     "t1": 29.44,
+     "prob": 0.999
+    },
+    {
+     "w": "cards",
+     "t0": 29.44,
+     "t1": 29.74,
+     "prob": 0.999
+    }
+   ]
+  },
+  {
+   "seg": "end",
+   "role": "body",
+   "clip": "C6805.MP4",
+   "in": 100.02,
+   "out": 101.7,
+   "at": 29.86,
+   "dur": 1.68,
+   "focus": 0.69,
+   "words": [
+    {
+     "w": "thank",
+     "t0": 29.92,
+     "t1": 30.1,
+     "prob": 0.971
+    },
+    {
+     "w": "you",
+     "t0": 30.1,
+     "t1": 30.22,
+     "prob": 0.998
+    },
+    {
+     "w": "very",
+     "t0": 30.22,
+     "t1": 30.34,
+     "prob": 0.981
+    },
+    {
+     "w": "much",
+     "t0": 30.34,
+     "t1": 30.58,
+     "prob": 0.988
+    },
+    {
+     "w": "and",
+     "t0": 30.58,
+     "t1": 30.72,
+     "prob": 0.705
+    },
+    {
+     "w": "looking",
+     "t0": 30.72,
+     "t1": 30.86,
+     "prob": 0.908
+    },
+    {
+     "w": "forward",
+     "t0": 30.86,
+     "t1": 31.1,
+     "prob": 0.999
+    },
+    {
+     "w": "to",
+     "t0": 31.1,
+     "t1": 31.26,
+     "prob": 0.999
+    },
+    {
+     "w": "it.",
+     "t0": 31.26,
+     "t1": 31.42,
+     "prob": 0.998
+    }
+   ]
+  }
+ ]
+}

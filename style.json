@@ -1,5 +1,5 @@
 {
-  "$comment": "OVS house style (north star: Chris Boustedt @chriss.boustedt). Compositions read this file; CLAUDE.md STYLE explains each rule.",
+  "$comment": "OVS house style (north star: Chris Boustedt @chriss.boustedt). build_comp.py reads this; 'studio' is the saved style from the OVS Video Editor page and overrides the house values where it says something.",
   "version": 1,
   "output": {
     "width": 1080,
@@ -14,7 +14,7 @@
       "maxSec": 20
     },
     "teaching": {
-      "minSec": 15,
+      "minSec": 30,
       "maxSec": 45
     },
     "hardCapSec": 45,
@@ -26,7 +26,7 @@
     "outro": false
   },
   "hook": {
-    "windowSec": 3,
+    "windowSec": 2,
     "frame1MustAlign": [
       "visual",
       "onScreenText",
@@ -50,14 +50,6 @@
         "blur",
         "glow"
       ]
-    },
-    "alternates": {
-      "count": 4,
-      "swapWindowSec": [
-        1,
-        3
-      ],
-      "bodyUnchanged": true
     }
   },
   "cuts": {
@@ -179,7 +171,8 @@
     "handCheckNames": [
       "Mudex",
       "One Vox Studio",
-      "Leederville"
+      "Leederville",
+      "Driftability"
     ]
   },
   "chapterPill": {
@@ -258,13 +251,12 @@
     }
   },
   "deliveryChecklist": [
-    "Hook lands on frame 1 (visual = on-screen text = first spoken line)",
+    "Hook lands in the first 2s (visual = on-screen text = first spoken line)",
     "Length within target for the video type, never over 45s",
     "Something changes on screen at least every 2s",
     "Captions word-checked (incl. Mudex, One Vox Studio, Leederville) and inside the safe zone",
     "No more than 2 accent moments",
-    "No watermarks",
-    "4 alternate-hook versions exported (only the first 1-3s swapped)"
+    "No watermarks"
   ],
   "drive": {
     "$comment": "Claude's own Drive inbox, separate from the Grok team's 'OVS Edit'. IDs pinned; transfers go through rclone (scripts/drive.sh).",
@@ -280,7 +272,7 @@
     "review": {
       "name": "2 For Review",
       "id": "10OBWAfflhNE8NmNv3EphOf7ie70gpfBE",
-      "naming": "<video>_v<N>.mp4"
+      "naming": "<video>_v<N>.mp4, <video>_v<N>_<format>.mp4, <video>_project/"
     },
     "approved": {
       "name": "3 Approved",
@@ -303,35 +295,160 @@
       {
         "name": "OVS Edit/2 For Review (Grok team)",
         "id": "1b3B1NQE-Qh2wN2jH5V-kZSOQ5fk4XwVu"
+      },
+      {
+        "name": "IMG_0400 (Grok team job)",
+        "id": null
       }
     ],
-    "ignoreJobs": [
-      "IMG_0400"
-    ]
+    "library": {
+      "name": "Library",
+      "subfolders": [
+        "LUTs",
+        "Sounds",
+        "Music",
+        "Fonts",
+        "Logos"
+      ],
+      "syncTo": "library/"
+    }
   },
   "music": {
     "licensed": [],
     "policy": "No licensed music yet: ship without music."
   },
-  "reference": {
-    "$comment": "Optional per video: a video file with 'ref' in its name and/or note.txt with a reel link + notes.",
-    "detect": {
-      "fileNamePattern": "(?i)ref",
-      "noteFile": "note.txt"
-    },
-    "analyse": [
-      "cutRate",
-      "hook",
-      "textStyles",
-      "textPlacement",
-      "transitions",
-      "zooms",
-      "captions"
-    ],
-    "precedence": "Reference overrides house style only where it differs; everything it does not show stays house style. Build with HyperFrames catalog blocks."
-  },
   "clipRoles": {
     "$comment": "A-roll = clips with speech; B-roll = clips without meaningful speech.",
     "brollMaxWordsPerMin": 20
+  },
+  "grade": {
+    "$comment": "Default LUT when edit.json names none. Built in: luts/slog3_to_709.cube. Others from Drive Library/LUTs -> library/LUTs/.",
+    "lut": null
+  },
+  "reference": {
+    "$comment": "Optional: a clip with 'ref' in its name or a reel link in the note. scripts/analyze_ref.py measures cut rate, hook, pace; match what differs, keep house style for the rest.",
+    "detect": {
+      "fileNamePattern": "(?i)ref",
+      "noteFile": "note.txt"
+    }
+  },
+  "studio": {
+    "$comment": "Written by Claude from the OVS Video Editor page (artifact db: settings/active -> styles/<id>). These defaults = the 'OVS House' preset.",
+    "name": "OVS House",
+    "reel": {
+      "size": "9x16",
+      "safe": 11,
+      "focus": 50,
+      "alsoWide": false,
+      "perSpeaker": true
+    },
+    "palette": [
+      {
+        "name": "Key yellow",
+        "hex": "#FFD400"
+      },
+      {
+        "name": "Ink",
+        "hex": "#0D0E0C"
+      },
+      {
+        "name": "Caption white",
+        "hex": "#FFFFFF"
+      },
+      {
+        "name": "Cream paper",
+        "hex": "#EFEAE0"
+      },
+      {
+        "name": "Olive brown",
+        "hex": "#303423"
+      }
+    ],
+    "grade": {
+      "lut": "none",
+      "strength": 100
+    },
+    "captions": {
+      "on": true,
+      "font": "Inter",
+      "weight": "900",
+      "size": 4.0,
+      "spacing": 2,
+      "x": 50,
+      "y": 62,
+      "words": "3",
+      "case": "upper",
+      "color": "#FFFFFF",
+      "keyStyle": "block",
+      "accent": "#FFD400",
+      "outline": "2",
+      "shadow": "soft",
+      "anim": "pop"
+    },
+    "hook": {
+      "on": true
+    },
+    "broll": {
+      "on": true,
+      "push": 1.5,
+      "minShot": 2.5,
+      "library": "ovs",
+      "rules": [
+        "Only cut away when it adds something: show what I'm describing, or drive a key point home so it's impossible to miss. Never cut away just to fill time.",
+        "Each b-roll scene slowly scales in (about 1-2% per second) across the whole scene: one smooth push, even when the shots change.",
+        "Match the shot to what I'm saying: when I describe a place, a tool or an action, show it.",
+        "Slow, calm pacing: give every shot time to breathe so the viewer can see what's happening. Never quick-fire cuts.",
+        "Captions never carry over into a cutaway: new scene, new caption."
+      ]
+    },
+    "cards": {
+      "on": true,
+      "bg": "alternate",
+      "bgA": "#EFEAE0",
+      "inkA": "#0D0E0C",
+      "bgB": "#303423",
+      "inkB": "#EFEAE0",
+      "font": "same",
+      "weight": "800",
+      "size": 5.4,
+      "spacing": -5.5,
+      "align": "center",
+      "x": 50,
+      "y": 50,
+      "shows": "line",
+      "words": "2",
+      "maxLetters": 13,
+      "case": "lower",
+      "punct": "hide",
+      "rules": [
+        "Only cut to text for a line that lands: a strong claim, the lesson, a punchline or a number. If nothing lands, stay on me.",
+        "Stay on the text for the whole sentence, so the thought lands before cutting back to me.",
+        "Caption it like my normal captions: one line, a few words at a time. Never more than one line on screen.",
+        "Alternate the two card colours (A then B)."
+      ]
+    },
+    "transitions": {
+      "on": true,
+      "list": [
+        {
+          "name": "Flash",
+          "look": "flash2",
+          "where": "broll",
+          "frames": 2,
+          "strength": 58,
+          "sound": "",
+          "landsMs": 0,
+          "level": -12
+        }
+      ]
+    },
+    "audio": {
+      "voicePeak": -6,
+      "musicLevel": -20,
+      "lowpass": "off",
+      "whoosh": true,
+      "pop": false,
+      "track": ""
+    }
   }
 }

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Archivo"; src: url("assets/fonts/Archivo-Variable.ttf") format("truetype"); font-weight: 100 900; font-stretch: 62% 125%; font-display: block; }
+      :root { --accent: #FFD400; --accent-ink: #000000; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #bg { position: absolute; inset: 0; background: #000; }
+      #cam { position: absolute; inset: 0; transform-origin: 50% 35%; overflow: hidden; }
+      #aroll, #cutout { position: absolute; inset: 0; width: 1080px; height: 1920px; object-fit: cover; }
+      #cutout { z-index: 3; }
+      #hero { position: absolute; left: 0; right: 0; top: 360px; height: 520px; display: flex; align-items: center; justify-content: center; z-index: 2; }
+      #heroWord { display: inline-block; font-family: "Archivo", "Arial Black", sans-serif; font-weight: 900; font-stretch: 125%; color: #FFD400; line-height: 1; white-space: nowrap; transform-origin: 50% 50%; }
+      #captions { z-index: 10; }
+      .broll { position: absolute; inset: 0; width: 1080px; height: 1920px; object-fit: cover; z-index: 5; }
+      #flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 20; }
+      #hook { position: absolute; left: 120px; right: 120px; top: 1010px; height: 300px; display: flex; align-items: center; justify-content: center; z-index: 12; }
+      .hf-catalog-focus-blur-resolve { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 18px; max-width: 840px; text-align: center; color: #fff; font: 900 92px/1.02 "Inter", sans-serif; letter-spacing: -0.02em; transform-origin: 50% 50%; -webkit-text-stroke: 3px rgba(0,0,0,0.85); paint-order: stroke fill; text-shadow: 0 4px 18px rgba(0,0,0,0.45); }
+      .hf-catalog-focus-blur-resolve span { display: inline-block; filter: blur(calc(var(--hf-word-blur, 0px))); }
+      .hf-catalog-focus-blur-resolve span.key { background: var(--accent); color: var(--accent-ink); -webkit-text-stroke: 0; text-shadow: none; border-radius: 10px; padding: 0 14px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="31.54" data-width="1080" data-height="1920">
+      <div id="bg" class="clip" data-start="0" data-duration="31.54" data-track-index="0"></div>
+      <div id="cam">
+        <video id="aroll" class="clip" src="assets/aroll.mp4" data-start="0" data-media-start="0" data-duration="31.54" data-has-audio="true" data-track-index="1" playsinline></video>
+        <div id="hero" class="clip" data-start="4.86" data-duration="2.56" data-track-index="2"><span id="heroWord" style="font-size: 109.2px">DRIFTABILITY</span></div>
+        <video id="cutout" class="clip" src="assets/cutout.webm" data-start="4.86" data-media-start="0" data-duration="2.56" data-track-index="3" muted playsinline data-layout-allow-occlusion></video>
+      </div>
+
+      <div id="captions" data-composition-src="compositions/components/caption-highlight.html" data-composition-id="caption-highlight" data-start="0" data-duration="31.54" data-track-index="10"></div>
+      <div id="hook" class="clip" data-start="0" data-duration="2.44" data-track-index="13"><div class="hf-catalog-focus-blur-resolve"><span class="">THESE</span><span class="">EVENTS</span><span class="">CAN&#x27;T</span><span class="">HAPPEN</span><span class="">WITHOUT</span><span class="">THE</span><span class="key">HELP</span></div></div>
+
+
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#cam", { scale: 1 }, 0);
+      tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.08, duration: 2.440, ease: "none" }, 0.0);
+      tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.08, duration: 2.420, ease: "none" }, 2.44);
+      tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.08, duration: 2.560, ease: "none" }, 4.86);
+      tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.08, duration: 1.780, ease: "none" }, 7.42);
+      tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.08, duration: 0.060, ease: "none" }, 9.2);
+      tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.12, duration: 0.35, ease: "power3.out" }, 9.26);
+      tl.fromTo("#cam", { scale: 1.12 }, { immediateRender: false, scale: 1.154, duration: 0.890, ease: "none" }, 9.610);
+      tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.08, duration: 5.480, ease: "none" }, 10.5);
+      tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.08, duration: 2.620, ease: "none" }, 15.98);
+      tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.08, duration: 2.400, ease: "none" }, 18.6);
+      tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.12, duration: 0.35, ease: "power3.out" }, 21.0);
+      tl.fromTo("#cam", { scale: 1.12 }, { immediateRender: false, scale: 1.154, duration: 2.850, ease: "none" }, 21.350);
+      tl.fromTo("#cam", { scale: 1.25 }, { scale: 1.0, duration: 0.45, ease: "power3.out" }, 24.2);
+      tl.fromTo("#cam", { scale: 1 }, { immediateRender: false, scale: 1.04, duration: 3.810, ease: "none" }, 24.650);
+      tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.08, duration: 1.400, ease: "none" }, 28.46);
+      tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.08, duration: 1.680, ease: "none" }, 29.86);
+      tl.fromTo(".hf-catalog-focus-blur-resolve span", { opacity: 0.35, "--hf-word-blur": "28px" }, { opacity: 1, "--hf-word-blur": "0px", duration: 0.35, ease: "power3.out" }, 0);
+      tl.fromTo(".hf-catalog-focus-blur-resolve", { scale: 2.4 }, { scale: 1, duration: 0.35, ease: "power3.out" }, 0);
+      
+      
+      tl.fromTo("#heroWord", { scale: 1.18, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "power3.out" }, 4.86);
+      tl.fromTo("#heroWord", { scale: 1 }, { immediateRender: false, scale: 1.04, duration: 2.21, ease: "none" }, 5.21);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

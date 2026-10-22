@@ -1,0 +1,19 @@
+{
+ "maxGap": 0.35,
+ "pad": [0.06, 0.12],
+ "target": [30, 45],
+ "fix": {"the both users": "Mudex", "do AI": "see why"},
+ "segments": [
+  {"id": "hook", "role": "hook", "phrase": "These events can't happen without the help and the support", "near": 40.7, "focus": 0.49},
+  {"id": "mudex", "phrase": "from the both users as well as our other supporters", "near": 43.3, "focus": 0.49},
+  {"id": "intro", "phrase": "So that time of year again we've got driftability on", "near": 0.7, "focus": 0.69},
+  {"id": "soldout", "phrase": "it's 2nd of November, sold out event already.", "near": 12.8, "focus": 0.69},
+  {"id": "noms", "phrase": "It's pretty easy to do AI, I kept an eye on those nominations when you opened them up and they were gone straight away.", "near": 52.8, "focus": 0.30},
+  {"id": "help", "phrase": "we we can't help everybody but we do as much as we can.", "near": 67.4, "focus": 0.49},
+  {"id": "proud", "phrase": "It's a great event, we're really proud to be part of it", "near": 75.9, "focus": 0.69},
+  {"id": "easy", "phrase": "what we do is the easy part and what you guys do is the hard part.", "near": 79.0, "focus": 0.69},
+  {"id": "bigger", "phrase": "as it gets bigger and better we'll hopefully be able to do a bit more and maybe do a couple of events a year.", "near": 85.2, "focus": 0.69},
+  {"id": "cards", "phrase": "it's certainly something on the cards", "near": 90.3, "focus": 0.49},
+  {"id": "end", "phrase": "thank you very much and looking forward to it.", "near": 100.0, "focus": 0.69}
+ ]
+}

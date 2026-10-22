@@ -1,0 +1,2777 @@
+{
+ "clips": [
+  {
+   "file": "C6805.MP4",
+   "duration": 103.103,
+   "wpm": 230,
+   "broll": false
+  }
+ ],
+ "words": [
+  {
+   "clip": "C6805.MP4",
+   "word": "So",
+   "start": 0.68,
+   "end": 1.04,
+   "prob": 0.721
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "that",
+   "start": 1.04,
+   "end": 1.24,
+   "prob": 0.802
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "time",
+   "start": 1.24,
+   "end": 1.46,
+   "prob": 0.996
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "of",
+   "start": 1.46,
+   "end": 1.6,
+   "prob": 0.973
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "year",
+   "start": 1.6,
+   "end": 1.7,
+   "prob": 0.989
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "again",
+   "start": 1.7,
+   "end": 1.96,
+   "prob": 0.972
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we've",
+   "start": 1.96,
+   "end": 2.22,
+   "prob": 0.688
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "got",
+   "start": 2.22,
+   "end": 2.3,
+   "prob": 0.996
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "driftability",
+   "start": 2.3,
+   "end": 2.74,
+   "prob": 0.794
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "on",
+   "start": 2.74,
+   "end": 3.06,
+   "prob": 0.991
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 3.06,
+   "end": 3.88,
+   "prob": 0.696
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "so",
+   "start": 3.88,
+   "end": 4.1,
+   "prob": 0.915
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "it's",
+   "start": 4.1,
+   "end": 4.44,
+   "prob": 0.987
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "come",
+   "start": 4.44,
+   "end": 4.54,
+   "prob": 0.955
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "up",
+   "start": 4.54,
+   "end": 4.72,
+   "prob": 0.994
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "a",
+   "start": 4.72,
+   "end": 4.74,
+   "prob": 0.984
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "lot",
+   "start": 4.74,
+   "end": 4.86,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "quicker",
+   "start": 4.86,
+   "end": 5.1,
+   "prob": 0.989
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "on",
+   "start": 5.1,
+   "end": 5.28,
+   "prob": 0.497
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "us",
+   "start": 5.28,
+   "end": 5.42,
+   "prob": 0.963
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "this",
+   "start": 5.42,
+   "end": 5.56,
+   "prob": 0.987
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "year.",
+   "start": 5.56,
+   "end": 5.86,
+   "prob": 0.996
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "It",
+   "start": 6.08,
+   "end": 6.14,
+   "prob": 0.431
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "has.",
+   "start": 6.14,
+   "end": 6.46,
+   "prob": 0.959
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "We've",
+   "start": 8.74,
+   "end": 9.1,
+   "prob": 0.539
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "had",
+   "start": 9.1,
+   "end": 9.24,
+   "prob": 0.887
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "a",
+   "start": 9.24,
+   "end": 9.4,
+   "prob": 0.983
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "couple",
+   "start": 9.4,
+   "end": 9.68,
+   "prob": 0.979
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "of",
+   "start": 9.68,
+   "end": 9.82,
+   "prob": 0.75
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "little",
+   "start": 9.82,
+   "end": 9.92,
+   "prob": 0.962
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "things",
+   "start": 9.92,
+   "end": 10.14,
+   "prob": 0.993
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "that",
+   "start": 10.14,
+   "end": 10.26,
+   "prob": 0.951
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "have",
+   "start": 10.26,
+   "end": 10.36,
+   "prob": 0.985
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "tripped",
+   "start": 10.36,
+   "end": 10.56,
+   "prob": 0.996
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "us",
+   "start": 10.56,
+   "end": 10.7,
+   "prob": 0.993
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "up",
+   "start": 10.7,
+   "end": 10.9,
+   "prob": 0.995
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "but",
+   "start": 10.9,
+   "end": 11.04,
+   "prob": 0.72
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we're",
+   "start": 11.04,
+   "end": 11.42,
+   "prob": 0.829
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "here.",
+   "start": 11.42,
+   "end": 11.7,
+   "prob": 0.989
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "Yeah",
+   "start": 12.2,
+   "end": 12.2,
+   "prob": 0.51
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 12.2,
+   "end": 12.84,
+   "prob": 0.35
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "it's",
+   "start": 12.84,
+   "end": 13.6,
+   "prob": 0.88
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "2nd",
+   "start": 13.6,
+   "end": 13.92,
+   "prob": 0.761
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "of",
+   "start": 13.92,
+   "end": 14.02,
+   "prob": 0.926
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "November,",
+   "start": 14.02,
+   "end": 14.44,
+   "prob": 0.992
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "sold",
+   "start": 14.9,
+   "end": 15.16,
+   "prob": 0.854
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "out",
+   "start": 15.16,
+   "end": 15.36,
+   "prob": 0.831
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "event",
+   "start": 15.36,
+   "end": 15.62,
+   "prob": 0.982
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "already.",
+   "start": 15.62,
+   "end": 16.02,
+   "prob": 0.991
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "Yep",
+   "start": 16.52,
+   "end": 16.7,
+   "prob": 0.33
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "very",
+   "start": 16.7,
+   "end": 16.96,
+   "prob": 0.651
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "quickly.",
+   "start": 16.96,
+   "end": 17.28,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "Yeah",
+   "start": 17.66,
+   "end": 17.66,
+   "prob": 0.462
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 17.66,
+   "end": 17.86,
+   "prob": 0.96
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "unfortunately",
+   "start": 17.86,
+   "end": 18.3,
+   "prob": 0.996
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "this",
+   "start": 18.3,
+   "end": 18.56,
+   "prob": 0.992
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "year",
+   "start": 18.56,
+   "end": 18.72,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we",
+   "start": 18.72,
+   "end": 18.88,
+   "prob": 0.991
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "had",
+   "start": 18.88,
+   "end": 18.96,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "to",
+   "start": 18.96,
+   "end": 19.08,
+   "prob": 0.981
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "break",
+   "start": 19.08,
+   "end": 19.24,
+   "prob": 0.99
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "tradition,",
+   "start": 19.24,
+   "end": 19.58,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we",
+   "start": 19.72,
+   "end": 19.78,
+   "prob": 0.992
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "couldn't",
+   "start": 19.78,
+   "end": 19.96,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "get",
+   "start": 19.96,
+   "end": 20.06,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "one",
+   "start": 20.06,
+   "end": 20.18,
+   "prob": 0.981
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "of",
+   "start": 20.18,
+   "end": 20.28,
+   "prob": 0.982
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "the",
+   "start": 20.28,
+   "end": 20.38,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "cars",
+   "start": 20.38,
+   "end": 20.52,
+   "prob": 0.986
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "to",
+   "start": 20.52,
+   "end": 20.68,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "come",
+   "start": 20.68,
+   "end": 20.78,
+   "prob": 0.985
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 20.78,
+   "end": 20.88,
+   "prob": 0.697
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "do",
+   "start": 20.88,
+   "end": 20.96,
+   "prob": 0.993
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "some",
+   "start": 20.96,
+   "end": 21.1,
+   "prob": 0.995
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "burnouts",
+   "start": 21.1,
+   "end": 21.54,
+   "prob": 0.831
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "so",
+   "start": 21.54,
+   "end": 22.4,
+   "prob": 0.528
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "Darren's",
+   "start": 22.4,
+   "end": 23.1,
+   "prob": 0.888
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "gonna",
+   "start": 23.1,
+   "end": 23.2,
+   "prob": 0.507
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "get",
+   "start": 23.2,
+   "end": 23.38,
+   "prob": 0.897
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "out",
+   "start": 23.38,
+   "end": 23.54,
+   "prob": 0.658
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 23.54,
+   "end": 23.66,
+   "prob": 0.565
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "just",
+   "start": 23.66,
+   "end": 23.76,
+   "prob": 0.451
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "push",
+   "start": 23.76,
+   "end": 23.96,
+   "prob": 0.991
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "bike",
+   "start": 23.96,
+   "end": 24.18,
+   "prob": 0.863
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 24.18,
+   "end": 24.36,
+   "prob": 0.991
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "try",
+   "start": 24.36,
+   "end": 24.5,
+   "prob": 0.926
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 24.5,
+   "end": 24.6,
+   "prob": 0.96
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "smoke",
+   "start": 24.6,
+   "end": 24.8,
+   "prob": 0.991
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "that",
+   "start": 24.8,
+   "end": 24.96,
+   "prob": 0.989
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "up",
+   "start": 24.96,
+   "end": 25.12,
+   "prob": 0.987
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "later",
+   "start": 25.12,
+   "end": 25.32,
+   "prob": 0.974
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "on.",
+   "start": 25.32,
+   "end": 25.44,
+   "prob": 0.869
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "We'll",
+   "start": 25.44,
+   "end": 25.68,
+   "prob": 0.237
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "go",
+   "start": 25.68,
+   "end": 25.68,
+   "prob": 0.827
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "200",
+   "start": 25.68,
+   "end": 26.04,
+   "prob": 0.793
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "series",
+   "start": 26.04,
+   "end": 26.42,
+   "prob": 0.708
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "a",
+   "start": 26.42,
+   "end": 26.6,
+   "prob": 0.715
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "bit",
+   "start": 26.6,
+   "end": 26.66,
+   "prob": 0.989
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "later,",
+   "start": 26.66,
+   "end": 27.04,
+   "prob": 0.995
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we'll",
+   "start": 27.16,
+   "end": 27.34,
+   "prob": 0.719
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "see",
+   "start": 27.34,
+   "end": 27.44,
+   "prob": 0.98
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "that",
+   "start": 27.44,
+   "end": 27.7,
+   "prob": 0.988
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "in",
+   "start": 27.7,
+   "end": 28.06,
+   "prob": 0.901
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "action.",
+   "start": 28.06,
+   "end": 28.32,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "Blow",
+   "start": 28.58,
+   "end": 28.78,
+   "prob": 0.679
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "all",
+   "start": 28.78,
+   "end": 28.98,
+   "prob": 0.98
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "the",
+   "start": 28.98,
+   "end": 29.1,
+   "prob": 0.993
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "diffs",
+   "start": 29.1,
+   "end": 29.34,
+   "prob": 0.684
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 29.34,
+   "end": 29.4,
+   "prob": 0.983
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "everything",
+   "start": 29.4,
+   "end": 29.68,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "like",
+   "start": 29.68,
+   "end": 29.9,
+   "prob": 0.978
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "that",
+   "start": 29.9,
+   "end": 30.24,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "so",
+   "start": 30.24,
+   "end": 30.5,
+   "prob": 0.185
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "you",
+   "start": 30.5,
+   "end": 30.66,
+   "prob": 0.361
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "know.",
+   "start": 30.66,
+   "end": 31.26,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "We're",
+   "start": 31.9,
+   "end": 32.3,
+   "prob": 0.7
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "all",
+   "start": 32.3,
+   "end": 32.42,
+   "prob": 0.984
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "good.",
+   "start": 32.42,
+   "end": 32.56,
+   "prob": 0.992
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "Yeah",
+   "start": 33.88,
+   "end": 34.26,
+   "prob": 0.318
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "look",
+   "start": 34.26,
+   "end": 34.54,
+   "prob": 0.507
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "I",
+   "start": 34.54,
+   "end": 34.7,
+   "prob": 0.712
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "guess",
+   "start": 34.7,
+   "end": 34.88,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "as",
+   "start": 34.88,
+   "end": 35.64,
+   "prob": 0.815
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "always",
+   "start": 35.64,
+   "end": 35.94,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "you",
+   "start": 35.94,
+   "end": 36.12,
+   "prob": 0.679
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "know",
+   "start": 36.12,
+   "end": 36.26,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "the",
+   "start": 36.26,
+   "end": 36.54,
+   "prob": 0.897
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "help",
+   "start": 36.54,
+   "end": 36.68,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "that",
+   "start": 36.68,
+   "end": 36.82,
+   "prob": 0.978
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "you",
+   "start": 36.82,
+   "end": 36.9,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "guys",
+   "start": 36.9,
+   "end": 37.08,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "give",
+   "start": 37.08,
+   "end": 37.26,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "us",
+   "start": 37.26,
+   "end": 37.52,
+   "prob": 0.993
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "is",
+   "start": 37.52,
+   "end": 37.84,
+   "prob": 0.992
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "is",
+   "start": 37.84,
+   "end": 38.3,
+   "prob": 0.511
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "massively",
+   "start": 38.3,
+   "end": 38.6,
+   "prob": 0.24
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "appreciated.",
+   "start": 38.6,
+   "end": 39.62,
+   "prob": 0.846
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "These",
+   "start": 40.68,
+   "end": 41.12,
+   "prob": 0.949
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "events",
+   "start": 41.12,
+   "end": 41.4,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "can't",
+   "start": 41.4,
+   "end": 41.64,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "happen",
+   "start": 41.64,
+   "end": 41.8,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "without",
+   "start": 41.8,
+   "end": 42.04,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "the",
+   "start": 42.04,
+   "end": 42.22,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "help",
+   "start": 42.22,
+   "end": 42.38,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 42.38,
+   "end": 42.54,
+   "prob": 0.993
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "the",
+   "start": 42.54,
+   "end": 42.68,
+   "prob": 0.996
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "support",
+   "start": 42.68,
+   "end": 42.94,
+   "prob": 1.0
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "from",
+   "start": 42.94,
+   "end": 43.16,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "the",
+   "start": 43.16,
+   "end": 43.26,
+   "prob": 0.772
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "from",
+   "start": 43.26,
+   "end": 43.42,
+   "prob": 0.558
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "the",
+   "start": 43.42,
+   "end": 43.54,
+   "prob": 0.969
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "both",
+   "start": 43.54,
+   "end": 43.7,
+   "prob": 0.988
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "users",
+   "start": 43.7,
+   "end": 43.94,
+   "prob": 0.342
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "as",
+   "start": 43.94,
+   "end": 44.54,
+   "prob": 0.917
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "well",
+   "start": 44.54,
+   "end": 44.64,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "as",
+   "start": 44.64,
+   "end": 44.76,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "our",
+   "start": 44.76,
+   "end": 44.92,
+   "prob": 0.99
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "other",
+   "start": 44.92,
+   "end": 45.14,
+   "prob": 0.975
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "supporters",
+   "start": 45.14,
+   "end": 45.5,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "so",
+   "start": 45.5,
+   "end": 45.84,
+   "prob": 0.587
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "thank",
+   "start": 45.84,
+   "end": 46.88,
+   "prob": 0.752
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "you",
+   "start": 46.88,
+   "end": 47.08,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "again",
+   "start": 47.08,
+   "end": 47.44,
+   "prob": 0.82
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "you",
+   "start": 47.44,
+   "end": 47.62,
+   "prob": 0.602
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "know",
+   "start": 47.62,
+   "end": 47.76,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "it's",
+   "start": 47.76,
+   "end": 48.28,
+   "prob": 0.952
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "it's",
+   "start": 48.28,
+   "end": 48.36,
+   "prob": 0.853
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "the",
+   "start": 48.36,
+   "end": 48.48,
+   "prob": 0.957
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "same",
+   "start": 48.48,
+   "end": 48.7,
+   "prob": 1.0
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "conversation",
+   "start": 48.7,
+   "end": 49.12,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we",
+   "start": 49.12,
+   "end": 49.34,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "have",
+   "start": 49.34,
+   "end": 49.54,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "but",
+   "start": 49.54,
+   "end": 49.76,
+   "prob": 0.951
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "it's",
+   "start": 49.76,
+   "end": 50.34,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "so",
+   "start": 50.34,
+   "end": 50.5,
+   "prob": 1.0
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "massively",
+   "start": 50.5,
+   "end": 50.94,
+   "prob": 1.0
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "appreciated",
+   "start": 50.94,
+   "end": 51.5,
+   "prob": 0.961
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 51.5,
+   "end": 51.68,
+   "prob": 0.895
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we",
+   "start": 51.68,
+   "end": 51.76,
+   "prob": 0.993
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "are",
+   "start": 51.76,
+   "end": 51.92,
+   "prob": 0.98
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "incredibly",
+   "start": 51.92,
+   "end": 52.28,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "grateful.",
+   "start": 52.28,
+   "end": 52.52,
+   "prob": 0.987
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "It's",
+   "start": 52.8,
+   "end": 52.8,
+   "prob": 0.925
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "pretty",
+   "start": 52.8,
+   "end": 52.8,
+   "prob": 0.99
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "easy",
+   "start": 52.8,
+   "end": 53.02,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "to",
+   "start": 53.02,
+   "end": 53.18,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "do",
+   "start": 53.18,
+   "end": 53.36,
+   "prob": 0.996
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "AI,",
+   "start": 53.36,
+   "end": 53.68,
+   "prob": 0.757
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "I",
+   "start": 53.88,
+   "end": 53.88,
+   "prob": 0.908
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "kept",
+   "start": 53.88,
+   "end": 54.12,
+   "prob": 0.72
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "an",
+   "start": 54.12,
+   "end": 54.3,
+   "prob": 0.007
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "eye",
+   "start": 54.3,
+   "end": 54.44,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "on",
+   "start": 54.44,
+   "end": 54.66,
+   "prob": 0.993
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "those",
+   "start": 54.66,
+   "end": 55.08,
+   "prob": 0.979
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "nominations",
+   "start": 55.08,
+   "end": 56.24,
+   "prob": 0.866
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "when",
+   "start": 56.24,
+   "end": 56.5,
+   "prob": 0.91
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "you",
+   "start": 56.5,
+   "end": 56.6,
+   "prob": 0.994
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "opened",
+   "start": 56.6,
+   "end": 56.8,
+   "prob": 0.349
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "them",
+   "start": 56.8,
+   "end": 56.92,
+   "prob": 0.974
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "up",
+   "start": 56.92,
+   "end": 57.06,
+   "prob": 0.994
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 57.06,
+   "end": 57.18,
+   "prob": 0.818
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "they",
+   "start": 57.18,
+   "end": 57.3,
+   "prob": 0.846
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "were",
+   "start": 57.3,
+   "end": 57.38,
+   "prob": 0.936
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "gone",
+   "start": 57.38,
+   "end": 57.58,
+   "prob": 0.866
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "straight",
+   "start": 57.58,
+   "end": 57.82,
+   "prob": 0.986
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "away.",
+   "start": 57.82,
+   "end": 58.1,
+   "prob": 0.808
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "Oh",
+   "start": 58.22,
+   "end": 58.22,
+   "prob": 0.136
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "yeah",
+   "start": 58.22,
+   "end": 58.5,
+   "prob": 0.759
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "insane.",
+   "start": 58.5,
+   "end": 58.78,
+   "prob": 0.071
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "To",
+   "start": 58.78,
+   "end": 58.84,
+   "prob": 0.51
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "see",
+   "start": 58.84,
+   "end": 59.04,
+   "prob": 0.855
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "that",
+   "start": 59.04,
+   "end": 59.52,
+   "prob": 0.988
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "you",
+   "start": 59.52,
+   "end": 60.28,
+   "prob": 0.347
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "know",
+   "start": 60.28,
+   "end": 60.44,
+   "prob": 0.916
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "it",
+   "start": 60.44,
+   "end": 60.68,
+   "prob": 0.566
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "gets",
+   "start": 60.68,
+   "end": 60.84,
+   "prob": 0.959
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "utilised",
+   "start": 60.84,
+   "end": 61.24,
+   "prob": 0.659
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "so",
+   "start": 61.24,
+   "end": 61.44,
+   "prob": 0.995
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "quickly",
+   "start": 61.44,
+   "end": 61.76,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 61.76,
+   "end": 62.42,
+   "prob": 0.921
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "I",
+   "start": 62.42,
+   "end": 62.62,
+   "prob": 0.839
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "think",
+   "start": 62.62,
+   "end": 62.8,
+   "prob": 0.995
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "you've",
+   "start": 62.8,
+   "end": 62.98,
+   "prob": 0.893
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "got",
+   "start": 62.98,
+   "end": 63.04,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "a",
+   "start": 63.04,
+   "end": 63.16,
+   "prob": 0.995
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "waiting",
+   "start": 63.16,
+   "end": 63.32,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "list",
+   "start": 63.32,
+   "end": 63.54,
+   "prob": 0.996
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "just",
+   "start": 63.54,
+   "end": 63.74,
+   "prob": 0.87
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "as",
+   "start": 63.74,
+   "end": 63.92,
+   "prob": 0.993
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "long",
+   "start": 63.92,
+   "end": 64.0,
+   "prob": 0.994
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "as",
+   "start": 64.0,
+   "end": 64.16,
+   "prob": 0.984
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we",
+   "start": 64.16,
+   "end": 64.38,
+   "prob": 0.179
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "do.",
+   "start": 64.38,
+   "end": 64.76,
+   "prob": 0.628
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "We",
+   "start": 65.12,
+   "end": 65.24,
+   "prob": 0.789
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "do",
+   "start": 65.24,
+   "end": 65.24,
+   "prob": 0.991
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "it's",
+   "start": 65.24,
+   "end": 66.0,
+   "prob": 0.603
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "a",
+   "start": 66.0,
+   "end": 66.1,
+   "prob": 0.949
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "big",
+   "start": 66.1,
+   "end": 66.28,
+   "prob": 0.992
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "list",
+   "start": 66.28,
+   "end": 66.54,
+   "prob": 0.987
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "this",
+   "start": 66.54,
+   "end": 66.72,
+   "prob": 0.977
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "year",
+   "start": 66.72,
+   "end": 66.9,
+   "prob": 0.996
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "unfortunately",
+   "start": 66.9,
+   "end": 67.38,
+   "prob": 0.968
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we",
+   "start": 67.38,
+   "end": 67.96,
+   "prob": 0.238
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we",
+   "start": 67.96,
+   "end": 68.2,
+   "prob": 0.466
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "can't",
+   "start": 68.2,
+   "end": 68.4,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "help",
+   "start": 68.4,
+   "end": 68.54,
+   "prob": 1.0
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "everybody",
+   "start": 68.54,
+   "end": 68.94,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "but",
+   "start": 68.94,
+   "end": 69.2,
+   "prob": 0.972
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we",
+   "start": 69.2,
+   "end": 69.46,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "do",
+   "start": 69.46,
+   "end": 69.7,
+   "prob": 0.764
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "as",
+   "start": 69.7,
+   "end": 69.86,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "much",
+   "start": 69.86,
+   "end": 70.0,
+   "prob": 1.0
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "as",
+   "start": 70.0,
+   "end": 70.12,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we",
+   "start": 70.12,
+   "end": 70.26,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "can.",
+   "start": 70.26,
+   "end": 70.4,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "It's",
+   "start": 70.5,
+   "end": 70.56,
+   "prob": 0.852
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "the",
+   "start": 70.56,
+   "end": 70.68,
+   "prob": 0.993
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "only",
+   "start": 70.68,
+   "end": 70.8,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "disappointing",
+   "start": 70.8,
+   "end": 71.2,
+   "prob": 0.989
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "thing",
+   "start": 71.2,
+   "end": 71.52,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "about",
+   "start": 71.52,
+   "end": 71.78,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "the",
+   "start": 71.78,
+   "end": 71.92,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "event",
+   "start": 71.92,
+   "end": 72.12,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "is",
+   "start": 72.12,
+   "end": 72.3,
+   "prob": 0.965
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we've",
+   "start": 72.3,
+   "end": 72.48,
+   "prob": 0.931
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "got",
+   "start": 72.48,
+   "end": 72.54,
+   "prob": 0.989
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "a",
+   "start": 72.54,
+   "end": 72.66,
+   "prob": 0.925
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "waiting",
+   "start": 72.66,
+   "end": 72.82,
+   "prob": 0.995
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "list",
+   "start": 72.82,
+   "end": 73.04,
+   "prob": 0.988
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "out",
+   "start": 73.04,
+   "end": 73.18,
+   "prob": 0.498
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "there.",
+   "start": 73.18,
+   "end": 73.3,
+   "prob": 0.789
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "It's",
+   "start": 75.92,
+   "end": 76.28,
+   "prob": 0.52
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "a",
+   "start": 76.28,
+   "end": 76.32,
+   "prob": 0.577
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "great",
+   "start": 76.32,
+   "end": 76.48,
+   "prob": 0.982
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "event,",
+   "start": 76.48,
+   "end": 76.72,
+   "prob": 0.993
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we're",
+   "start": 76.88,
+   "end": 76.98,
+   "prob": 0.941
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "really",
+   "start": 76.98,
+   "end": 77.22,
+   "prob": 0.995
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "proud",
+   "start": 77.22,
+   "end": 77.48,
+   "prob": 0.979
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "to",
+   "start": 77.48,
+   "end": 77.58,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "be",
+   "start": 77.58,
+   "end": 77.72,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "part",
+   "start": 77.72,
+   "end": 77.94,
+   "prob": 0.983
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "of",
+   "start": 77.94,
+   "end": 78.06,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "it",
+   "start": 78.06,
+   "end": 78.14,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 78.14,
+   "end": 78.32,
+   "prob": 0.913
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "as",
+   "start": 78.32,
+   "end": 78.5,
+   "prob": 0.993
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we've",
+   "start": 78.5,
+   "end": 78.68,
+   "prob": 0.984
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "said",
+   "start": 78.68,
+   "end": 78.78,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "before",
+   "start": 78.78,
+   "end": 79.06,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "what",
+   "start": 79.06,
+   "end": 79.26,
+   "prob": 0.902
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we",
+   "start": 79.26,
+   "end": 79.42,
+   "prob": 1.0
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "do",
+   "start": 79.42,
+   "end": 79.56,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "is",
+   "start": 79.56,
+   "end": 79.66,
+   "prob": 0.995
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "the",
+   "start": 79.66,
+   "end": 79.8,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "easy",
+   "start": 79.8,
+   "end": 80.04,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "part",
+   "start": 80.04,
+   "end": 80.4,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 80.4,
+   "end": 80.56,
+   "prob": 0.969
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "what",
+   "start": 80.56,
+   "end": 80.74,
+   "prob": 0.973
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "you",
+   "start": 80.74,
+   "end": 80.9,
+   "prob": 0.789
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "guys",
+   "start": 80.9,
+   "end": 81.14,
+   "prob": 0.978
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "do",
+   "start": 81.14,
+   "end": 81.34,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "is",
+   "start": 81.34,
+   "end": 81.46,
+   "prob": 0.994
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "the",
+   "start": 81.46,
+   "end": 81.6,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "hard",
+   "start": 81.6,
+   "end": 81.78,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "part.",
+   "start": 81.78,
+   "end": 82.08,
+   "prob": 0.256
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "It's",
+   "start": 82.32,
+   "end": 82.5,
+   "prob": 0.534
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "just",
+   "start": 82.5,
+   "end": 82.64,
+   "prob": 0.531
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "something",
+   "start": 82.64,
+   "end": 82.82,
+   "prob": 0.986
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "that",
+   "start": 82.82,
+   "end": 82.96,
+   "prob": 0.678
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we",
+   "start": 82.96,
+   "end": 83.12,
+   "prob": 0.919
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "want",
+   "start": 83.12,
+   "end": 83.24,
+   "prob": 0.946
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "to",
+   "start": 83.24,
+   "end": 83.34,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "be",
+   "start": 83.34,
+   "end": 83.44,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "part",
+   "start": 83.44,
+   "end": 83.66,
+   "prob": 0.945
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "of",
+   "start": 83.66,
+   "end": 84.0,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 84.0,
+   "end": 84.66,
+   "prob": 0.379
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "yeah",
+   "start": 84.66,
+   "end": 85.22,
+   "prob": 0.409
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "as",
+   "start": 85.22,
+   "end": 85.42,
+   "prob": 0.794
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "it",
+   "start": 85.42,
+   "end": 85.54,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "gets",
+   "start": 85.54,
+   "end": 85.68,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "bigger",
+   "start": 85.68,
+   "end": 85.92,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 85.92,
+   "end": 86.08,
+   "prob": 0.995
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "better",
+   "start": 86.08,
+   "end": 86.26,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we'll",
+   "start": 86.26,
+   "end": 86.44,
+   "prob": 0.498
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "hopefully",
+   "start": 86.44,
+   "end": 86.62,
+   "prob": 0.875
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "be",
+   "start": 86.62,
+   "end": 86.74,
+   "prob": 0.825
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "able",
+   "start": 86.74,
+   "end": 86.82,
+   "prob": 0.975
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "to",
+   "start": 86.82,
+   "end": 86.88,
+   "prob": 0.971
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "do",
+   "start": 86.88,
+   "end": 86.96,
+   "prob": 0.991
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "a",
+   "start": 86.96,
+   "end": 87.04,
+   "prob": 0.993
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "bit",
+   "start": 87.04,
+   "end": 87.14,
+   "prob": 0.996
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "more",
+   "start": 87.14,
+   "end": 87.44,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 87.44,
+   "end": 87.78,
+   "prob": 0.879
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "maybe",
+   "start": 87.78,
+   "end": 88.24,
+   "prob": 0.591
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "do",
+   "start": 88.24,
+   "end": 88.54,
+   "prob": 0.404
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "a",
+   "start": 88.54,
+   "end": 88.68,
+   "prob": 0.966
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "couple",
+   "start": 88.68,
+   "end": 88.78,
+   "prob": 0.977
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "of",
+   "start": 88.78,
+   "end": 88.88,
+   "prob": 0.522
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "events",
+   "start": 88.88,
+   "end": 89.06,
+   "prob": 0.936
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "a",
+   "start": 89.06,
+   "end": 89.18,
+   "prob": 0.778
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "year.",
+   "start": 89.18,
+   "end": 89.3,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "Yeah",
+   "start": 89.7,
+   "end": 89.96,
+   "prob": 0.603
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "look",
+   "start": 89.96,
+   "end": 90.14,
+   "prob": 0.847
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "I",
+   "start": 90.14,
+   "end": 90.26,
+   "prob": 0.834
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "mean",
+   "start": 90.26,
+   "end": 90.34,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "it's",
+   "start": 90.34,
+   "end": 90.54,
+   "prob": 0.992
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "certainly",
+   "start": 90.54,
+   "end": 90.7,
+   "prob": 0.982
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "something",
+   "start": 90.7,
+   "end": 91.0,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "on",
+   "start": 91.0,
+   "end": 91.14,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "the",
+   "start": 91.14,
+   "end": 91.26,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "cards",
+   "start": 91.26,
+   "end": 91.56,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "with",
+   "start": 91.56,
+   "end": 91.82,
+   "prob": 0.977
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "with",
+   "start": 91.82,
+   "end": 92.4,
+   "prob": 0.695
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "the",
+   "start": 92.4,
+   "end": 92.52,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "way",
+   "start": 92.52,
+   "end": 92.66,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "these",
+   "start": 92.66,
+   "end": 92.86,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "events",
+   "start": 92.86,
+   "end": 93.12,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "are",
+   "start": 93.12,
+   "end": 93.26,
+   "prob": 0.994
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "filling",
+   "start": 93.26,
+   "end": 93.44,
+   "prob": 0.993
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "up",
+   "start": 93.44,
+   "end": 93.66,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "now",
+   "start": 93.66,
+   "end": 93.88,
+   "prob": 0.957
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we",
+   "start": 93.88,
+   "end": 94.22,
+   "prob": 0.702
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "know",
+   "start": 94.22,
+   "end": 94.4,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "the",
+   "start": 94.4,
+   "end": 94.52,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "numbers",
+   "start": 94.52,
+   "end": 94.8,
+   "prob": 1.0
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "are",
+   "start": 94.8,
+   "end": 94.96,
+   "prob": 0.996
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "there",
+   "start": 94.96,
+   "end": 95.1,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "where",
+   "start": 95.1,
+   "end": 95.34,
+   "prob": 0.884
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "people",
+   "start": 95.34,
+   "end": 95.72,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "want",
+   "start": 95.72,
+   "end": 96.02,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "it",
+   "start": 96.02,
+   "end": 96.24,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "yeah",
+   "start": 96.24,
+   "end": 96.64,
+   "prob": 0.61
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "we",
+   "start": 96.64,
+   "end": 96.78,
+   "prob": 0.982
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "just",
+   "start": 96.78,
+   "end": 96.94,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "have",
+   "start": 96.94,
+   "end": 97.08,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "to",
+   "start": 97.08,
+   "end": 97.36,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "just",
+   "start": 97.36,
+   "end": 97.54,
+   "prob": 0.948
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "have",
+   "start": 97.54,
+   "end": 97.66,
+   "prob": 0.996
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "to",
+   "start": 97.66,
+   "end": 97.82,
+   "prob": 1.0
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "make",
+   "start": 97.82,
+   "end": 97.96,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "it",
+   "start": 97.96,
+   "end": 98.14,
+   "prob": 1.0
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "work",
+   "start": 98.14,
+   "end": 98.38,
+   "prob": 0.997
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "so",
+   "start": 98.38,
+   "end": 98.68,
+   "prob": 0.852
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "yeah",
+   "start": 98.68,
+   "end": 99.22,
+   "prob": 0.921
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "no",
+   "start": 99.22,
+   "end": 99.6,
+   "prob": 0.173
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "worries",
+   "start": 99.6,
+   "end": 99.86,
+   "prob": 0.9
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "well",
+   "start": 99.86,
+   "end": 100.08,
+   "prob": 0.355
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "thank",
+   "start": 100.08,
+   "end": 100.26,
+   "prob": 0.971
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "you",
+   "start": 100.26,
+   "end": 100.38,
+   "prob": 0.998
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "very",
+   "start": 100.38,
+   "end": 100.5,
+   "prob": 0.981
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "much",
+   "start": 100.5,
+   "end": 100.74,
+   "prob": 0.988
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "and",
+   "start": 100.74,
+   "end": 100.88,
+   "prob": 0.705
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "looking",
+   "start": 100.88,
+   "end": 101.02,
+   "prob": 0.908
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "forward",
+   "start": 101.02,
+   "end": 101.26,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "to",
+   "start": 101.26,
+   "end": 101.42,
+   "prob": 0.999
+  },
+  {
+   "clip": "C6805.MP4",
+   "word": "it.",
+   "start": 101.42,
+   "end": 101.58,
+   "prob": 0.998
+  }
+ ]
+}

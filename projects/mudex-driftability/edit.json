@@ -1,0 +1,13 @@
+{
+ "formats": ["9x16", "16x9"],
+ "lut": "luts/slog3_to_709.cube",
+ "hookText": "These events can't happen without the help",
+ "hookKeys": ["help"],
+ "keys": ["Mudex", "driftability", "November", "sold", "nominations", "everybody", "proud", "hard", "couple", "cards"],
+ "punch": ["soldout@sold", "easy"],
+ "settle": ["bigger"],
+ "hero": {"word": "Driftability", "seg": "intro"},
+ "transition": {"look": "cut"},
+ "sfx": false,
+ "tail": 0.35
+}
