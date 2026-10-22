@@ -42,4 +42,14 @@ End-to-end test of the Cutting Room Inbox upload route with a 544 MB .mov, edite
 - Hero word size is computed offline from the real font (the renderer can't measure at render time).
 
 ## QA (v1)
-_filled from `scripts/qa_check.py` after the hook renders_
+2026-10-22 · v1 · 27.8 s · QA 7/7
+- [x] Hook on frame 1 (visual = text = first line) — text “The moon is the way to Mars” vs spoken “the moon is the way to get to mars” (100% shared); speech starts 0.06s; text fully resolved by 0.35s
+- [x] Length within target — 27.8s, teaching target 15–45s
+- [x] A change on screen every 2s or less — longest hold 1.88s at 22.57s (cuts, punch-ins, B-roll, graphics; captions not counted)
+- [x] Captions word-checked and inside the safe zone — caption line y≈1190, x 120–960; names list checked (Mudex, One Vox Studio, Leederville: none spoken)
+- [x] At most 2 accent moments — 1 (text-behind-subject on “Fuel”)
+- [x] No watermarks — no logos or watermarks added; source and B-roll are public-domain NASA media
+- [x] 4 alternate-hook versions exported — 4 rendered (first 1–3s swapped)
+
+Delivery: renders in `renders/` (repo, Git LFS). Drive upload to 2 For Review pending the rclone token
+(not visible in this session). Job card updated with preview, hooks, QA and notes.
