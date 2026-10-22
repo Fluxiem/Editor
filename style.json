@@ -173,7 +173,8 @@
       "One Vox Studio",
       "Leederville",
       "Driftability"
-    ]
+    ],
+    "minHoldSec": 0.4
   },
   "chapterPill": {
     "x": 120,
@@ -224,7 +225,13 @@
     "xMax": 960,
     "yMin": 240,
     "yMax": 1260,
-    "bottomThirdClear": true
+    "bottomThirdClear": true,
+    "instagram": {
+      "$comment": "Instagram UI: keep anything important out of these bands",
+      "topPx": 220,
+      "bottomPx": 380,
+      "rightPx": 140
+    }
   },
   "graphics": {
     "brollMatchesSpeech": true,
@@ -448,7 +455,8 @@
       "lowpass": "off",
       "whoosh": true,
       "pop": false,
-      "track": ""
+      "track": "",
+      "voiceClean": "light"
     }
   }
 }

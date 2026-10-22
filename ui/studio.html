@@ -284,6 +284,7 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
           <label class="f"><span>Voice peaks</span><input type="range" id="s_audio_voicePeak" min="-12" max="-1" step="0.5"><span class="range-val" data-for="s_audio_voicePeak" data-unit=" dBFS"></span></label>
           <label class="f"><span>Music under voice</span><input type="range" id="s_audio_musicLevel" min="-30" max="-10" step="1"><span class="range-val" data-for="s_audio_musicLevel" data-unit=" dB"></span></label>
           <label class="f"><span>Music low-pass under speech</span><select id="s_audio_lowpass"><option value="off">Off</option><option value="on">On</option></select></label>
+          <label class="f"><span>Voice clean-up</span><select id="s_audio_voiceClean"><option value="off">Off</option><option value="light">Light: rumble cut, light denoise</option><option value="strong">Strong: + de-ess, firmer compression</option></select></label>
         </div>
         <div class="row"><label class="switch"><input type="checkbox" id="s_audio_whoosh"> Whoosh on whips and punch-ins</label><label class="switch"><input type="checkbox" id="s_audio_pop"> Pop on key words</label></div>
         <div class="lbl">Music track</div>
@@ -365,7 +366,7 @@ const BASE = {
   broll: { on: true, push: 1.5, minShot: 2.5, library: "ovs", rules: BROLL_RULES.slice() },
   cards: { on: true, bg: "alternate", bgA: "#EFEAE0", inkA: "#0D0E0C", bgB: "#303423", inkB: "#EFEAE0", font: "same", weight: "800", size: 5.4, spacing: -5.5, align: "center", x: 50, y: 50, shows: "line", words: "2", maxLetters: 13, case: "lower", punct: "hide", rules: CARD_RULES.slice() },
   transitions: { on: true, list: [ { name: "Flash", look: "flash2", where: "broll", frames: 2, strength: 58, sound: "", landsMs: 0, level: -12 } ] },
-  audio: { voicePeak: -6, musicLevel: -20, lowpass: "off", whoosh: true, pop: false, track: "" }
+  audio: { voicePeak: -6, musicLevel: -20, lowpass: "off", voiceClean: "light", whoosh: true, pop: false, track: "" }
 };
 const PRESETS = {
   "preset:ovs": BASE,

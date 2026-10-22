@@ -119,6 +119,24 @@ North star: Chris Boustedt (@chriss.boustedt).
   only; if none is supplied, ship without music and say so. SFX: whoosh on whips, pop on key words
   (off for clean corporate pieces).
 
+## Craft notes (from the 5-Pass Reel Edit Kit, @zeeuiux)
+
+- **Transcript check**: after step b, list low-confidence words and names in the reply (or fix them
+  with `plan.json` → `fix`) before captions are built on them.
+- **Scene plan before building**: for B-roll, text cards and graphics, write a table in NOTES.md
+  and the reply (says → at → what appears → why). One idea on screen at a time, each fired on its
+  trigger word: fast in (0.2–0.35s), hold, clean out. Don't wait for approval unless the note asks.
+- **Cutout quality**: soft edges, no sticker outline, no holes in hands; if rembg flickers on a
+  shot, try a video matting model (RobustVideoMatting ONNX at 2× size) for that span.
+- **Captions**: hold each at least 0.4s; never over a face (move the line, or skip that group).
+- **Sound palette** (when SFX are on): a hit on the hook, a tap on every on-screen click, a whoosh
+  on scene changes, a chime to close; voice always on top, cleaned (`voiceClean`), −14 LUFS.
+- **Safe area**: also keep text out of Instagram's top 220px, bottom 380px and right 140px.
+- **Deliver a cover frame** (`qa/*_cover.jpg`, one big word on screen) with each version.
+- **Director notes** like "fire the X graphic 3 frames earlier" or "only re-render 0:04–0:07" map to
+  `edit.json` timings and a re-run from step e; the rest of the project stays as it was.
+- **Before it ships**: it must make sense with sound on and sound off.
+
 ## Which catalog block for each job
 
 | Job | Block |
