@@ -1,0 +1,80 @@
+{
+ "hookText": "The moon is the way to Mars",
+ "hookKeys": [
+  "Mars"
+ ],
+ "chapters": [
+  {
+   "at": "sun",
+   "label": "Why the Moon"
+  },
+  {
+   "at": "sls",
+   "label": "The rocket"
+  },
+  {
+   "at": "proving",
+   "label": "The goal"
+  }
+ ],
+ "settle": [
+  "sun",
+  "goal"
+ ],
+ "punch": [
+  "ice@moon",
+  "largest@rocket",
+  "proving"
+ ],
+ "keys": [
+  "sunlight",
+  "power",
+  "ice",
+  "support",
+  "fuel",
+  "largest",
+  "proving",
+  "Mars",
+  "goal"
+ ],
+ "broll": [
+  {
+   "src": "assets/broll/moon_south_pole.jpg",
+   "at": "sun@sunlight-0.1",
+   "dur": 1.6,
+   "zoom": 1.3
+  },
+  {
+   "src": "assets/broll/moon_south_pole_clementine.jpg",
+   "at": "ice@water-0.05",
+   "dur": 1.5,
+   "zoom": 1.25
+  },
+  {
+   "src": "assets/broll/sls_liftoff.jpg",
+   "at": "sls@space-0.1",
+   "dur": 1.9,
+   "zoom": 1.05,
+   "pos": "40% 50%"
+  },
+  {
+   "src": "assets/broll/mars.jpg",
+   "at": "goal@Mars-0.1",
+   "dur": 1.5,
+   "zoom": 1.2
+  }
+ ],
+ "lowerThird": {
+  "at": "life",
+  "name": "NASA Artemis",
+  "role": "Interview soundbite \u00b7 2019"
+ },
+ "hero": {
+  "word": "Fuel",
+  "at": "fuel@rocket",
+  "until": "sls@power+0.1",
+  "cutout": "assets/hero_cutout.webm",
+  "cutoutAt": "fuel@rocket-0.21"
+ },
+ "tail": 0.25
+}

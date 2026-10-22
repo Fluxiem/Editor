@@ -1,0 +1,6 @@
+[
+ {"id": "B", "phrase": "So the moon is the proving ground", "near": 164, "text": "The moon is the proving ground", "keys": ["proving"]},
+ {"id": "C", "phrase": "but it's also rocket fuel", "near": 138, "text": "It's also rocket fuel", "keys": ["fuel"]},
+ {"id": "D", "phrase": "the largest, most powerful rocket ever launched", "near": 151, "text": "The most powerful rocket ever launched", "keys": ["powerful"]},
+ {"id": "E", "phrase": "a sustainable return to the moon", "near": 46, "text": "A sustainable return to the moon", "keys": ["moon"]}
+]

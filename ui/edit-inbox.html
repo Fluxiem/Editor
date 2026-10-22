@@ -1,9 +1,9 @@
 <title>Cutting Room Inbox</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: one working column — submit form on top (drop zone + brief), job queue below as a strip of reels. */
+/* Layout: one working column — status banner, new-job form (Drive folder | upload), then the job queue as cards that grow into result sheets. */
 :root {
   --bg: #eef0f3;
   --surface: #ffffff;
@@ -30,17 +30,32 @@
   color-scheme: dark }
 
 body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--f-body); }
-.wrap { max-width: 860px; margin: 0 auto; padding-block: 28px 64px;
+.wrap { max-width: 880px; margin: 0 auto; padding-block: 28px 64px;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
-  display: grid; gap: 28px; }
+  display: grid; gap: 24px; }
 header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 h1 { font: 800 clamp(28px, 5vw, 40px)/1 var(--f-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
 h1 .rec { display: inline-block; width: .32em; height: .32em; border-radius: 50%; background: var(--tally); vertical-align: middle; margin-right: .3em; transform: translateY(-.08em); }
 .tc { font: 500 13px var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
 h2 { font: 700 13px var(--f-display); text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin: 0; }
+h3 { margin: 0; }
 .lede { color: var(--muted); margin: 6px 0 0; max-width: 62ch; }
 
+.banner { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 12px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); }
+.banner.live { border-color: var(--ok); }
+.banner.manual { border-color: var(--warn); }
+.banner p { margin: 0; min-width: 0; flex: 1 1 280px; }
+.banner b { font-family: var(--f-display); }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); margin-right: 8px; vertical-align: middle; }
+.banner.live .dot { background: var(--ok); }
+.banner.manual .dot { background: var(--warn); }
+.cmd { font: 500 13px var(--f-mono); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; user-select: all; }
+
 form { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: grid; gap: 18px; }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.tab { font: 700 14px var(--f-display); letter-spacing: .02em; background: var(--bg); color: var(--muted); border: 1px solid var(--line); border-radius: 99px; padding: 7px 14px; cursor: pointer; }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.pane { display: grid; gap: 12px; }
 .drop { border: 2px dashed var(--line); border-radius: 8px; padding: 28px 16px; text-align: center; cursor: pointer; display: grid; gap: 6px; transition: background .15s, border-color .15s; }
 .drop:hover, .drop.over { background: var(--drop); border-color: var(--accent); }
 .drop:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -48,41 +63,67 @@ form { background: var(--surface); border: 1px solid var(--line); border-radius:
 .drop span { color: var(--muted); font-size: 13px; }
 .files { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .files li { display: grid; grid-template-columns: 1fr auto auto; gap: 4px 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 14px; }
-.bar { grid-column: 1 / -1; height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
-.bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .2s; }
-.ghost { font: 600 13px var(--f-body); background: none; color: var(--accent); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; cursor: pointer; justify-self: start; }
 .files .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.files .sz { font: 400 12px var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
 .st { font: 500 12px var(--f-mono); }
 .st.up { color: var(--warn); } .st.done { color: var(--ok); } .st.err { color: var(--tally); }
 .x { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 18px; line-height: 1; padding: 0 4px; }
+.bar { grid-column: 1 / -1; height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .3s; }
+.folders { display: grid; gap: 6px; max-height: 260px; overflow: auto; margin: 0; padding: 0; list-style: none; }
+.folders button { width: 100%; text-align: left; font: 500 14px var(--f-body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; cursor: pointer; }
+.folders button[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
 
 .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
 label { display: grid; gap: 6px; font-weight: 600; font-size: 13px; }
 label small { font-weight: 400; color: var(--muted); }
 input[type=text], textarea, select { font: 15px var(--f-body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 9px 11px; width: 100%; box-sizing: border-box; }
-textarea { resize: vertical; min-height: 92px; }
+textarea { resize: vertical; min-height: 84px; }
 input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .row { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
 .btn { font: 700 15px var(--f-display); letter-spacing: .02em; background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 6px; padding: 11px 20px; cursor: pointer; }
 .btn:disabled { opacity: .45; cursor: not-allowed; }
+.ghost { font: 600 13px var(--f-body); background: none; color: var(--accent); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+.ghost:disabled { opacity: .5; cursor: default; }
 .msg { font-size: 13px; color: var(--muted); }
 .msg.err { color: var(--tally); }
 
 .queue { display: grid; gap: 12px; }
-.job { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; gap: 10px; }
+.job { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; gap: 12px; min-width: 0; }
 .job-h { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
-.job-h h3 { font: 700 18px var(--f-display); margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.job-h h3 { font: 700 19px var(--f-display); min-width: 0; overflow-wrap: anywhere; }
 .pill { font: 500 11px var(--f-mono); text-transform: uppercase; letter-spacing: .08em; padding: 3px 9px; border-radius: 99px; border: 1px solid currentColor; white-space: nowrap; }
-.pill.queued { color: var(--muted); } .pill.editing { color: var(--warn); } .pill.rendered { color: var(--ok); } .pill.needs-input { color: var(--tally); }
+.pill.queued { color: var(--muted); } .pill.done { color: var(--ok); } .pill.needs-input, .pill.failed { color: var(--tally); }
+.pill.downloading, .pill.cutting, .pill.captions, .pill.rendering, .pill.qa, .pill.revising { color: var(--warn); }
 .meta { font: 400 12px var(--f-mono); color: var(--muted); display: flex; gap: 14px; flex-wrap: wrap; font-variant-numeric: tabular-nums; }
 .brief { margin: 0; white-space: pre-wrap; max-width: 65ch; }
+.stages { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.stage { display: grid; gap: 4px; font: 500 10px var(--f-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); min-width: 0; }
+.stage i { height: 4px; border-radius: 2px; background: var(--line); }
+.stage.past i { background: var(--ok); } .stage.now i { background: var(--warn); } .stage.now { color: var(--ink); }
+.stage span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.progress { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; font-size: 14px; }
+.progress b { font: 700 22px var(--f-display); font-variant-numeric: tabular-nums; }
+.log { margin: 0; padding: 0; list-style: none; font: 400 12px var(--f-mono); color: var(--muted); display: grid; gap: 2px; }
+.log li { overflow-wrap: anywhere; }
 .note { margin: 0; padding: 10px 12px; border-left: 3px solid var(--accent); background: var(--bg); border-radius: 0 6px 6px 0; font-size: 14px; white-space: pre-wrap; }
 .note b { font-family: var(--f-display); }
-video { width: 100%; max-width: 100%; border-radius: 6px; background: #000; }
+.result { display: grid; gap: 16px; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); align-items: start; }
+@media (max-width: 640px) { .result { grid-template-columns: minmax(0, 1fr); } }
+.player, .side { display: grid; gap: 10px; min-width: 0; }
+video { width: 100%; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 8px; background: #000; object-fit: cover; }
+.hooks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 480px) { .hooks { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.hooks figure { margin: 0; display: grid; gap: 4px; min-width: 0; }
+.hooks figcaption { font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+.qa { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 14px; }
+.qa li { display: grid; grid-template-columns: 20px 1fr; gap: 6px; }
+.qa .ok { color: var(--ok); font-weight: 700; } .qa .no { color: var(--tally); font-weight: 700; }
+.versions { display: flex; gap: 6px; flex-wrap: wrap; }
+.links { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.links a { color: var(--accent); font-weight: 600; font-size: 14px; }
+.feedback { display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 12px; }
 .empty { border: 1px dashed var(--line); border-radius: 10px; padding: 22px; color: var(--muted); text-align: center; }
-.sample { opacity: .8; }
-.tag { font: 500 11px var(--f-mono); color: var(--muted); }
+.tag { font: 500 11px var(--f-mono); color: var(--muted); overflow-wrap: anywhere; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 
@@ -90,247 +131,391 @@ video { width: 100%; max-width: 100%; border-radius: 6px; background: #000; }
   <header>
     <div>
       <h1><span class="rec" aria-hidden="true"></span>Cutting Room Inbox</h1>
-      <p class="lede">Drop clips and a brief. Claude picks up queued jobs, cuts them in HyperFrames, and posts the render back here.</p>
+      <p class="lede">Queue clips from Drive or upload them here. Claude cuts them in HyperFrames in the One Vox house style, posts progress as it works, and returns the edit, four alternate hooks and a QA sheet.</p>
     </div>
     <span class="tc" id="clock">00:00:00:00</span>
   </header>
 
+  <div class="banner manual" id="banner" role="status">
+    <p id="bannerText"><span class="dot"></span><b>Checking for a Claude session…</b></p>
+    <span class="cmd" id="cmd">process the inbox</span>
+    <button class="ghost" type="button" id="copyCmd">Copy</button>
+  </div>
+
   <form id="jobForm" novalidate>
-    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Add files">
-      <strong>Drop clips, music, logos, references</strong>
-      <span>Any format: MOV, MP4, MKV, WAV, MP3, images, PDFs. Large files upload in pieces.</span>
-      <span id="meter" class="tc">Storage: checking…</span>
+    <div class="tabs" role="tablist" aria-label="Job source">
+      <button class="tab" type="button" role="tab" id="tabDrive" aria-selected="true">Drive folder</button>
+      <button class="tab" type="button" role="tab" id="tabUpload" aria-selected="false">Upload here</button>
     </div>
-    <input type="file" id="picker" multiple hidden>
-    <ul class="files" id="files"></ul>
+
+    <div id="paneDrive" class="pane">
+      <label for="driveLink">Google Drive folder link <small>no size limit; the main route for big clips</small>
+        <input type="text" id="driveLink" placeholder="https://drive.google.com/drive/folders/…">
+      </label>
+      <div class="row">
+        <span class="msg" id="pickMsg">Or pick a video folder from OVS Edit / 1 Drop Clips.</span>
+        <button class="ghost" type="button" id="loadFolders">Show folders</button>
+      </div>
+      <ul class="folders" id="folders" hidden></ul>
+    </div>
+
+    <div id="paneUpload" class="pane" hidden>
+      <div class="drop" id="drop" tabindex="0" role="button" aria-label="Add files">
+        <strong>Drop clips, music, logos, references</strong>
+        <span>Any format. Large files upload in 14 MB pieces; keep this tab open until each shows ✓.</span>
+        <span id="meter" class="tc">Storage: checking…</span>
+      </div>
+      <input type="file" id="picker" multiple hidden>
+      <ul class="files" id="files"></ul>
+    </div>
 
     <div class="grid2">
-      <label for="name">Job name
-        <input type="text" id="name" placeholder="e.g. Spring launch teaser">
+      <label for="name">Video name
+        <input type="text" id="name" placeholder="e.g. Leederville launch teaser">
       </label>
-      <label for="format">Format
-        <select id="format">
+      <label for="kind">Video type
+        <select id="kind">
           <option value="auto">Let Claude decide</option>
-          <option value="9:16">Vertical 9:16 (Reels, TikTok, Shorts)</option>
-          <option value="16:9">Landscape 16:9 (YouTube)</option>
-          <option value="1:1">Square 1:1</option>
-          <option value="4:5">Portrait 4:5 (feed)</option>
+          <option value="teaching">Teaching (15–45s)</option>
+          <option value="skit">Skit (under 20s)</option>
         </select>
-      </label>
-      <label for="length">Target length <small>optional</small>
-        <input type="text" id="length" placeholder="e.g. 30–45s">
       </label>
       <label for="captions">Captions
         <select id="captions">
-          <option value="auto">Let Claude decide</option>
-          <option value="word-pop">Bold word-by-word pop</option>
-          <option value="clean-lower">Clean lower third</option>
-          <option value="karaoke">Karaoke highlight</option>
+          <option value="house">House style (word pop + yellow key words)</option>
+          <option value="karaoke">Karaoke pill</option>
+          <option value="slam">One big word at a time</option>
           <option value="none">No captions</option>
         </select>
       </label>
+      <label for="length">Target length <small>optional, hard cap 45s</small>
+        <input type="text" id="length" placeholder="e.g. 30s">
+      </label>
     </div>
-
-    <label for="brief">Brief <small>style, pacing, audience, references, anything to avoid</small>
-      <textarea id="brief" placeholder="Punchy 30s teaser for Instagram. Fast cuts on the beat, open on the strongest line, end with the logo and 'Link in bio'."></textarea>
+    <label for="brief">Brief <small>hook idea, audience, anything to avoid; a note.txt in the Drive folder works too</small>
+      <textarea id="brief" placeholder="Teaching clip for Instagram. Open on the strongest line. Make the hero word ‘MOON’."></textarea>
     </label>
     <label for="keep">Must-keep moments <small>optional</small>
-      <input type="text" id="keep" placeholder="e.g. the laugh at 0:42 in interview.mp4">
-    </label>
-    <label for="links">Links <small>references, or files over 1 GB on Google Drive, one per line</small>
-      <textarea id="links" rows="2" style="min-height:56px"></textarea>
+      <input type="text" id="keep" placeholder="e.g. the laugh at 0:42">
     </label>
 
     <div class="row">
-      <span class="msg" id="formMsg" role="status">Files upload as soon as you drop them.</span>
+      <span class="msg" id="formMsg" role="status">Queued jobs show their progress below.</span>
       <button class="btn" id="submit" type="submit">Queue job</button>
     </div>
   </form>
 
   <section class="queue" aria-labelledby="qh">
     <h2 id="qh">Jobs</h2>
-    <div id="jobs">
-      <div class="empty">Connecting to the job queue…</div>
-    </div>
+    <div id="jobs"><div class="empty">Connecting to the job queue…</div></div>
   </section>
 </div>
 
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
   const fmtSize = (b) => b >= 1073741824 ? (b / 1073741824).toFixed(2) + " GB" : b >= 1048576 ? (b / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(b / 1024)) + " KB";
-  // Every file is stored as numbered pieces. Each piece is one 0x00 header byte + up to 19 MiB of the file,
-  // uploaded as video/mp4 so the store accepts any source format. Claude strips the byte and joins the pieces.
-  const PIECE = 19 * 1024 * 1024, PARALLEL = 3;
-  const SAMPLE = [{ name: "Example · Podcast clip, vertical", status: "rendered", format: "9:16", captions: "word-pop", brief: "60s highlight from episode 12. Cut the dead air, bold captions, logo sting at the end.", files: [{ name: "ep12-cam-a.mov", size: 2140000000 }, { name: "logo.png", size: 84000 }], note: "Example: Trimmed 3m10s to 58s, removed 41 pauses, added word-pop captions and an end card.", sample: true }];
+  const fmtTime = (iso) => iso ? new Date(iso).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "";
+  // Upload format: each piece = one 0x00 header byte + up to PIECE bytes of the file, stored as video/mp4.
+  // Claude rebuilds files with scripts/join_pieces.py.
+  const PIECE = 14000000, PARALLEL = 3;
+  const DROP_CLIPS = "1rJLGWonNJ-xxQUbzS6TCXULxdi4sPpmr";
+  const STAGES = ["queued", "downloading", "cutting", "captions", "rendering", "qa", "done"];
+  const STAGE_LABEL = { queued: "Queued", downloading: "Download", cutting: "Cut", captions: "Captions", rendering: "Render", qa: "QA", done: "Done" };
+  const CMD = "process the inbox";
 
   const t0 = performance.now();
   const tick = () => { const f = Math.floor((performance.now() - t0) / 40); const p = (n) => String(n).padStart(2, "0");
     $("clock").textContent = `${p(Math.floor(f / 90000) % 24)}:${p(Math.floor(f / 1500) % 60)}:${p(Math.floor(f / 25) % 60)}:${p(f % 25)}`; };
   if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(tick, 40); else tick();
 
-  let db = null, assets = null, usage = null, reserved = 0;
-  const pending = []; // {file, status, done, total, chunks[], error}
+  let db = null, assets = null, comments = null, mcp = null, downloads = null, usage = null, reserved = 0;
+  let jobs = [], revisions = [], claudeState = "unknown", source = "drive", pickedFolder = null;
+  const selectedVersion = {};
+  const pending = [];
   const setMsg = (t, err) => { const m = $("formMsg"); m.textContent = t; m.className = "msg" + (err ? " err" : ""); };
-  const ERR = { quota_or_state: "inbox storage is full", rate_limited: "upload rate limited", not_granted: "no upload access", upstream_auth: "sign in again and retry" };
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+  // ---------- banner: can queuing wake Claude directly? ----------
+  async function refreshBanner() {
+    if (comments) { try { claudeState = await comments.canSendToClaude(); } catch { claudeState = "off"; } }
+    else claudeState = "off";
+    const live = claudeState === "available";
+    $("banner").className = "banner " + (live ? "live" : "manual");
+    const waiting = jobs.filter((j) => j.status === "queued").length + revisions.filter((r) => r.status === "queued").length;
+    const t = $("bannerText"); t.textContent = "";
+    t.append(el("span", "dot"));
+    if (live) {
+      t.append(el("b", null, "Claude is watching this inbox. "), document.createTextNode("Queuing a job sends it straight to the Claude session. If a card hasn't moved within a couple of minutes, send the command below in Claude Code."));
+    } else {
+      t.append(el("b", null, waiting ? `${waiting} waiting. Tell Claude: “${CMD}”. ` : `Tell Claude: “${CMD}”. `),
+        document.createTextNode("No Claude session is watching this page right now, so queued jobs wait until you send that message in Claude Code."));
+    }
+  }
+  $("copyCmd").onclick = async () => {
+    try { await navigator.clipboard.writeText(CMD); $("copyCmd").textContent = "Copied"; }
+    catch { const r = document.createRange(); r.selectNodeContents($("cmd")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); $("copyCmd").textContent = "Selected: press Ctrl/⌘ C"; }
+    setTimeout(() => ($("copyCmd").textContent = "Copy"), 2500);
+  };
+  async function pingClaude(anchorEl, text) {
+    if (!comments || claudeState !== "available") return false;
+    try { await comments.sendToClaude({ anchor: await comments.anchorFor(anchorEl), text }); return true; }
+    catch { await refreshBanner(); return false; }
+  }
+
+  // ---------- source tabs ----------
+  function setSource(s) {
+    source = s;
+    $("tabDrive").setAttribute("aria-selected", String(s === "drive")); $("tabUpload").setAttribute("aria-selected", String(s === "upload"));
+    $("paneDrive").hidden = s !== "drive"; $("paneUpload").hidden = s !== "upload";
+  }
+  $("tabDrive").onclick = () => setSource("drive"); $("tabUpload").onclick = () => setSource("upload");
+
+  // ---------- Drive folder picker (the viewer's Google Drive connector) ----------
+  const folderIdFrom = (s) => { const m = String(s).match(/folders\/([A-Za-z0-9_-]{10,})/) || String(s).match(/[?&]id=([A-Za-z0-9_-]{10,})/); return m ? m[1] : null; };
+  $("loadFolders").onclick = async () => {
+    const box = $("folders"), msg = $("pickMsg");
+    if (!mcp) { msg.textContent = "Folder picking needs the Google Drive connector in claude.ai. Paste the folder link instead."; return; }
+    $("loadFolders").disabled = true; msg.textContent = "Loading folders from 1 Drop Clips…";
+    try {
+      const r = await mcp.callTool("Google Drive", "search_files", { query: `parentId = '${DROP_CLIPS}' and mimeType = 'application/vnd.google-apps.folder'`, excludeContentSnippets: true, pageSize: 50 });
+      const list = ((r && r.payload && r.payload.files) || []).filter((f) => f && f.id);
+      box.textContent = ""; box.hidden = !list.length;
+      msg.textContent = list.length ? `${list.length} folder${list.length === 1 ? "" : "s"} in 1 Drop Clips. Pick one:` : "No video folders in 1 Drop Clips yet. Make one per video, then try again.";
+      for (const f of list) {
+        const li = el("li"), b = el("button", null, f.title || f.id); b.type = "button"; b.setAttribute("aria-pressed", "false");
+        b.onclick = () => { pickedFolder = { id: f.id, name: f.title || "" }; $("driveLink").value = f.viewUrl || `https://drive.google.com/drive/folders/${f.id}`;
+          if (!$("name").value.trim()) $("name").value = f.title || ""; box.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b))); };
+        li.append(b); box.append(li);
+      }
+    } catch (e) {
+      const code = e && e.code;
+      msg.textContent = code === "server_not_connected" ? "Google Drive isn't connected in your claude.ai connectors. Paste the folder link instead."
+        : code === "consent_required" || code === "not_in_manifest" ? "Allow Google Drive for this page in its Permissions menu, or paste the folder link."
+        : "Couldn't list Drive folders. Paste the folder link instead.";
+    } finally { $("loadFolders").disabled = false; }
+  };
+  $("driveLink").addEventListener("input", () => { pickedFolder = null; });
+
+  // ---------- pieced upload ----------
   async function refreshMeter() {
     if (!assets) return;
-    try { usage = (await assets.list()).usage; $("meter").textContent = `Storage: ${fmtSize(usage.bytes)} of ${fmtSize(usage.maxBytes)} used`; }
-    catch { $("meter").textContent = ""; }
+    try { usage = (await assets.list()).usage; $("meter").textContent = `Storage: ${fmtSize(usage.bytes)} of ${fmtSize(usage.maxBytes)} used`; } catch { $("meter").textContent = ""; }
   }
   const free = () => usage ? usage.maxBytes - usage.bytes - reserved : Infinity;
+  const ERR = { quota_or_state: "inbox storage is full, use Drive", rate_limited: "upload rate limited", not_granted: "no upload access", upstream_auth: "sign in again and retry" };
 
   function renderFiles() {
     const ul = $("files"); ul.textContent = "";
     for (const p of pending) {
-      const li = document.createElement("li");
-      const nm = document.createElement("span"); nm.className = "nm"; nm.textContent = p.file.name; nm.title = p.file.name;
-      const st = document.createElement("span");
-      st.className = "st " + (p.status === "done" ? "done" : p.status === "error" ? "err" : "up");
+      const li = el("li"), nm = el("span", "nm", p.file.name); nm.title = p.file.name;
       const pct = p.total ? Math.floor((p.done / p.total) * 100) : 0;
-      st.textContent = p.status === "done" ? fmtSize(p.file.size) + " ✓" : p.status === "error" ? p.error : `${pct}% of ${fmtSize(p.file.size)}`;
-      const x = document.createElement("button"); x.type = "button"; x.className = "x"; x.textContent = "×"; x.setAttribute("aria-label", "Remove " + p.file.name);
-      x.onclick = () => { p.cancelled = true; pending.splice(pending.indexOf(p), 1); if (p.chunks) p.chunks.filter(Boolean).forEach((id) => assets.delete(id).catch(() => {})); reserved -= p.status === "uploading" ? p.file.size : 0; renderFiles(); refreshMeter(); };
+      const st = el("span", "st " + (p.status === "done" ? "done" : p.status === "error" ? "err" : "up"),
+        p.status === "done" ? fmtSize(p.file.size) + " ✓" : p.status === "error" ? p.error : `${pct}% of ${fmtSize(p.file.size)}`);
+      const x = el("button", "x", "×"); x.type = "button"; x.setAttribute("aria-label", "Remove " + p.file.name);
+      x.onclick = () => { p.cancelled = true; pending.splice(pending.indexOf(p), 1);
+        if (p.chunks) p.chunks.filter(Boolean).forEach((id) => assets.delete(id).catch(() => {}));
+        if (p.status === "uploading") reserved -= p.file.size; renderFiles(); refreshMeter(); };
       li.append(nm, st, x);
-      if (p.status === "uploading") { const bar = document.createElement("div"); bar.className = "bar"; const i = document.createElement("i"); i.style.width = pct + "%"; bar.append(i); li.append(bar); }
+      if (p.status === "uploading") { const bar = el("div", "bar"), i = el("i"); i.style.width = pct + "%"; bar.append(i); li.append(bar); }
       ul.append(li);
     }
     const busy = pending.some((p) => p.status === "uploading");
     $("submit").disabled = busy;
     if (busy) setMsg("Uploading… keep this tab open until every file shows ✓.");
-    else if (pending.length && pending.every((p) => p.status === "done")) setMsg("All files uploaded. Fill in the brief and queue the job.");
   }
-
+  function pieceBlob(file, idx) {
+    const start = idx * PIECE;
+    return new Blob([new Uint8Array([0]), file.slice(start, Math.min(start + PIECE, file.size))], { type: "video/mp4" });
+  }
   async function uploadPiece(p, idx) {
-    const start = idx * PIECE, slice = p.file.slice(start, Math.min(start + PIECE, p.file.size));
-    const blob = new Blob([new Uint8Array([0]), slice], { type: "video/mp4" });
+    const blob = pieceBlob(p.file, idx);
     for (let attempt = 0; ; attempt++) {
-      try { const r = await assets.upload(blob, { type: "video/mp4" }); return r.id; }
-      catch (e) {
-        const code = e && e.code;
-        if (attempt < 4 && (code === "store_unavailable" || code === "rate_limited" || code === "upstream_error")) { await sleep(1500 * 2 ** attempt); continue; }
-        throw e;
-      }
+      try { return (await assets.upload(blob, { type: "video/mp4" })).id; }
+      catch (e) { const c = e && e.code; if (attempt < 4 && (c === "store_unavailable" || c === "rate_limited" || c === "upstream_error")) { await sleep(1500 * 2 ** attempt); continue; } throw e; }
     }
   }
-
   async function uploadFile(p) {
-    const n = Math.max(1, Math.ceil(p.file.size / PIECE));
-    p.total = n; p.done = 0; p.chunks = new Array(n);
+    const n = Math.max(1, Math.ceil(p.file.size / PIECE)); p.total = n; p.done = 0; p.chunks = new Array(n);
     let next = 0;
-    const worker = async () => {
-      while (next < n && !p.cancelled && p.status === "uploading") {
-        const idx = next++;
-        const id = await uploadPiece(p, idx);
-        if (p.cancelled) { assets.delete(id).catch(() => {}); return; }
-        p.chunks[idx] = id; p.done++; renderFiles();
-      }
-    };
+    const worker = async () => { while (next < n && !p.cancelled && p.status === "uploading") { const idx = next++; const id = await uploadPiece(p, idx);
+      if (p.cancelled) { assets.delete(id).catch(() => {}); return; } p.chunks[idx] = id; p.done++; renderFiles(); } };
     try { await Promise.all(Array.from({ length: Math.min(PARALLEL, n) }, worker)); if (!p.cancelled) p.status = "done"; }
     catch (e) { p.status = "error"; p.error = ERR[e && e.code] || "upload failed, remove and retry"; p.chunks.filter(Boolean).forEach((id) => assets.delete(id).catch(() => {})); p.chunks = null; }
-    if (!p.cancelled) reserved -= p.file.size;
-    renderFiles(); refreshMeter();
+    if (!p.cancelled) reserved -= p.file.size; renderFiles(); refreshMeter();
   }
-
   function addFiles(list) {
     for (const file of list) {
-      const p = { file, status: "uploading" };
-      pending.push(p);
+      const p = { file, status: "uploading" }; pending.push(p);
       if (!assets) { p.status = "error"; p.error = "uploads unavailable here"; continue; }
       if (!file.size) { p.status = "error"; p.error = "empty file"; continue; }
-      if (file.size + n0(file) > free()) { p.status = "error"; p.error = "not enough inbox storage, use a Drive link"; continue; }
+      if (file.size * 1.001 > free()) { p.status = "error"; p.error = "not enough inbox storage, use a Drive folder"; continue; }
       reserved += file.size; uploadFile(p);
     }
     renderFiles();
   }
-  const n0 = (f) => Math.ceil(f.size / PIECE); // header bytes
-
   const drop = $("drop"), picker = $("picker");
   drop.onclick = () => picker.click();
   drop.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); picker.click(); } };
   picker.onchange = () => { addFiles([...picker.files]); picker.value = ""; };
   ["dragenter", "dragover"].forEach((ev) => document.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add("over"); }));
   ["dragleave", "drop"].forEach((ev) => document.addEventListener(ev, (e) => { e.preventDefault(); if (ev === "drop" || !e.relatedTarget) drop.classList.remove("over"); }));
-  document.addEventListener("drop", (e) => { if (e.dataTransfer && e.dataTransfer.files.length) addFiles([...e.dataTransfer.files]); });
+  document.addEventListener("drop", (e) => { if (e.dataTransfer && e.dataTransfer.files.length) { setSource("upload"); addFiles([...e.dataTransfer.files]); } });
   window.addEventListener("beforeunload", (e) => { if (pending.some((p) => p.status === "uploading")) { e.preventDefault(); e.returnValue = ""; } });
 
+  // ---------- queue a job ----------
+  function buildJob(now) {
+    const job = { type: source, name: $("name").value.trim(), kind: $("kind").value, captions: $("captions").value, length: $("length").value.trim(),
+      brief: $("brief").value.trim(), keep: $("keep").value.trim(), status: "queued", step: "Waiting for Claude", progress: 0,
+      log: [{ at: now, status: "queued", msg: "Queued from the inbox page" }], version: 1, createdAt: now, updatedAt: now };
+    if (source === "drive") {
+      const id = (pickedFolder && pickedFolder.id) || folderIdFrom($("driveLink").value);
+      if (!id) return { error: "Paste a Google Drive folder link, or pick a folder from 1 Drop Clips." };
+      job.drive = { folderId: id, folderName: (pickedFolder && pickedFolder.name) || "", url: $("driveLink").value.trim() || `https://drive.google.com/drive/folders/${id}` };
+      job.name = job.name || job.drive.folderName || "Drive job";
+    } else {
+      const files = pending.filter((p) => p.status === "done").map((p) => ({ name: p.file.name, size: p.file.size, type: p.file.type || "", pieceSize: PIECE, chunks: p.chunks }));
+      if (!files.length) return { error: "Add at least one file, or switch to Drive folder." };
+      job.files = files; job.name = job.name || files[0].name.replace(/\.[^.]+$/, "");
+    }
+    return { job };
+  }
   $("jobForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!db) { setMsg("The job queue isn't available in this view. Open the page signed in to claude.ai.", true); return; }
-    const files = pending.filter((p) => p.status === "done").map((p) => ({ name: p.file.name, size: p.file.size, type: p.file.type || "", pieceSize: PIECE, chunks: p.chunks }));
-    const links = $("links").value.split(/\s+/).map((s) => s.trim()).filter((s) => /^https?:\/\//.test(s));
-    if (!files.length && !links.length) { setMsg("Add at least one file or link.", true); return; }
-    const now = new Date();
-    const job = {
-      name: $("name").value.trim() || "Untitled job " + now.toISOString().slice(0, 10),
-      format: $("format").value, captions: $("captions").value, length: $("length").value.trim(),
-      brief: $("brief").value.trim(), keep: $("keep").value.trim(), links, files,
-      status: "queued", note: "", output: null, createdAt: now.toISOString(), updatedAt: now.toISOString()
-    };
+    const { job, error } = buildJob(new Date().toISOString());
+    if (error) { setMsg(error, true); return; }
     $("submit").disabled = true;
     try {
-      await db.collection("jobs").add(job);
-      pending.length = 0; renderFiles();
-      ["name", "length", "brief", "keep", "links"].forEach((id) => $(id).value = "");
-      setMsg("Queued. Tell Claude “process the inbox” in your session to start the edit.");
+      const ref = await db.collection("jobs").add(job);
+      if (source === "upload") { pending.length = 0; renderFiles(); }
+      ["name", "length", "brief", "keep", "driveLink"].forEach((id) => ($(id).value = "")); pickedFolder = null;
+      const sent = await pingClaude($("jobForm"), `New edit job queued in the Cutting Room Inbox: “${job.name}” (job ${ref.id}, ${job.type}). Please ${CMD}.`);
+      setMsg(sent ? "Queued and sent to Claude. Progress shows on the card below." : `Queued. Now tell Claude: “${CMD}”.`);
+      refreshBanner();
     } catch (err) {
       setMsg(err && err.code === "invalid_argument" ? "You don't have permission to add jobs here." : "Couldn't queue the job. Try again in a moment.", true);
     } finally { $("submit").disabled = false; }
   });
 
-  async function clearSources(j, btn) {
-    btn.disabled = true; btn.textContent = "Clearing…";
-    try {
-      for (const f of j.files || []) for (const id of f.chunks || []) await assets.delete(id);
-      await db.collection("jobs").doc(j.id).update({ files: (j.files || []).map((f) => ({ name: f.name, size: f.size, type: f.type, cleared: true })), updatedAt: new Date().toISOString() });
-      refreshMeter();
-    } catch { btn.disabled = false; btn.textContent = "Couldn’t clear, try again"; }
+  // ---------- job cards ----------
+  const assetUrl = (id) => "/_blob/" + id;
+  async function saveAsset(id, filename, btn) {
+    btn.disabled = true; const label = btn.textContent; btn.textContent = "Preparing…";
+    try { const blob = await (await fetch(assetUrl(id))).blob(); await downloads.save({ filename, data: blob }); btn.textContent = "Saved"; }
+    catch { btn.textContent = "Not saved"; }
+    finally { setTimeout(() => { btn.disabled = false; btn.textContent = label; }, 2500); }
+  }
+  function videoEl(id, label) { const v = el("video"); v.controls = true; v.preload = "metadata"; v.playsInline = true; v.src = assetUrl(id); v.setAttribute("aria-label", label); return v; }
+
+  function renderStages(j) {
+    const s = el("div", "stages"), cur = j.status === "revising" ? "cutting" : j.status, ci = STAGES.indexOf(cur);
+    STAGES.forEach((name, i) => { const d = el("div", "stage" + (ci > i ? " past" : ci === i ? " now" : "")); d.append(el("i"), el("span", null, STAGE_LABEL[name])); s.append(d); });
+    return s;
   }
 
-  function renderJobs(list) {
-    const box = $("jobs"); box.textContent = "";
-    const items = list.length ? list : SAMPLE;
-    if (!list.length) { const e = document.createElement("div"); e.className = "empty"; e.textContent = "No jobs yet. Queue one above and it shows up here with its status. The card below is an example."; box.append(e); }
-    for (const j of items) {
-      const c = document.createElement("article"); c.className = "job" + (j.sample ? " sample" : "");
-      const h = document.createElement("div"); h.className = "job-h";
-      const t = document.createElement("h3"); t.textContent = j.name || "Untitled";
-      const pill = document.createElement("span"); const s = String(j.status || "queued");
-      pill.className = "pill " + s; pill.textContent = s.replace("-", " ");
-      h.append(t, pill); c.append(h);
-      const files = j.files || [], bytes = files.reduce((a, f) => a + (f.size || 0), 0);
-      const m = document.createElement("div"); m.className = "meta";
-      [j.format && j.format !== "auto" ? j.format : "auto format", files.length + " file" + (files.length === 1 ? "" : "s") + (bytes ? " · " + fmtSize(bytes) : ""),
-        (j.links || []).length ? j.links.length + " link" + (j.links.length === 1 ? "" : "s") : "", j.length || "", j.captions && j.captions !== "auto" ? "captions: " + j.captions : "",
-        j.createdAt ? new Date(j.createdAt).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }) : ""]
-        .filter(Boolean).forEach((b) => { const sp = document.createElement("span"); sp.textContent = b; m.append(sp); });
-      c.append(m);
-      if (j.brief) { const p = document.createElement("p"); p.className = "brief"; p.textContent = j.brief; c.append(p); }
-      if (j.note) { const n = document.createElement("p"); n.className = "note"; const b = document.createElement("b"); b.textContent = "Claude: "; n.append(b, document.createTextNode(j.note)); c.append(n); }
-      if (j.output) { const v = document.createElement("video"); v.controls = true; v.preload = "metadata"; v.src = "/_blob/" + j.output; c.append(v); }
-      if (j.outputPath) { const op = document.createElement("span"); op.className = "tag"; op.textContent = "Repo: " + j.outputPath; c.append(op); }
-      if (!j.sample && assets && j.status === "rendered" && files.some((f) => f.chunks && f.chunks.length)) {
-        const btn = document.createElement("button"); btn.type = "button"; btn.className = "ghost";
-        btn.textContent = `Free ${fmtSize(bytes)} of inbox storage (originals stay in the repo)`;
-        btn.onclick = () => clearSources(j, btn); c.append(btn);
-      }
-      box.append(c);
+  function renderResult(j, card) {
+    const versions = (j.versions || []).filter((v) => v && v.result);
+    if (!versions.length) return;
+    const chosen = versions.find((v) => v.v === selectedVersion[j.id]) || versions[versions.length - 1];
+    const r = chosen.result, box = el("div", "result"), player = el("div", "player"), side = el("div", "side");
+    if (r.preview) player.append(videoEl(r.preview, `${j.name} v${chosen.v}`));
+    const links = el("div", "links");
+    if (r.preview && downloads) { const b = el("button", "ghost", "Download MP4"); b.type = "button"; b.onclick = () => saveAsset(r.preview, `${(j.name || "edit").replace(/[^\w-]+/g, "_")}_v${chosen.v}.mp4`, b); links.append(b); }
+    if (r.driveUrl) { const a = el("a", null, "Open in Drive"); a.href = r.driveUrl; a.target = "_blank"; a.rel = "noopener"; links.append(a); }
+    if (links.childNodes.length) player.append(links);
+    if (r.length) player.append(el("span", "tag", `${r.length} · ${r.size || ""}`));
+    if (r.outputPath) player.append(el("span", "tag", "Repo: " + r.outputPath));
+    if (versions.length > 1) {
+      const vs = el("div", "versions");
+      versions.forEach((v) => { const b = el("button", "tab", "v" + v.v); b.type = "button"; b.setAttribute("aria-selected", String(v === chosen)); b.title = v.feedback || "first cut"; b.onclick = () => { selectedVersion[j.id] = v.v; renderJobs(); }; vs.append(b); });
+      side.append(vs);
     }
+    if (chosen.feedback) side.append(el("p", "msg", `v${chosen.v} brief: “${chosen.feedback}”`));
+    if (r.summary) { const n = el("p", "note"); n.append(el("b", null, "Notes: "), document.createTextNode(r.summary)); side.append(n); }
+    if (r.qa && r.qa.length) {
+      side.append(el("h2", null, `QA checklist · ${r.qa.filter((q) => q.pass).length}/${r.qa.length}`));
+      const ul = el("ul", "qa");
+      r.qa.forEach((q) => { const li = el("li"); li.append(el("span", q.pass ? "ok" : "no", q.pass ? "✓" : "✗"), el("span", null, q.label + (q.note ? ` (${q.note})` : ""))); ul.append(li); });
+      side.append(ul);
+    }
+    if (r.hooks && r.hooks.length) {
+      side.append(el("h2", null, "Alternate hooks"));
+      const hk = el("div", "hooks");
+      r.hooks.forEach((h) => { const f = el("figure"); if (h.asset) f.append(videoEl(h.asset, h.label)); f.append(el("figcaption", null, `${h.label}: ${h.line || ""}`)); hk.append(f); });
+      side.append(hk);
+    }
+    box.append(player, side); card.append(box);
+  }
+
+  function renderFeedback(j, card) {
+    const open = revisions.filter((r) => r.jobId === j.id && r.status !== "done").sort((a, b) => a.v - b.v)[0];
+    const fb = el("div", "feedback");
+    if (open) { fb.append(el("p", "msg", `v${open.v} requested: “${open.feedback}”. ${open.status === "queued" ? "Waiting for Claude." : "Claude is working on it."}`)); card.append(fb); return; }
+    const next = (j.version || 1) + 1, id = "fb-" + j.id;
+    const lab = el("label", null, `Changes for v${next}`); lab.htmlFor = id;
+    const ta = el("textarea"); ta.id = id; ta.rows = 2; ta.placeholder = "e.g. make it tighter, change the caption style, try a different hook";
+    const row = el("div", "row"), m = el("span", "msg"), b = el("button", "ghost", `Request v${next}`); b.type = "button";
+    b.onclick = async () => {
+      const text = ta.value.trim(); if (!text) { m.textContent = "Say what to change."; return; }
+      b.disabled = true;
+      try {
+        await db.collection("revisions").add({ jobId: j.id, jobName: j.name, v: next, feedback: text, status: "queued", createdAt: new Date().toISOString() });
+        const sent = await pingClaude(card, `Revision v${next} requested for “${j.name}” (job ${j.id}): ${text}. Please ${CMD}.`);
+        m.textContent = sent ? "Sent to Claude." : `Queued. Tell Claude: “${CMD}”.`; refreshBanner();
+      } catch { m.textContent = "Couldn't queue the revision. Try again."; b.disabled = false; }
+    };
+    row.append(m, b); lab.append(ta); fb.append(lab, row); card.append(fb);
+  }
+
+  function renderJobs() {
+    const box = $("jobs");
+    const focusId = document.activeElement && document.activeElement.id, draft = {};
+    box.querySelectorAll("textarea").forEach((t) => (draft[t.id] = t.value));
+    box.textContent = "";
+    if (!jobs.length) { box.append(el("div", "empty", "No jobs yet. Queue one above: each card shows its live step and progress, then the finished edit with alternate hooks and a QA sheet.")); return; }
+    for (const j of jobs) {
+      const card = box.appendChild(el("article", "job")), s = String(j.status || "queued");
+      const h = el("div", "job-h");
+      h.append(el("h3", null, j.name || "Untitled"), el("span", "pill " + s, s === "qa" ? "QA" : s.replace("-", " ")));
+      card.append(h);
+      const files = j.files || [], bytes = files.reduce((a, f) => a + (f.size || 0), 0);
+      const m = el("div", "meta");
+      [j.type === "drive" ? "Drive: " + ((j.drive && (j.drive.folderName || j.drive.folderId)) || "folder") : `${files.length} upload${files.length === 1 ? "" : "s"}${bytes ? " · " + fmtSize(bytes) : ""}`,
+        j.kind && j.kind !== "auto" ? j.kind : "", j.captions && j.captions !== "house" ? "captions: " + j.captions : "", j.length || "", "v" + (j.version || 1), fmtTime(j.createdAt),
+        j.storageFreed ? "upload storage freed" : ""]
+        .filter(Boolean).forEach((b) => m.append(el("span", null, b)));
+      card.append(m);
+      if (j.brief) card.append(el("p", "brief", j.brief));
+      if (s !== "done") {
+        card.append(renderStages(j));
+        const pr = el("div", "progress"); pr.append(el("b", null, `${Math.round(j.progress || 0)}%`), el("span", null, j.step || ""));
+        if (j.updatedAt) pr.append(el("span", "tag", "updated " + fmtTime(j.updatedAt)));
+        card.append(pr);
+        const bar = el("div", "bar"), i = el("i"); i.style.width = Math.max(0, Math.min(100, j.progress || 0)) + "%"; bar.append(i); card.append(bar);
+      }
+      if (j.question) { const n = el("p", "note"); n.append(el("b", null, "Claude needs: "), document.createTextNode(j.question)); card.append(n); }
+      if (j.log && j.log.length) { const ul = el("ul", "log"); j.log.slice(-4).forEach((l) => ul.append(el("li", null, `${fmtTime(l.at)}  ${l.msg}`))); card.append(ul); }
+      renderResult(j, card);
+      if (s === "done") renderFeedback(j, card);
+    }
+    box.querySelectorAll("textarea").forEach((t) => { if (draft[t.id]) t.value = draft[t.id]; });
+    if (focusId && $(focusId)) $(focusId).focus();
   }
 
   (async () => {
-    const [d, a] = await Promise.all([window.claude ? claude.use("db") : null, window.claude ? claude.use("assets") : null]);
-    db = d; assets = a;
-    if (!assets) $("meter").textContent = "Uploads are available to the page's owner and editors. Links still work.";
+    const use = (n) => (window.claude ? claude.use(n) : Promise.resolve(null));
+    [db, assets, comments, mcp, downloads] = await Promise.all([use("db"), use("assets"), use("comments"), use("mcp"), use("downloads")]);
+    if (!assets) $("meter").textContent = "Uploads are available to the page's owner and editors. Drive folders still work.";
     else refreshMeter();
-    if (!db) { renderJobs([]); setMsg("Open this page signed in to claude.ai to queue jobs.", true); return; }
+    refreshBanner(); setInterval(refreshBanner, 30000);
+    if (!db) { $("jobs").textContent = ""; $("jobs").append(el("div", "empty", "Open this page signed in to claude.ai to see and queue jobs.")); setMsg("Open this page signed in to claude.ai to queue jobs.", true); return; }
     db.collection("jobs").orderBy("createdAt", "desc").limit(50).onSnapshot(
-      (snap) => renderJobs(snap.docs.map((x) => ({ id: x.id, ...x.data() }))),
-      () => { $("jobs").innerHTML = '<div class="empty">Couldn’t load jobs. Reload the page to try again.</div>'; }
-    );
+      (snap) => { jobs = snap.docs.map((x) => ({ id: x.id, ...x.data() })); renderJobs(); refreshBanner(); },
+      () => { $("jobs").textContent = ""; $("jobs").append(el("div", "empty", "Couldn’t load jobs. Reload the page to try again.")); });
+    db.collection("revisions").orderBy("createdAt", "desc").limit(100).onSnapshot((snap) => { revisions = snap.docs.map((x) => ({ id: x.id, ...x.data() })); renderJobs(); refreshBanner(); });
   })();
-  renderJobs([]);
+  window.__inboxTest = { pieceBlob, PIECE }; // used by scripts/test_inbox_upload.mjs (headless test of the real piece format)
 })();
 </script>
