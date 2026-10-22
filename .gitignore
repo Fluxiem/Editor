@@ -2,3 +2,4 @@ node_modules/
 .DS_Store
 **/.hyperframes/cache/
 **/renders/tmp/
+__pycache__/
