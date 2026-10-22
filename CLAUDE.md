@@ -15,15 +15,20 @@ before building.
 ## Web inbox (Cutting Room Inbox)
 Artifact: https://claude.ai/artifact/G5w5iJcPT376URSdZ11hmZ (source: `ui/edit-inbox.html`).
 - Jobs live in its db collection `jobs` (fields: name, format, captions, length, brief, keep,
-  links[], files[{id,name,size,type}], status, note, output, outputPath, createdAt).
-- "Process the inbox": `ArtifactData list jobs`, take `status == "queued"`, download each
-  file with `Artifact read path=<asset id>` into `inbox/<job-slug>/`, fetch links (Drive via
-  the Google Drive connector), then run the job workflow below.
+  links[], files[{name,size,type,pieceSize,chunks[]}], status, note, output, outputPath, createdAt).
+- Every file is uploaded as ordered pieces (asset ids in `chunks`): each piece = one 0x00
+  header byte + up to 19 MiB of the original. Storage is 1 GB per artifact in total.
+- "Process the inbox": `ArtifactData list jobs`, take `status == "queued"`, download every
+  piece with `Artifact read paths=[...ids]`, rebuild each file with
+  `scripts/join_pieces.py inbox/<job-slug>/<name> <piece files in chunks order>`, verify the size,
+  fetch links (Drive via the Google Drive connector), then run the job workflow below.
+- Once a job is rendered, the page shows a "Free storage" button; the user clicks it to delete
+  that job's pieces (originals stay in `done/`). Don't delete pieces yourself unless asked.
 - Update the job doc as you go: status `editing` → `rendered` (or `needs-input` with a
   question in `note`). Put a short summary in `note`, the repo path in `outputPath`, and
   upload the MP4 as an asset (`Artifact publish asset:true`, ≤15 MB) into `output` so it
   plays on the page.
-- Uploads are capped at 20 MB/file and .mov is unsupported; bigger files come in as links.
+- Jobs over ~1 GB total come in as Google Drive links.
 
 ## Job workflow
 1. Inspect every file (ffprobe, keyframe snapshots, transcribe speech, read briefs/references).

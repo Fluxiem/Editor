@@ -47,7 +47,10 @@ form { background: var(--surface); border: 1px solid var(--line); border-radius:
 .drop strong { font: 700 18px var(--f-display); }
 .drop span { color: var(--muted); font-size: 13px; }
 .files { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
-.files li { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 14px; }
+.files li { display: grid; grid-template-columns: 1fr auto auto; gap: 4px 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 14px; }
+.bar { grid-column: 1 / -1; height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .2s; }
+.ghost { font: 600 13px var(--f-body); background: none; color: var(--accent); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; cursor: pointer; justify-self: start; }
 .files .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .files .sz { font: 400 12px var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
 .st { font: 500 12px var(--f-mono); }
@@ -95,10 +98,10 @@ video { width: 100%; max-width: 100%; border-radius: 6px; background: #000; }
   <form id="jobForm" novalidate>
     <div class="drop" id="drop" tabindex="0" role="button" aria-label="Add files">
       <strong>Drop clips, music, logos, references</strong>
-      <span>MP4, WebM, PNG, JPG, GIF, PDF, TXT, MD · up to 20 MB each</span>
-      <span>Bigger files or .mov? Paste a Google Drive or Dropbox link below.</span>
+      <span>Any format: MOV, MP4, MKV, WAV, MP3, images, PDFs. Large files upload in pieces.</span>
+      <span id="meter" class="tc">Storage: checking…</span>
     </div>
-    <input type="file" id="picker" multiple hidden accept="video/mp4,video/webm,image/*,application/pdf,text/plain,text/markdown,.md,.txt">
+    <input type="file" id="picker" multiple hidden>
     <ul class="files" id="files"></ul>
 
     <div class="grid2">
@@ -134,7 +137,7 @@ video { width: 100%; max-width: 100%; border-radius: 6px; background: #000; }
     <label for="keep">Must-keep moments <small>optional</small>
       <input type="text" id="keep" placeholder="e.g. the laugh at 0:42 in interview.mp4">
     </label>
-    <label for="links">Links <small>Drive, Dropbox, YouTube references, one per line</small>
+    <label for="links">Links <small>references, or files over 1 GB on Google Drive, one per line</small>
       <textarea id="links" rows="2" style="min-height:56px"></textarea>
     </label>
 
@@ -155,19 +158,29 @@ video { width: 100%; max-width: 100%; border-radius: 6px; background: #000; }
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
-  const fmtSize = (b) => b >= 1048576 ? (b / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(b / 1024)) + " KB";
-  const MAX = 20 * 1024 * 1024;
-  const OK_TYPES = { mp4: "video/mp4", webm: "video/webm", png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", gif: "image/gif", webp: "image/webp", svg: "image/svg+xml", pdf: "application/pdf", txt: "text/plain", md: "text/markdown", csv: "text/csv", json: "application/json" };
-  const SAMPLE = [{ name: "Example · Podcast clip, vertical", status: "rendered", format: "9:16", captions: "word-pop", brief: "60s highlight from episode 12. Cut the dead air, bold captions, logo sting at the end.", files: [{ name: "ep12-cam-a.mp4", size: 18200000 }, { name: "logo.png", size: 84000 }], note: "Example: Trimmed 3m10s to 58s, removed 41 pauses, added word-pop captions and an end card.", sample: true }];
+  const fmtSize = (b) => b >= 1073741824 ? (b / 1073741824).toFixed(2) + " GB" : b >= 1048576 ? (b / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(b / 1024)) + " KB";
+  // Every file is stored as numbered pieces. Each piece is one 0x00 header byte + up to 19 MiB of the file,
+  // uploaded as video/mp4 so the store accepts any source format. Claude strips the byte and joins the pieces.
+  const PIECE = 19 * 1024 * 1024, PARALLEL = 3;
+  const SAMPLE = [{ name: "Example · Podcast clip, vertical", status: "rendered", format: "9:16", captions: "word-pop", brief: "60s highlight from episode 12. Cut the dead air, bold captions, logo sting at the end.", files: [{ name: "ep12-cam-a.mov", size: 2140000000 }, { name: "logo.png", size: 84000 }], note: "Example: Trimmed 3m10s to 58s, removed 41 pauses, added word-pop captions and an end card.", sample: true }];
 
-  // Timecode clock, purely decorative
   const t0 = performance.now();
-  const tick = () => { const f = Math.floor((performance.now() - t0) / (1000 / 25)); const p = (n) => String(n).padStart(2, "0");
+  const tick = () => { const f = Math.floor((performance.now() - t0) / 40); const p = (n) => String(n).padStart(2, "0");
     $("clock").textContent = `${p(Math.floor(f / 90000) % 24)}:${p(Math.floor(f / 1500) % 60)}:${p(Math.floor(f / 25) % 60)}:${p(f % 25)}`; };
   if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(tick, 40); else tick();
 
-  let db = null, assets = null;
-  const pending = []; // {key, file, status, id, contentType, error}
+  let db = null, assets = null, usage = null, reserved = 0;
+  const pending = []; // {file, status, done, total, chunks[], error}
+  const setMsg = (t, err) => { const m = $("formMsg"); m.textContent = t; m.className = "msg" + (err ? " err" : ""); };
+  const ERR = { quota_or_state: "inbox storage is full", rate_limited: "upload rate limited", not_granted: "no upload access", upstream_auth: "sign in again and retry" };
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  async function refreshMeter() {
+    if (!assets) return;
+    try { usage = (await assets.list()).usage; $("meter").textContent = `Storage: ${fmtSize(usage.bytes)} of ${fmtSize(usage.maxBytes)} used`; }
+    catch { $("meter").textContent = ""; }
+  }
+  const free = () => usage ? usage.maxBytes - usage.bytes - reserved : Infinity;
 
   function renderFiles() {
     const ul = $("files"); ul.textContent = "";
@@ -176,35 +189,63 @@ video { width: 100%; max-width: 100%; border-radius: 6px; background: #000; }
       const nm = document.createElement("span"); nm.className = "nm"; nm.textContent = p.file.name; nm.title = p.file.name;
       const st = document.createElement("span");
       st.className = "st " + (p.status === "done" ? "done" : p.status === "error" ? "err" : "up");
-      st.textContent = p.status === "done" ? fmtSize(p.file.size) + " ✓" : p.status === "error" ? p.error : "uploading…";
+      const pct = p.total ? Math.floor((p.done / p.total) * 100) : 0;
+      st.textContent = p.status === "done" ? fmtSize(p.file.size) + " ✓" : p.status === "error" ? p.error : `${pct}% of ${fmtSize(p.file.size)}`;
       const x = document.createElement("button"); x.type = "button"; x.className = "x"; x.textContent = "×"; x.setAttribute("aria-label", "Remove " + p.file.name);
-      x.onclick = () => { pending.splice(pending.indexOf(p), 1); renderFiles(); };
-      li.append(nm, st, x); ul.append(li);
+      x.onclick = () => { p.cancelled = true; pending.splice(pending.indexOf(p), 1); if (p.chunks) p.chunks.filter(Boolean).forEach((id) => assets.delete(id).catch(() => {})); reserved -= p.status === "uploading" ? p.file.size : 0; renderFiles(); refreshMeter(); };
+      li.append(nm, st, x);
+      if (p.status === "uploading") { const bar = document.createElement("div"); bar.className = "bar"; const i = document.createElement("i"); i.style.width = pct + "%"; bar.append(i); li.append(bar); }
+      ul.append(li);
     }
     const busy = pending.some((p) => p.status === "uploading");
     $("submit").disabled = busy;
-    if (busy) setMsg("Uploading…");
+    if (busy) setMsg("Uploading… keep this tab open until every file shows ✓.");
+    else if (pending.length && pending.every((p) => p.status === "done")) setMsg("All files uploaded. Fill in the brief and queue the job.");
   }
-  const setMsg = (t, err) => { const m = $("formMsg"); m.textContent = t; m.className = "msg" + (err ? " err" : ""); };
 
-  const ERR = { too_large: "over 20 MB, use a link", unsupported_type: "type not supported", quota_or_state: "storage full", rate_limited: "slow down, retry", not_granted: "no upload access" };
+  async function uploadPiece(p, idx) {
+    const start = idx * PIECE, slice = p.file.slice(start, Math.min(start + PIECE, p.file.size));
+    const blob = new Blob([new Uint8Array([0]), slice], { type: "video/mp4" });
+    for (let attempt = 0; ; attempt++) {
+      try { const r = await assets.upload(blob, { type: "video/mp4" }); return r.id; }
+      catch (e) {
+        const code = e && e.code;
+        if (attempt < 4 && (code === "store_unavailable" || code === "rate_limited" || code === "upstream_error")) { await sleep(1500 * 2 ** attempt); continue; }
+        throw e;
+      }
+    }
+  }
 
-  async function addFiles(list) {
+  async function uploadFile(p) {
+    const n = Math.max(1, Math.ceil(p.file.size / PIECE));
+    p.total = n; p.done = 0; p.chunks = new Array(n);
+    let next = 0;
+    const worker = async () => {
+      while (next < n && !p.cancelled && p.status === "uploading") {
+        const idx = next++;
+        const id = await uploadPiece(p, idx);
+        if (p.cancelled) { assets.delete(id).catch(() => {}); return; }
+        p.chunks[idx] = id; p.done++; renderFiles();
+      }
+    };
+    try { await Promise.all(Array.from({ length: Math.min(PARALLEL, n) }, worker)); if (!p.cancelled) p.status = "done"; }
+    catch (e) { p.status = "error"; p.error = ERR[e && e.code] || "upload failed, remove and retry"; p.chunks.filter(Boolean).forEach((id) => assets.delete(id).catch(() => {})); p.chunks = null; }
+    if (!p.cancelled) reserved -= p.file.size;
+    renderFiles(); refreshMeter();
+  }
+
+  function addFiles(list) {
     for (const file of list) {
-      const ext = (file.name.split(".").pop() || "").toLowerCase();
-      const type = OK_TYPES[ext];
       const p = { file, status: "uploading" };
       pending.push(p);
       if (!assets) { p.status = "error"; p.error = "uploads unavailable here"; continue; }
-      if (!type) { p.status = "error"; p.error = "." + ext + " not supported, use a link"; continue; }
-      if (file.size > MAX) { p.status = "error"; p.error = "over 20 MB, use a link"; continue; }
-      renderFiles();
-      assets.upload(file, { type }).then((r) => { p.status = "done"; p.id = r.id; p.contentType = r.contentType; })
-        .catch((e) => { p.status = "error"; p.error = ERR[e && e.code] || "upload failed"; })
-        .finally(renderFiles);
+      if (!file.size) { p.status = "error"; p.error = "empty file"; continue; }
+      if (file.size + n0(file) > free()) { p.status = "error"; p.error = "not enough inbox storage, use a Drive link"; continue; }
+      reserved += file.size; uploadFile(p);
     }
     renderFiles();
   }
+  const n0 = (f) => Math.ceil(f.size / PIECE); // header bytes
 
   const drop = $("drop"), picker = $("picker");
   drop.onclick = () => picker.click();
@@ -213,19 +254,19 @@ video { width: 100%; max-width: 100%; border-radius: 6px; background: #000; }
   ["dragenter", "dragover"].forEach((ev) => document.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add("over"); }));
   ["dragleave", "drop"].forEach((ev) => document.addEventListener(ev, (e) => { e.preventDefault(); if (ev === "drop" || !e.relatedTarget) drop.classList.remove("over"); }));
   document.addEventListener("drop", (e) => { if (e.dataTransfer && e.dataTransfer.files.length) addFiles([...e.dataTransfer.files]); });
+  window.addEventListener("beforeunload", (e) => { if (pending.some((p) => p.status === "uploading")) { e.preventDefault(); e.returnValue = ""; } });
 
   $("jobForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!db) { setMsg("The job queue isn't available in this view. Open the page signed in to claude.ai.", true); return; }
-    const files = pending.filter((p) => p.status === "done").map((p) => ({ id: p.id, name: p.file.name, size: p.file.size, type: p.contentType }));
+    const files = pending.filter((p) => p.status === "done").map((p) => ({ name: p.file.name, size: p.file.size, type: p.file.type || "", pieceSize: PIECE, chunks: p.chunks }));
     const links = $("links").value.split(/\s+/).map((s) => s.trim()).filter((s) => /^https?:\/\//.test(s));
-    const brief = $("brief").value.trim();
     if (!files.length && !links.length) { setMsg("Add at least one file or link.", true); return; }
     const now = new Date();
     const job = {
       name: $("name").value.trim() || "Untitled job " + now.toISOString().slice(0, 10),
       format: $("format").value, captions: $("captions").value, length: $("length").value.trim(),
-      brief, keep: $("keep").value.trim(), links, files,
+      brief: $("brief").value.trim(), keep: $("keep").value.trim(), links, files,
       status: "queued", note: "", output: null, createdAt: now.toISOString(), updatedAt: now.toISOString()
     };
     $("submit").disabled = true;
@@ -239,6 +280,15 @@ video { width: 100%; max-width: 100%; border-radius: 6px; background: #000; }
     } finally { $("submit").disabled = false; }
   });
 
+  async function clearSources(j, btn) {
+    btn.disabled = true; btn.textContent = "Clearing…";
+    try {
+      for (const f of j.files || []) for (const id of f.chunks || []) await assets.delete(id);
+      await db.collection("jobs").doc(j.id).update({ files: (j.files || []).map((f) => ({ name: f.name, size: f.size, type: f.type, cleared: true })), updatedAt: new Date().toISOString() });
+      refreshMeter();
+    } catch { btn.disabled = false; btn.textContent = "Couldn’t clear, try again"; }
+  }
+
   function renderJobs(list) {
     const box = $("jobs"); box.textContent = "";
     const items = list.length ? list : SAMPLE;
@@ -250,16 +300,22 @@ video { width: 100%; max-width: 100%; border-radius: 6px; background: #000; }
       const pill = document.createElement("span"); const s = String(j.status || "queued");
       pill.className = "pill " + s; pill.textContent = s.replace("-", " ");
       h.append(t, pill); c.append(h);
+      const files = j.files || [], bytes = files.reduce((a, f) => a + (f.size || 0), 0);
       const m = document.createElement("div"); m.className = "meta";
-      const bits = [j.format && j.format !== "auto" ? j.format : "auto format", (j.files || []).length + " file" + ((j.files || []).length === 1 ? "" : "s"),
+      [j.format && j.format !== "auto" ? j.format : "auto format", files.length + " file" + (files.length === 1 ? "" : "s") + (bytes ? " · " + fmtSize(bytes) : ""),
         (j.links || []).length ? j.links.length + " link" + (j.links.length === 1 ? "" : "s") : "", j.length || "", j.captions && j.captions !== "auto" ? "captions: " + j.captions : "",
-        j.createdAt ? new Date(j.createdAt).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }) : ""];
-      bits.filter(Boolean).forEach((b) => { const sp = document.createElement("span"); sp.textContent = b; m.append(sp); });
+        j.createdAt ? new Date(j.createdAt).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }) : ""]
+        .filter(Boolean).forEach((b) => { const sp = document.createElement("span"); sp.textContent = b; m.append(sp); });
       c.append(m);
       if (j.brief) { const p = document.createElement("p"); p.className = "brief"; p.textContent = j.brief; c.append(p); }
       if (j.note) { const n = document.createElement("p"); n.className = "note"; const b = document.createElement("b"); b.textContent = "Claude: "; n.append(b, document.createTextNode(j.note)); c.append(n); }
       if (j.output) { const v = document.createElement("video"); v.controls = true; v.preload = "metadata"; v.src = "/_blob/" + j.output; c.append(v); }
       if (j.outputPath) { const op = document.createElement("span"); op.className = "tag"; op.textContent = "Repo: " + j.outputPath; c.append(op); }
+      if (!j.sample && assets && j.status === "rendered" && files.some((f) => f.chunks && f.chunks.length)) {
+        const btn = document.createElement("button"); btn.type = "button"; btn.className = "ghost";
+        btn.textContent = `Free ${fmtSize(bytes)} of inbox storage (originals stay in the repo)`;
+        btn.onclick = () => clearSources(j, btn); c.append(btn);
+      }
       box.append(c);
     }
   }
@@ -267,7 +323,8 @@ video { width: 100%; max-width: 100%; border-radius: 6px; background: #000; }
   (async () => {
     const [d, a] = await Promise.all([window.claude ? claude.use("db") : null, window.claude ? claude.use("assets") : null]);
     db = d; assets = a;
-    if (!assets) { drop.querySelector("span").textContent = "Uploads are available to the page's owner and editors. Links still work."; }
+    if (!assets) $("meter").textContent = "Uploads are available to the page's owner and editors. Links still work.";
+    else refreshMeter();
     if (!db) { renderJobs([]); setMsg("Open this page signed in to claude.ai to queue jobs.", true); return; }
     db.collection("jobs").orderBy("createdAt", "desc").limit(50).onSnapshot(
       (snap) => renderJobs(snap.docs.map((x) => ({ id: x.id, ...x.data() }))),
