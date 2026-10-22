@@ -1,0 +1,279 @@
+<title>Cutting Room Inbox</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one working column — submit form on top (drop zone + brief), job queue below as a strip of reels. */
+:root {
+  --bg: #eef0f3;
+  --surface: #ffffff;
+  --ink: #161a22;
+  --muted: #5d6573;
+  --line: #d5dae2;
+  --accent: #2346d8;
+  --accent-ink: #ffffff;
+  --tally: #d23a2a;
+  --ok: #1f8a4c;
+  --warn: #b7791f;
+  --drop: #e4e9fb;
+  --f-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "Figtree", system-ui, -apple-system, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11141b; --surface: #191d26; --ink: #e8ebf1; --muted: #9aa3b2; --line: #2b313d;
+  --accent: #7b93ff; --accent-ink: #0e1220; --tally: #ff6b5a; --ok: #4cc584; --warn: #e3b04b; --drop: #1d2540;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11141b; --surface: #191d26; --ink: #e8ebf1; --muted: #9aa3b2; --line: #2b313d;
+  --accent: #7b93ff; --accent-ink: #0e1220; --tally: #ff6b5a; --ok: #4cc584; --warn: #e3b04b; --drop: #1d2540;
+  color-scheme: dark }
+
+body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--f-body); }
+.wrap { max-width: 860px; margin: 0 auto; padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 28px; }
+header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+h1 { font: 800 clamp(28px, 5vw, 40px)/1 var(--f-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h1 .rec { display: inline-block; width: .32em; height: .32em; border-radius: 50%; background: var(--tally); vertical-align: middle; margin-right: .3em; transform: translateY(-.08em); }
+.tc { font: 500 13px var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+h2 { font: 700 13px var(--f-display); text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin: 0; }
+.lede { color: var(--muted); margin: 6px 0 0; max-width: 62ch; }
+
+form { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: grid; gap: 18px; }
+.drop { border: 2px dashed var(--line); border-radius: 8px; padding: 28px 16px; text-align: center; cursor: pointer; display: grid; gap: 6px; transition: background .15s, border-color .15s; }
+.drop:hover, .drop.over { background: var(--drop); border-color: var(--accent); }
+.drop:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.drop strong { font: 700 18px var(--f-display); }
+.drop span { color: var(--muted); font-size: 13px; }
+.files { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.files li { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 14px; }
+.files .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.files .sz { font: 400 12px var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.st { font: 500 12px var(--f-mono); }
+.st.up { color: var(--warn); } .st.done { color: var(--ok); } .st.err { color: var(--tally); }
+.x { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 18px; line-height: 1; padding: 0 4px; }
+
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+label { display: grid; gap: 6px; font-weight: 600; font-size: 13px; }
+label small { font-weight: 400; color: var(--muted); }
+input[type=text], textarea, select { font: 15px var(--f-body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 9px 11px; width: 100%; box-sizing: border-box; }
+textarea { resize: vertical; min-height: 92px; }
+input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.row { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.btn { font: 700 15px var(--f-display); letter-spacing: .02em; background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 6px; padding: 11px 20px; cursor: pointer; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.msg { font-size: 13px; color: var(--muted); }
+.msg.err { color: var(--tally); }
+
+.queue { display: grid; gap: 12px; }
+.job { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; gap: 10px; }
+.job-h { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.job-h h3 { font: 700 18px var(--f-display); margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.pill { font: 500 11px var(--f-mono); text-transform: uppercase; letter-spacing: .08em; padding: 3px 9px; border-radius: 99px; border: 1px solid currentColor; white-space: nowrap; }
+.pill.queued { color: var(--muted); } .pill.editing { color: var(--warn); } .pill.rendered { color: var(--ok); } .pill.needs-input { color: var(--tally); }
+.meta { font: 400 12px var(--f-mono); color: var(--muted); display: flex; gap: 14px; flex-wrap: wrap; font-variant-numeric: tabular-nums; }
+.brief { margin: 0; white-space: pre-wrap; max-width: 65ch; }
+.note { margin: 0; padding: 10px 12px; border-left: 3px solid var(--accent); background: var(--bg); border-radius: 0 6px 6px 0; font-size: 14px; white-space: pre-wrap; }
+.note b { font-family: var(--f-display); }
+video { width: 100%; max-width: 100%; border-radius: 6px; background: #000; }
+.empty { border: 1px dashed var(--line); border-radius: 10px; padding: 22px; color: var(--muted); text-align: center; }
+.sample { opacity: .8; }
+.tag { font: 500 11px var(--f-mono); color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1><span class="rec" aria-hidden="true"></span>Cutting Room Inbox</h1>
+      <p class="lede">Drop clips and a brief. Claude picks up queued jobs, cuts them in HyperFrames, and posts the render back here.</p>
+    </div>
+    <span class="tc" id="clock">00:00:00:00</span>
+  </header>
+
+  <form id="jobForm" novalidate>
+    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Add files">
+      <strong>Drop clips, music, logos, references</strong>
+      <span>MP4, WebM, PNG, JPG, GIF, PDF, TXT, MD · up to 20 MB each</span>
+      <span>Bigger files or .mov? Paste a Google Drive or Dropbox link below.</span>
+    </div>
+    <input type="file" id="picker" multiple hidden accept="video/mp4,video/webm,image/*,application/pdf,text/plain,text/markdown,.md,.txt">
+    <ul class="files" id="files"></ul>
+
+    <div class="grid2">
+      <label for="name">Job name
+        <input type="text" id="name" placeholder="e.g. Spring launch teaser">
+      </label>
+      <label for="format">Format
+        <select id="format">
+          <option value="auto">Let Claude decide</option>
+          <option value="9:16">Vertical 9:16 (Reels, TikTok, Shorts)</option>
+          <option value="16:9">Landscape 16:9 (YouTube)</option>
+          <option value="1:1">Square 1:1</option>
+          <option value="4:5">Portrait 4:5 (feed)</option>
+        </select>
+      </label>
+      <label for="length">Target length <small>optional</small>
+        <input type="text" id="length" placeholder="e.g. 30–45s">
+      </label>
+      <label for="captions">Captions
+        <select id="captions">
+          <option value="auto">Let Claude decide</option>
+          <option value="word-pop">Bold word-by-word pop</option>
+          <option value="clean-lower">Clean lower third</option>
+          <option value="karaoke">Karaoke highlight</option>
+          <option value="none">No captions</option>
+        </select>
+      </label>
+    </div>
+
+    <label for="brief">Brief <small>style, pacing, audience, references, anything to avoid</small>
+      <textarea id="brief" placeholder="Punchy 30s teaser for Instagram. Fast cuts on the beat, open on the strongest line, end with the logo and 'Link in bio'."></textarea>
+    </label>
+    <label for="keep">Must-keep moments <small>optional</small>
+      <input type="text" id="keep" placeholder="e.g. the laugh at 0:42 in interview.mp4">
+    </label>
+    <label for="links">Links <small>Drive, Dropbox, YouTube references, one per line</small>
+      <textarea id="links" rows="2" style="min-height:56px"></textarea>
+    </label>
+
+    <div class="row">
+      <span class="msg" id="formMsg" role="status">Files upload as soon as you drop them.</span>
+      <button class="btn" id="submit" type="submit">Queue job</button>
+    </div>
+  </form>
+
+  <section class="queue" aria-labelledby="qh">
+    <h2 id="qh">Jobs</h2>
+    <div id="jobs">
+      <div class="empty">Connecting to the job queue…</div>
+    </div>
+  </section>
+</div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const fmtSize = (b) => b >= 1048576 ? (b / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(b / 1024)) + " KB";
+  const MAX = 20 * 1024 * 1024;
+  const OK_TYPES = { mp4: "video/mp4", webm: "video/webm", png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", gif: "image/gif", webp: "image/webp", svg: "image/svg+xml", pdf: "application/pdf", txt: "text/plain", md: "text/markdown", csv: "text/csv", json: "application/json" };
+  const SAMPLE = [{ name: "Example · Podcast clip, vertical", status: "rendered", format: "9:16", captions: "word-pop", brief: "60s highlight from episode 12. Cut the dead air, bold captions, logo sting at the end.", files: [{ name: "ep12-cam-a.mp4", size: 18200000 }, { name: "logo.png", size: 84000 }], note: "Example: Trimmed 3m10s to 58s, removed 41 pauses, added word-pop captions and an end card.", sample: true }];
+
+  // Timecode clock, purely decorative
+  const t0 = performance.now();
+  const tick = () => { const f = Math.floor((performance.now() - t0) / (1000 / 25)); const p = (n) => String(n).padStart(2, "0");
+    $("clock").textContent = `${p(Math.floor(f / 90000) % 24)}:${p(Math.floor(f / 1500) % 60)}:${p(Math.floor(f / 25) % 60)}:${p(f % 25)}`; };
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(tick, 40); else tick();
+
+  let db = null, assets = null;
+  const pending = []; // {key, file, status, id, contentType, error}
+
+  function renderFiles() {
+    const ul = $("files"); ul.textContent = "";
+    for (const p of pending) {
+      const li = document.createElement("li");
+      const nm = document.createElement("span"); nm.className = "nm"; nm.textContent = p.file.name; nm.title = p.file.name;
+      const st = document.createElement("span");
+      st.className = "st " + (p.status === "done" ? "done" : p.status === "error" ? "err" : "up");
+      st.textContent = p.status === "done" ? fmtSize(p.file.size) + " ✓" : p.status === "error" ? p.error : "uploading…";
+      const x = document.createElement("button"); x.type = "button"; x.className = "x"; x.textContent = "×"; x.setAttribute("aria-label", "Remove " + p.file.name);
+      x.onclick = () => { pending.splice(pending.indexOf(p), 1); renderFiles(); };
+      li.append(nm, st, x); ul.append(li);
+    }
+    const busy = pending.some((p) => p.status === "uploading");
+    $("submit").disabled = busy;
+    if (busy) setMsg("Uploading…");
+  }
+  const setMsg = (t, err) => { const m = $("formMsg"); m.textContent = t; m.className = "msg" + (err ? " err" : ""); };
+
+  const ERR = { too_large: "over 20 MB, use a link", unsupported_type: "type not supported", quota_or_state: "storage full", rate_limited: "slow down, retry", not_granted: "no upload access" };
+
+  async function addFiles(list) {
+    for (const file of list) {
+      const ext = (file.name.split(".").pop() || "").toLowerCase();
+      const type = OK_TYPES[ext];
+      const p = { file, status: "uploading" };
+      pending.push(p);
+      if (!assets) { p.status = "error"; p.error = "uploads unavailable here"; continue; }
+      if (!type) { p.status = "error"; p.error = "." + ext + " not supported, use a link"; continue; }
+      if (file.size > MAX) { p.status = "error"; p.error = "over 20 MB, use a link"; continue; }
+      renderFiles();
+      assets.upload(file, { type }).then((r) => { p.status = "done"; p.id = r.id; p.contentType = r.contentType; })
+        .catch((e) => { p.status = "error"; p.error = ERR[e && e.code] || "upload failed"; })
+        .finally(renderFiles);
+    }
+    renderFiles();
+  }
+
+  const drop = $("drop"), picker = $("picker");
+  drop.onclick = () => picker.click();
+  drop.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); picker.click(); } };
+  picker.onchange = () => { addFiles([...picker.files]); picker.value = ""; };
+  ["dragenter", "dragover"].forEach((ev) => document.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => document.addEventListener(ev, (e) => { e.preventDefault(); if (ev === "drop" || !e.relatedTarget) drop.classList.remove("over"); }));
+  document.addEventListener("drop", (e) => { if (e.dataTransfer && e.dataTransfer.files.length) addFiles([...e.dataTransfer.files]); });
+
+  $("jobForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!db) { setMsg("The job queue isn't available in this view. Open the page signed in to claude.ai.", true); return; }
+    const files = pending.filter((p) => p.status === "done").map((p) => ({ id: p.id, name: p.file.name, size: p.file.size, type: p.contentType }));
+    const links = $("links").value.split(/\s+/).map((s) => s.trim()).filter((s) => /^https?:\/\//.test(s));
+    const brief = $("brief").value.trim();
+    if (!files.length && !links.length) { setMsg("Add at least one file or link.", true); return; }
+    const now = new Date();
+    const job = {
+      name: $("name").value.trim() || "Untitled job " + now.toISOString().slice(0, 10),
+      format: $("format").value, captions: $("captions").value, length: $("length").value.trim(),
+      brief, keep: $("keep").value.trim(), links, files,
+      status: "queued", note: "", output: null, createdAt: now.toISOString(), updatedAt: now.toISOString()
+    };
+    $("submit").disabled = true;
+    try {
+      await db.collection("jobs").add(job);
+      pending.length = 0; renderFiles();
+      ["name", "length", "brief", "keep", "links"].forEach((id) => $(id).value = "");
+      setMsg("Queued. Tell Claude “process the inbox” in your session to start the edit.");
+    } catch (err) {
+      setMsg(err && err.code === "invalid_argument" ? "You don't have permission to add jobs here." : "Couldn't queue the job. Try again in a moment.", true);
+    } finally { $("submit").disabled = false; }
+  });
+
+  function renderJobs(list) {
+    const box = $("jobs"); box.textContent = "";
+    const items = list.length ? list : SAMPLE;
+    if (!list.length) { const e = document.createElement("div"); e.className = "empty"; e.textContent = "No jobs yet. Queue one above and it shows up here with its status. The card below is an example."; box.append(e); }
+    for (const j of items) {
+      const c = document.createElement("article"); c.className = "job" + (j.sample ? " sample" : "");
+      const h = document.createElement("div"); h.className = "job-h";
+      const t = document.createElement("h3"); t.textContent = j.name || "Untitled";
+      const pill = document.createElement("span"); const s = String(j.status || "queued");
+      pill.className = "pill " + s; pill.textContent = s.replace("-", " ");
+      h.append(t, pill); c.append(h);
+      const m = document.createElement("div"); m.className = "meta";
+      const bits = [j.format && j.format !== "auto" ? j.format : "auto format", (j.files || []).length + " file" + ((j.files || []).length === 1 ? "" : "s"),
+        (j.links || []).length ? j.links.length + " link" + (j.links.length === 1 ? "" : "s") : "", j.length || "", j.captions && j.captions !== "auto" ? "captions: " + j.captions : "",
+        j.createdAt ? new Date(j.createdAt).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }) : ""];
+      bits.filter(Boolean).forEach((b) => { const sp = document.createElement("span"); sp.textContent = b; m.append(sp); });
+      c.append(m);
+      if (j.brief) { const p = document.createElement("p"); p.className = "brief"; p.textContent = j.brief; c.append(p); }
+      if (j.note) { const n = document.createElement("p"); n.className = "note"; const b = document.createElement("b"); b.textContent = "Claude: "; n.append(b, document.createTextNode(j.note)); c.append(n); }
+      if (j.output) { const v = document.createElement("video"); v.controls = true; v.preload = "metadata"; v.src = "/_blob/" + j.output; c.append(v); }
+      if (j.outputPath) { const op = document.createElement("span"); op.className = "tag"; op.textContent = "Repo: " + j.outputPath; c.append(op); }
+      box.append(c);
+    }
+  }
+
+  (async () => {
+    const [d, a] = await Promise.all([window.claude ? claude.use("db") : null, window.claude ? claude.use("assets") : null]);
+    db = d; assets = a;
+    if (!assets) { drop.querySelector("span").textContent = "Uploads are available to the page's owner and editors. Links still work."; }
+    if (!db) { renderJobs([]); setMsg("Open this page signed in to claude.ai to queue jobs.", true); return; }
+    db.collection("jobs").orderBy("createdAt", "desc").limit(50).onSnapshot(
+      (snap) => renderJobs(snap.docs.map((x) => ({ id: x.id, ...x.data() }))),
+      () => { $("jobs").innerHTML = '<div class="empty">Couldn’t load jobs. Reload the page to try again.</div>'; }
+    );
+  })();
+  renderJobs([]);
+})();
+</script>

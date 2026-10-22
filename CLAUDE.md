@@ -12,6 +12,19 @@ before building.
 - `done/<job-slug>/` — original source media moved here after a job finishes, plus
   `<job-slug>.mp4` (final render).
 
+## Web inbox (Cutting Room Inbox)
+Artifact: https://claude.ai/artifact/G5w5iJcPT376URSdZ11hmZ (source: `ui/edit-inbox.html`).
+- Jobs live in its db collection `jobs` (fields: name, format, captions, length, brief, keep,
+  links[], files[{id,name,size,type}], status, note, output, outputPath, createdAt).
+- "Process the inbox": `ArtifactData list jobs`, take `status == "queued"`, download each
+  file with `Artifact read path=<asset id>` into `inbox/<job-slug>/`, fetch links (Drive via
+  the Google Drive connector), then run the job workflow below.
+- Update the job doc as you go: status `editing` → `rendered` (or `needs-input` with a
+  question in `note`). Put a short summary in `note`, the repo path in `outputPath`, and
+  upload the MP4 as an asset (`Artifact publish asset:true`, ≤15 MB) into `output` so it
+  plays on the page.
+- Uploads are capped at 20 MB/file and .mov is unsupported; bigger files come in as links.
+
 ## Job workflow
 1. Inspect every file (ffprobe, keyframe snapshots, transcribe speech, read briefs/references).
 2. Decide format/aspect, style, pacing, captions, graphics, structure; write them to `NOTES.md`.
