@@ -49,7 +49,8 @@ Artifact: https://claude.ai/artifact/G5w5iJcPT376URSdZ11hmZ (source: `ui/edit-in
    transcribe with faster-whisper (word timestamps), hand-check the names list.
 3. Decide video type (skit / teaching), hook, structure, chapters, hero word, B-roll plan
    (pull matching clips from `B-Roll`). Write the plan to `NOTES.md`.
-4. Build the HyperFrames project from `style.json` (see STYLE).
+4. Copy `templates/ovs-vertical/` to `projects/<job-slug>/` and build from its restyled catalog
+   blocks (see CATALOG BLOCKS) and `style.json`. Prefer a catalog block over hand-building.
 5. Run the DELIVERY CHECKLIST. Fix anything that fails before rendering.
 6. Render the main cut + 4 alternate hooks.
 7. Upload the renders to `2 For Review`, move sources to `done/<job-slug>/`, commit + push.
@@ -117,6 +118,47 @@ North star: Chris Boustedt (@chriss.boustedt). Values below are mirrored in `sty
 - SFX: whoosh on whips, pop on keywords.
 - Commercially licensed music only. If none is supplied, ship without music and say so.
   Never pull random tracks.
+
+## CATALOG BLOCKS
+Prefer HyperFrames catalog blocks over building from scratch. Before hand-building anything
+new, search the catalog first (`npx hyperframes catalog --query "<what it should do>"`); if
+something new is adopted, add it to `templates/ovs-vertical/blocks.txt` and give it a restyle
+rule in `scripts/restyle_blocks.py`.
+
+- **Template:** `templates/ovs-vertical/` (1080×1920) holds all 34 blocks, already restyled to
+  the house style: Inter Black, #FFD400 accent with black text on it, Archivo width 125 for
+  headings, text inside the safe zone. The restyle is a script, so it can be rebuilt from the
+  catalog at any time with `scripts/install_blocks.sh` (reinstall + `scripts/restyle_blocks.py`
+  + lint).
+- **Mounting:** a block mounts with `data-composition-src="compositions/<name>.html"`. A
+  component in `compositions/components/` has its markup/style/script merged into the scene;
+  some (e.g. `focus-blur-resolve`) only give their timeline recipe in a comment block.
+- **Captions:** words come from `scripts/transcribe.py`. Replace the block's `WORDS` array and
+  its groups (≤3 words). Mark key words (numbers, names, payoff) with `key: true`.
+
+### Which block for each job
+| Job | Default block | Alternates / notes |
+| --- | --- | --- |
+| Hook text (first 3s) | `focus-blur-resolve` (2.4× → 1×, blur 28px → 0, 35% → 100% opacity over 0.35s, phrase scales as one unit) | `blur-in`. For a single huge word: `caption-kinetic-slam` |
+| Captions (default) | `caption-highlight` (white Inter Black 76px caps at y≈1190, 0.14s back.out pop, `key: true` words in a #FFD400 block) | "Karaoke" style → `caption-pill-karaoke`. "Word-pop" style → `caption-kinetic-slam` (one word at a time, big) |
+| Text behind subject (once per video) | `caption-parallax-layers` (hero word in Archivo 125/900, fitted to 92% width around y≈620, 1.18 → 1 over 0.35s then 4% drift). Put the rembg subject cutout (`scripts/matte.py`) on a layer above it | `mk-emphasis-type` for a low-contrast background word texture |
+| Chapter pill | `spring-pop` holding the pill (top-left x120 y250) | |
+| Lower third (name/role) | `lt-color-block` (yellow block, black Inter Black caps) | `lt-kicker-name`, `lt-bold-block`, `lt-stack-bars`; quieter: `lt-accent-underline`, `lt-side-rule`, `lt-clean-bar`, `lt-dark-card`, `lt-soft-pill`, `lt-mask-reveal`, `lt-neon-border` |
+| Numbers / stat pop-ups | `number-pop-in` | `spring-pop` for a badge |
+| Keyword hit (with the "pop" SFX) | `beat-accent` | |
+| Typed text on screen | `typewriter` | `typed-prompt` (AI prompt), `notes-typing` (notes app) |
+| Handwritten annotation | `hw-title` (word-by-word highlight) | `hw-write-title` (true write-on). Caveat stays: handwriting is the point |
+| Transition (default) | Hard cut, with punch-in 1.00 → 1.12 (0.35s power3.out) or scale-out settle 1.25 → 1.00 (0.45s). `cut-the-curve` for a velocity-matched hard cut | `whip-pan-cut` for whips (add the whoosh) |
+| Accent transition (counts toward the max of 2 accent moments) | `cinematic-zoom` (zoom blur) | `flash-through-white` only as a fast flash, never as a slow dissolve |
+| Banned by STYLE | `glitch`, `chromatic-radial-split` | Installed and restyled, but only used if Justin asks for them by name |
+| End | No outro. `cta-close` as a ≤2s CTA card | `logo-outro` only when asked, trimmed to ≤2s |
+
+Known quirks:
+- The 4 shader transitions (`cinematic-zoom`, `flash-through-white`, `glitch`,
+  `chromatic-radial-split`) register under the composition id `main`, which clashes with a
+  project's root id. Rename the id inside the block before mounting one.
+- `caption-parallax-layers` refits the hero word on every timeline update, because the
+  renderer can capture before the heading font has loaded. Don't remove that.
 
 ## DELIVERY CHECKLIST (every render, before it ships)
 - [ ] Hook lands on frame 1 (visual = on-screen text = first spoken line).
