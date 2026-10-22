@@ -6,6 +6,11 @@ HF_VERSION=0.8.185
 
 python3 -c "import faster_whisper, rembg" 2>/dev/null || pip install -q faster-whisper "rembg[cpu]"
 npx -y "hyperframes@${HF_VERSION}" browser ensure >/dev/null
+# rclone for Drive transfers (scripts/drive.sh)
+if ! command -v rclone >/dev/null; then
+  tmp=$(mktemp -d) && curl -sSfL -o "$tmp/rclone.zip" https://downloads.rclone.org/rclone-current-linux-amd64.zip \
+    && unzip -qo "$tmp/rclone.zip" -d "$tmp" && install -m 755 "$tmp"/rclone-*-linux-amd64/rclone /usr/local/bin/rclone; rm -rf "$tmp"
+fi
 # Pre-fetch models so the first job doesn't stall on downloads.
 python3 - <<'PY'
 from rembg import new_session

@@ -144,19 +144,24 @@ video { width: 100%; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 8px; 
 
   <form id="jobForm" novalidate>
     <div class="tabs" role="tablist" aria-label="Job source">
-      <button class="tab" type="button" role="tab" id="tabDrive" aria-selected="true">Drive folder</button>
+      <button class="tab" type="button" role="tab" id="tabInbox" aria-selected="true">Drive inbox</button>
+      <button class="tab" type="button" role="tab" id="tabDrive" aria-selected="false">Drive folder link</button>
       <button class="tab" type="button" role="tab" id="tabUpload" aria-selected="false">Upload here</button>
     </div>
 
-    <div id="paneDrive" class="pane">
-      <label for="driveLink">Google Drive folder link <small>no size limit; the main route for big clips</small>
-        <input type="text" id="driveLink" placeholder="https://drive.google.com/drive/folders/…">
-      </label>
+    <div id="paneInbox" class="pane">
+      <p class="msg">One subfolder per video in <b>OVS Claude Edit / 1 Drop Clips</b>: the talking clips (A-roll), any background footage (B-roll), and optionally a reference video with “ref” in its name and/or a note.txt with a reel link and notes. No size limit.</p>
       <div class="row">
-        <span class="msg" id="pickMsg">Or pick a video folder from OVS Edit / 1 Drop Clips.</span>
+        <span class="msg" id="pickMsg">Pick a video folder, or queue every folder that has no render yet.</span>
         <button class="ghost" type="button" id="loadFolders">Show folders</button>
       </div>
       <ul class="folders" id="folders" hidden></ul>
+    </div>
+
+    <div id="paneDrive" class="pane" hidden>
+      <label for="driveLink">Google Drive folder link <small>any folder you can share with Claude; no size limit</small>
+        <input type="text" id="driveLink" placeholder="https://drive.google.com/drive/folders/…">
+      </label>
     </div>
 
     <div id="paneUpload" class="pane" hidden>
@@ -193,7 +198,7 @@ video { width: 100%; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 8px; 
       </label>
     </div>
     <label for="brief">Brief <small>hook idea, audience, anything to avoid; a note.txt in the Drive folder works too</small>
-      <textarea id="brief" placeholder="Teaching clip for Instagram. Open on the strongest line. Make the hero word ‘MOON’."></textarea>
+      <textarea id="brief" placeholder="Teaching clip for Instagram. Open on the strongest line. Match the reference’s captions."></textarea>
     </label>
     <label for="keep">Must-keep moments <small>optional</small>
       <input type="text" id="keep" placeholder="e.g. the laugh at 0:42">
@@ -220,7 +225,7 @@ video { width: 100%; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 8px; 
   // Upload format: each piece = one 0x00 header byte + up to PIECE bytes of the file, stored as video/mp4.
   // Claude rebuilds files with scripts/join_pieces.py.
   const PIECE = 14000000, PARALLEL = 3;
-  const DROP_CLIPS = "1rJLGWonNJ-xxQUbzS6TCXULxdi4sPpmr";
+  const DROP_CLIPS = "1_TAxCJa9V4eMYVretfStwxBfbI1mVwOQ"; // OVS Claude Edit / 1 Drop Clips
   const STAGES = ["queued", "downloading", "cutting", "captions", "rendering", "qa", "done"];
   const STAGE_LABEL = { queued: "Queued", downloading: "Download", cutting: "Cut", captions: "Captions", rendering: "Render", qa: "QA", done: "Done" };
   const CMD = "process the inbox";
@@ -231,7 +236,7 @@ video { width: 100%; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 8px; 
   if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(tick, 40); else tick();
 
   let db = null, assets = null, comments = null, mcp = null, downloads = null, usage = null, reserved = 0;
-  let jobs = [], revisions = [], claudeState = "unknown", source = "drive", pickedFolder = null;
+  let jobs = [], revisions = [], claudeState = "unknown", source = "inbox", pickedFolder = null;
   const selectedVersion = {};
   const pending = [];
   const setMsg = (t, err) => { const m = $("formMsg"); m.textContent = t; m.className = "msg" + (err ? " err" : ""); };
@@ -267,25 +272,28 @@ video { width: 100%; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 8px; 
   // ---------- source tabs ----------
   function setSource(s) {
     source = s;
-    $("tabDrive").setAttribute("aria-selected", String(s === "drive")); $("tabUpload").setAttribute("aria-selected", String(s === "upload"));
-    $("paneDrive").hidden = s !== "drive"; $("paneUpload").hidden = s !== "upload";
+    [["inbox", "tabInbox", "paneInbox"], ["drive", "tabDrive", "paneDrive"], ["upload", "tabUpload", "paneUpload"]].forEach(([k, t, p]) => {
+      $(t).setAttribute("aria-selected", String(s === k)); $(p).hidden = s !== k; });
   }
-  $("tabDrive").onclick = () => setSource("drive"); $("tabUpload").onclick = () => setSource("upload");
+  $("tabInbox").onclick = () => setSource("inbox"); $("tabDrive").onclick = () => setSource("drive"); $("tabUpload").onclick = () => setSource("upload");
 
   // ---------- Drive folder picker (the viewer's Google Drive connector) ----------
   const folderIdFrom = (s) => { const m = String(s).match(/folders\/([A-Za-z0-9_-]{10,})/) || String(s).match(/[?&]id=([A-Za-z0-9_-]{10,})/); return m ? m[1] : null; };
   $("loadFolders").onclick = async () => {
     const box = $("folders"), msg = $("pickMsg");
     if (!mcp) { msg.textContent = "Folder picking needs the Google Drive connector in claude.ai. Paste the folder link instead."; return; }
-    $("loadFolders").disabled = true; msg.textContent = "Loading folders from 1 Drop Clips…";
+    $("loadFolders").disabled = true; msg.textContent = "Loading folders from OVS Claude Edit / 1 Drop Clips…";
     try {
       const r = await mcp.callTool("Google Drive", "search_files", { query: `parentId = '${DROP_CLIPS}' and mimeType = 'application/vnd.google-apps.folder'`, excludeContentSnippets: true, pageSize: 50 });
       const list = ((r && r.payload && r.payload.files) || []).filter((f) => f && f.id);
-      box.textContent = ""; box.hidden = !list.length;
-      msg.textContent = list.length ? `${list.length} folder${list.length === 1 ? "" : "s"} in 1 Drop Clips. Pick one:` : "No video folders in 1 Drop Clips yet. Make one per video, then try again.";
+      box.textContent = ""; box.hidden = false;
+      msg.textContent = list.length ? `${list.length} folder${list.length === 1 ? "" : "s"} in 1 Drop Clips. Pick one, or all new ones:` : "No video folders in 1 Drop Clips yet. Make one per video, then try again.";
+      const all = el("li"), ab = el("button", null, "All new folders (no render in 2 For Review yet)"); ab.type = "button"; ab.setAttribute("aria-pressed", "false");
+      ab.onclick = () => { pickedFolder = { all: true, name: "All new folders" }; if (!$("name").value.trim()) $("name").value = "Drive inbox sweep"; box.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === ab))); };
+      all.append(ab); if (list.length) box.append(all);
       for (const f of list) {
         const li = el("li"), b = el("button", null, f.title || f.id); b.type = "button"; b.setAttribute("aria-pressed", "false");
-        b.onclick = () => { pickedFolder = { id: f.id, name: f.title || "" }; $("driveLink").value = f.viewUrl || `https://drive.google.com/drive/folders/${f.id}`;
+        b.onclick = () => { pickedFolder = { id: f.id, name: f.title || "", url: f.viewUrl || `https://drive.google.com/drive/folders/${f.id}` };
           if (!$("name").value.trim()) $("name").value = f.title || ""; box.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b))); };
         li.append(b); box.append(li);
       }
@@ -296,7 +304,7 @@ video { width: 100%; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 8px; 
         : "Couldn't list Drive folders. Paste the folder link instead.";
     } finally { $("loadFolders").disabled = false; }
   };
-  $("driveLink").addEventListener("input", () => { pickedFolder = null; });
+
 
   // ---------- pieced upload ----------
   async function refreshMeter() {
@@ -369,11 +377,16 @@ video { width: 100%; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 8px; 
     const job = { type: source, name: $("name").value.trim(), kind: $("kind").value, captions: $("captions").value, length: $("length").value.trim(),
       brief: $("brief").value.trim(), keep: $("keep").value.trim(), status: "queued", step: "Waiting for Claude", progress: 0,
       log: [{ at: now, status: "queued", msg: "Queued from the inbox page" }], version: 1, createdAt: now, updatedAt: now };
-    if (source === "drive") {
-      const id = (pickedFolder && pickedFolder.id) || folderIdFrom($("driveLink").value);
-      if (!id) return { error: "Paste a Google Drive folder link, or pick a folder from 1 Drop Clips." };
-      job.drive = { folderId: id, folderName: (pickedFolder && pickedFolder.name) || "", url: $("driveLink").value.trim() || `https://drive.google.com/drive/folders/${id}` };
-      job.name = job.name || job.drive.folderName || "Drive job";
+    if (source === "inbox") {
+      if (!pickedFolder) return { error: "Pick a video folder (Show folders), or “All new folders”." };
+      job.type = "drive-inbox";
+      job.drive = pickedFolder.all ? { scanAll: true, folderName: "All new folders" } : { folderId: pickedFolder.id, folderName: pickedFolder.name, url: pickedFolder.url };
+      job.name = job.name || pickedFolder.name || "Drive inbox";
+    } else if (source === "drive") {
+      const id = folderIdFrom($("driveLink").value);
+      if (!id) return { error: "Paste a Google Drive folder link." };
+      job.drive = { folderId: id, folderName: "", url: $("driveLink").value.trim() };
+      job.name = job.name || "Drive folder job";
     } else {
       const files = pending.filter((p) => p.status === "done").map((p) => ({ name: p.file.name, size: p.file.size, type: p.file.type || "", pieceSize: PIECE, chunks: p.chunks }));
       if (!files.length) return { error: "Add at least one file, or switch to Drive folder." };
@@ -391,6 +404,7 @@ video { width: 100%; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 8px; 
       const ref = await db.collection("jobs").add(job);
       if (source === "upload") { pending.length = 0; renderFiles(); }
       ["name", "length", "brief", "keep", "driveLink"].forEach((id) => ($(id).value = "")); pickedFolder = null;
+      $("folders").querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", "false"));
       const sent = await pingClaude($("jobForm"), `New edit job queued in the Cutting Room Inbox: “${job.name}” (job ${ref.id}, ${job.type}). Please ${CMD}.`);
       setMsg(sent ? "Queued and sent to Claude. Progress shows on the card below." : `Queued. Now tell Claude: “${CMD}”.`);
       refreshBanner();
@@ -482,7 +496,7 @@ video { width: 100%; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 8px; 
       card.append(h);
       const files = j.files || [], bytes = files.reduce((a, f) => a + (f.size || 0), 0);
       const m = el("div", "meta");
-      [j.type === "drive" ? "Drive: " + ((j.drive && (j.drive.folderName || j.drive.folderId)) || "folder") : `${files.length} upload${files.length === 1 ? "" : "s"}${bytes ? " · " + fmtSize(bytes) : ""}`,
+      [j.type === "drive-inbox" ? "Drive inbox: " + ((j.drive && j.drive.folderName) || "folder") : j.type === "drive" ? "Drive: " + ((j.drive && (j.drive.folderName || j.drive.folderId)) || "folder") : `${files.length} upload${files.length === 1 ? "" : "s"}${bytes ? " · " + fmtSize(bytes) : ""}`,
         j.kind && j.kind !== "auto" ? j.kind : "", j.captions && j.captions !== "house" ? "captions: " + j.captions : "", j.length || "", "v" + (j.version || 1), fmtTime(j.createdAt),
         j.storageFreed ? "upload storage freed" : ""]
         .filter(Boolean).forEach((b) => m.append(el("span", null, b)));

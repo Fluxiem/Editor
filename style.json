@@ -1,58 +1,150 @@
 {
   "$comment": "OVS house style (north star: Chris Boustedt @chriss.boustedt). Compositions read this file; CLAUDE.md STYLE explains each rule.",
   "version": 1,
-  "output": { "width": 1080, "height": 1920, "fps": 30, "codec": "h264", "pixelFormat": "yuv420p", "container": "mp4" },
-
+  "output": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "codec": "h264",
+    "pixelFormat": "yuv420p",
+    "container": "mp4"
+  },
   "length": {
-    "skit": { "maxSec": 20 },
-    "teaching": { "minSec": 15, "maxSec": 45 },
+    "skit": {
+      "maxSec": 20
+    },
+    "teaching": {
+      "minSec": 15,
+      "maxSec": 45
+    },
     "hardCapSec": 45,
-    "forbiddenRangeSec": [50, 70],
+    "forbiddenRangeSec": [
+      50,
+      70
+    ],
     "endHandleMaxSec": 2,
     "outro": false
   },
-
   "hook": {
     "windowSec": 3,
-    "frame1MustAlign": ["visual", "onScreenText", "firstSpokenLine"],
+    "frame1MustAlign": [
+      "visual",
+      "onScreenText",
+      "firstSpokenLine"
+    ],
     "noGreetings": true,
     "text": {
-      "from": { "scale": 2.4, "blurPx": 28, "opacity": 0.35 },
-      "to": { "scale": 1.0, "blurPx": 0, "opacity": 1.0 },
+      "from": {
+        "scale": 2.4,
+        "blurPx": 28,
+        "opacity": 0.35
+      },
+      "to": {
+        "scale": 1.0,
+        "blurPx": 0,
+        "opacity": 1.0
+      },
       "durationSec": 0.35,
       "ease": "power3.out",
-      "allowedRevealStyles": ["blur", "glow"]
+      "allowedRevealStyles": [
+        "blur",
+        "glow"
+      ]
     },
-    "alternates": { "count": 4, "swapWindowSec": [1, 3], "bodyUnchanged": true }
+    "alternates": {
+      "count": 4,
+      "swapWindowSec": [
+        1,
+        3
+      ],
+      "bodyUnchanged": true
+    }
   },
-
   "cuts": {
-    "jumpCutOn": ["breath", "filler", "retake"],
+    "jumpCutOn": [
+      "breath",
+      "filler",
+      "retake"
+    ],
     "cutOnWordTimings": true,
     "keepBestTake": true,
-    "fillerWords": ["um", "uh", "erm", "ah", "like", "you know", "sort of", "kind of", "basically", "literally", "so yeah"],
-    "talkingHead": { "jumpCutEverySec": [3, 5], "slowZoom": { "from": 1.0, "to": 1.08, "ease": "none" } },
-    "brollEverySec": [1.5, 2.0],
-    "montageEverySec": [0.5, 0.7],
+    "fillerWords": [
+      "um",
+      "uh",
+      "erm",
+      "ah",
+      "like",
+      "you know",
+      "sort of",
+      "kind of",
+      "basically",
+      "literally",
+      "so yeah"
+    ],
+    "talkingHead": {
+      "jumpCutEverySec": [
+        3,
+        5
+      ],
+      "slowZoom": {
+        "from": 1.0,
+        "to": 1.08,
+        "ease": "none"
+      }
+    },
+    "brollEverySec": [
+      1.5,
+      2.0
+    ],
+    "montageEverySec": [
+      0.5,
+      0.7
+    ],
     "maxSecWithoutChange": 2.0,
     "transitions": "hard-cut",
-    "punchIn": { "from": 1.0, "to": 1.12, "durationSec": 0.35, "ease": "power3.out" },
-    "scaleOutSettle": { "from": 1.25, "to": 1.0, "durationSec": 0.45, "ease": "power3.out" },
-    "banned": ["dissolve", "crossfade", "spin", "glitch-pack"]
+    "punchIn": {
+      "from": 1.0,
+      "to": 1.12,
+      "durationSec": 0.35,
+      "ease": "power3.out"
+    },
+    "scaleOutSettle": {
+      "from": 1.25,
+      "to": 1.0,
+      "durationSec": 0.45,
+      "ease": "power3.out"
+    },
+    "banned": [
+      "dissolve",
+      "crossfade",
+      "spin",
+      "glitch-pack"
+    ]
   },
-
   "fonts": {
     "$comment": "Headings target Druk Wide (not licensed yet). Swap heading.family once licensed; everything reads from here.",
-    "caption": { "family": "Inter", "weight": 900, "source": "google", "fallback": "Arial Black, sans-serif" },
+    "caption": {
+      "family": "Inter",
+      "weight": 900,
+      "source": "google",
+      "fallback": "Arial Black, sans-serif"
+    },
     "heading": {
-      "family": "Archivo", "weight": 900, "width": 125, "source": "google",
-      "target": "Druk Wide", "targetLicensed": false,
+      "family": "Archivo",
+      "weight": 900,
+      "width": 125,
+      "source": "google",
+      "target": "Druk Wide",
+      "targetLicensed": false,
       "fallback": "Arial Black, sans-serif"
     }
   },
-
-  "colors": { "accent": "#FFD400", "accentInk": "#000000", "captionFill": "#FFFFFF", "captionStroke": "rgba(0,0,0,0.85)" },
-
+  "colors": {
+    "accent": "#FFD400",
+    "accentInk": "#000000",
+    "captionFill": "#FFFFFF",
+    "captionStroke": "rgba(0,0,0,0.85)"
+  },
   "captions": {
     "default": true,
     "font": "caption",
@@ -66,56 +158,105 @@
     "centerX": 540,
     "centerY": 1190,
     "chunking": "one word or short phrase (max 3 words)",
-    "popIn": { "durationSec": 0.14, "ease": "back.out" },
+    "popIn": {
+      "durationSec": 0.14,
+      "ease": "back.out"
+    },
     "keyword": {
-      "applyTo": ["numbers", "names", "payoff"],
+      "applyTo": [
+        "numbers",
+        "names",
+        "payoff"
+      ],
       "background": "#FFD400",
       "color": "#000000",
       "radiusPx": 10,
-      "paddingPx": [4, 14]
+      "paddingPx": [
+        4,
+        14
+      ]
     },
-    "handCheckNames": ["Mudex", "One Vox Studio", "Leederville"]
+    "handCheckNames": [
+      "Mudex",
+      "One Vox Studio",
+      "Leederville"
+    ]
   },
-
   "chapterPill": {
-    "x": 120, "y": 250,
-    "background": "#FFD400", "color": "#000000",
-    "font": "caption", "weight": 900, "sizePx": 28, "case": "upper",
-    "radiusPx": 10, "paddingPx": [8, 16],
+    "x": 120,
+    "y": 250,
+    "background": "#FFD400",
+    "color": "#000000",
+    "font": "caption",
+    "weight": 900,
+    "sizePx": 28,
+    "case": "upper",
+    "radiusPx": 10,
+    "paddingPx": [
+      8,
+      16
+    ],
     "changesEach": "section"
   },
-
   "textBehindSubject": {
     "perVideo": 1,
     "word": "hero word, one word, caps",
     "font": "heading",
     "fitWidthPct": 92,
     "centerY": 620,
-    "layers": ["footage", "giantWord", "footageMaskedToSubject"],
-    "matte": { "tool": "rembg", "model": "u2net_human_seg", "perFrame": true },
-    "in": { "scaleFrom": 1.18, "scaleTo": 1.0, "durationSec": 0.35, "ease": "power3.out" },
-    "drift": { "scale": 0.04, "ease": "none", "untilEndOfShot": true }
+    "layers": [
+      "footage",
+      "giantWord",
+      "footageMaskedToSubject"
+    ],
+    "matte": {
+      "tool": "rembg",
+      "model": "u2net_human_seg",
+      "perFrame": true
+    },
+    "in": {
+      "scaleFrom": 1.18,
+      "scaleTo": 1.0,
+      "durationSec": 0.35,
+      "ease": "power3.out"
+    },
+    "drift": {
+      "scale": 0.04,
+      "ease": "none",
+      "untilEndOfShot": true
+    }
   },
-
-  "safeZone": { "xMin": 120, "xMax": 960, "yMin": 240, "yMax": 1260, "bottomThirdClear": true },
-
+  "safeZone": {
+    "xMin": 120,
+    "xMax": 960,
+    "yMin": 240,
+    "yMax": 1260,
+    "bottomThirdClear": true
+  },
   "graphics": {
     "brollMatchesSpeech": true,
     "popupPerMention": 1,
     "popupMaxHoldSec": 2.0,
-    "boldEffectEverySec": [5, 10],
+    "boldEffectEverySec": [
+      5,
+      10
+    ],
     "maxSimultaneousBoldEffects": 1,
     "maxAccentMoments": 2
   },
-
   "audio": {
     "voicePeakDbfs": -6,
-    "musicUnderVoiceDb": [-22, -18],
+    "musicUnderVoiceDb": [
+      -22,
+      -18
+    ],
     "noLyricsUnderSpeech": true,
     "musicLicense": "commercial-only",
-    "sfx": { "whip": "whoosh", "keyword": "pop" }
+    "sfx": {
+      "whip": "whoosh",
+      "keyword": "pop"
+    }
   },
-
   "deliveryChecklist": [
     "Hook lands on frame 1 (visual = on-screen text = first spoken line)",
     "Length within target for the video type, never over 45s",
@@ -125,12 +266,72 @@
     "No watermarks",
     "4 alternate-hook versions exported (only the first 1-3s swapped)"
   ],
-
   "drive": {
-    "$comment": "Folder IDs pinned so a same-named folder elsewhere (e.g. another 'B-Roll') is never used.",
-    "root": { "name": "OVS Edit", "id": "1JovciMDuW9QzS9fdwLzjGPlc2RNQF4i4" },
-    "inbox": { "name": "1 Drop Clips", "id": "1rJLGWonNJ-xxQUbzS6TCXULxdi4sPpmr" },
-    "broll": { "name": "B-Roll", "id": "128fTy29nYqmCcs12azNBrzJSuRm3dfL6", "neverDelete": true },
-    "review": { "name": "2 For Review", "id": "1b3B1NQE-Qh2wN2jH5V-kZSOQ5fk4XwVu" }
+    "$comment": "Claude's own Drive inbox, separate from the Grok team's 'OVS Edit'. IDs pinned; transfers go through rclone (scripts/drive.sh).",
+    "root": {
+      "name": "OVS Claude Edit",
+      "id": "13UItvrTqDvxww3rJhD5plq2lgJEOw1Hu"
+    },
+    "inbox": {
+      "name": "1 Drop Clips",
+      "id": "1_TAxCJa9V4eMYVretfStwxBfbI1mVwOQ",
+      "deleteRawAfterApproval": true
+    },
+    "review": {
+      "name": "2 For Review",
+      "id": "10OBWAfflhNE8NmNv3EphOf7ie70gpfBE",
+      "naming": "<video>_v<N>.mp4"
+    },
+    "approved": {
+      "name": "3 Approved",
+      "id": "1JT7bnmH6J2lSA7U8ZONTRs4k6E2c0GYC"
+    },
+    "sharedBroll": {
+      "name": "OVS Edit/B-Roll",
+      "id": "128fTy29nYqmCcs12azNBrzJSuRm3dfL6",
+      "readOnly": true
+    },
+    "doNotTouch": [
+      {
+        "name": "OVS Edit (Grok team)",
+        "id": "1JovciMDuW9QzS9fdwLzjGPlc2RNQF4i4"
+      },
+      {
+        "name": "OVS Edit/1 Drop Clips (Grok team)",
+        "id": "1rJLGWonNJ-xxQUbzS6TCXULxdi4sPpmr"
+      },
+      {
+        "name": "OVS Edit/2 For Review (Grok team)",
+        "id": "1b3B1NQE-Qh2wN2jH5V-kZSOQ5fk4XwVu"
+      }
+    ],
+    "ignoreJobs": [
+      "IMG_0400"
+    ]
+  },
+  "music": {
+    "licensed": [],
+    "policy": "No licensed music yet: ship without music."
+  },
+  "reference": {
+    "$comment": "Optional per video: a video file with 'ref' in its name and/or note.txt with a reel link + notes.",
+    "detect": {
+      "fileNamePattern": "(?i)ref",
+      "noteFile": "note.txt"
+    },
+    "analyse": [
+      "cutRate",
+      "hook",
+      "textStyles",
+      "textPlacement",
+      "transitions",
+      "zooms",
+      "captions"
+    ],
+    "precedence": "Reference overrides house style only where it differs; everything it does not show stays house style. Build with HyperFrames catalog blocks."
+  },
+  "clipRoles": {
+    "$comment": "A-roll = clips with speech; B-roll = clips without meaningful speech.",
+    "brollMaxWordsPerMin": 20
   }
 }

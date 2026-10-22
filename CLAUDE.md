@@ -7,61 +7,87 @@ human-readable version of it. If they disagree, update both.
 
 ## Inputs
 
-### Primary: Google Drive (`OVS Edit/`)
-Folder IDs are pinned in `style.json` → `drive` (another Drive also has a "B-Roll" folder:
-never use it).
-- `OVS Edit/1 Drop Clips/<Video Name>/` — one subfolder per video, named after the video:
-  the clips plus an optional `note.txt` (the brief). Loose files at the root of
-  `1 Drop Clips` = one job named after the first clip; ask only if that's ambiguous.
-- `OVS Edit/B-Roll/` — reusable B-roll library. Read only. **Never delete, move or rename
-  anything in it.**
-- `OVS Edit/2 For Review/` — finished MP4s (main cut + 4 alternate hooks) go here.
-- Transfer: the Drive connector's `download_file_content` caps at **10 MB** (base64; the result
-  lands in a tool-results file, decode with `jq -r .content <file> | base64 -d > out`). Use it
-  for `note.txt`, images and small clips only. Clips over 10 MB need the Drive API directly:
-  `scripts/drive.sh` (rclone) once an `RCLONE_DRIVE_TOKEN` environment variable is configured.
-  Without it, large clips can't be pulled. Say so instead of guessing at the footage.
+### Primary: Google Drive "OVS Claude Edit" (rclone, no size limit)
+Claude's own inbox, separate from the Grok team's "OVS Edit". IDs are pinned in `style.json` →
+`drive`. All Drive transfers go through `scripts/drive.sh` (rclone + `RCLONE_DRIVE_TOKEN` from the
+environment; it loads at session start, and `scripts/setup.sh` installs rclone).
+- `1 Drop Clips/<Video Name>/` — one subfolder per video:
+  - **A-roll**: the clips where someone talks to camera.
+  - **B-roll**: any footage without meaningful speech (fewer than `clipRoles.brollMaxWordsPerMin`
+    words/min after transcription). Also usable: `OVS Edit/B-Roll`, **read-only**.
+  - **Reference** (optional): a video with `ref` in its file name and/or `note.txt` with a reel link
+    and notes. See "References" below.
+- `2 For Review/` — renders, named exactly after the subfolder: `<Video Name>_v1.mp4`, `_v2`… plus
+  `<Video Name>_v1_hook-B.mp4` … `_hook-E.mp4`.
+- `3 Approved/` — Justin moves the approved render here. **After that, delete that video's raw
+  subfolder from 1 Drop Clips** (`drive.sh cleanup`; run `--dry-run` first and log what it removes).
+- **Don't touch the Grok team's "OVS Edit"**: not its `1 Drop Clips` or `2 For Review`, and
+  `IMG_0400` is their job, so ignore it. Only `OVS Edit/B-Roll` may be read.
+- Fallbacks: the Drive connector only for files under 10 MB (it returns base64); the inbox page
+  for small uploads.
 
-### Secondary: Cutting Room Inbox (small files only)
-Artifact: https://claude.ai/artifact/G5w5iJcPT376URSdZ11hmZ (source: `ui/edit-inbox.html`).
-- Jobs live in its db collection `jobs` (fields: name, format, captions, length, brief, keep,
-  links[], files[{name,size,type,pieceSize,chunks[]}], status, note, output, outputPath, createdAt).
-- Every file is uploaded as ordered pieces (asset ids in `chunks`): each piece = one 0x00
-  header byte + up to 19 MiB of the original. Storage is 1 GB per artifact in total.
-- To process: `ArtifactData list jobs`, take `status == "queued"`, download every piece with
-  `Artifact read paths=[...ids]`, rebuild with
-  `scripts/join_pieces.py inbox/<job-slug>/<name> <piece files in chunks order>`, verify size.
-- Status flow `queued` → `editing` → `rendered` (or `needs-input` with a question in `note`).
-  Put the summary in `note`, the repo path in `outputPath`, and the MP4 asset id (≤15 MB) in
-  `output`. Rendered jobs show a "Free storage" button for the user; don't delete pieces
-  yourself unless asked.
+### "Process the inbox"
+1. `scripts/drive.sh cleanup` (approved → delete raw subfolder), then `scripts/drive.sh scan`:
+   every subfolder of 1 Drop Clips with no `<Video Name>_v*.mp4` in 2 For Review or 3 Approved is
+   a job. Also take queued jobs and revisions from the inbox page (below).
+2. If `RCLONE_DRIVE_TOKEN` isn't visible, say so plainly and stop the Drive part. Don't fall back
+   to the connector for big clips.
+
+### Inbox page (Cutting Room Inbox)
+https://claude.ai/artifact/G5w5iJcPT376URSdZ11hmZ (source `ui/edit-inbox.html`).
+- Job types: `drive-inbox` (a subfolder of OVS Claude Edit/1 Drop Clips, or `drive.scanAll` = every
+  new folder), `drive` (a pasted folder link), `upload` (small files only, in pieces, see below).
+- Queuing calls `comments.sendToClaude`, which wakes a Claude session watching the artifact. With no
+  session the page shows "Tell Claude: process the inbox" + Copy. Claude can't poll on its own.
+- Collections: `jobs/<id>` and `revisions/<id>` ({jobId, v, feedback, status}).
+- Live status: build a patch with `scripts/job_status.py <doc.json> <status> <pct> "<step>"` and
+  send it with ArtifactData `update` (pin `if_version`). Statuses: queued → downloading → cutting →
+  captions → rendering → qa → done (or needs-input with `question`, or failed).
+- When done, set `versions: [{v, feedback, result: {preview, hooks[{label,line,asset}], qa[{label,
+  pass,note}], summary, outputPath, driveUrl, length, size}}]`, `version`, `status: done`.
+  Previews are uploaded as assets (≤15 MB each via the Artifact tool: re-encode, see
+  `projects/artemis-soundbites/NOTES.md`). Revisions: mark the revision doc `done` and append the
+  next version.
+- Upload pieces: each = one 0x00 byte + ≤14 MB of the file, stored as video/mp4. Fetch each piece
+  with Artifact `read` and a single `path` (bulk `paths` does not reach assets), rebuild with
+  `scripts/join_pieces.py`, check the size/sha256. **Auto-free**: once the original is in the repo
+  (Git LFS, confirm with `git lfs push --object-id origin <oid>` returning 0 B) or in Drive, delete
+  the job's pieces (Artifact `delete`, one per id) and set `storageFreed: true`.
+
+### References
+`scripts/analyze_ref.py <ref.mp4> <dir>` measures cut rate (hard cuts and jump cuts), shot
+lengths, the hook line and when speech starts, pace and loudness, and writes `hook.jpg` (first 3s at
+8 fps) and `reel.jpg` (1 fps). Read both sheets for text styles and placement, caption style,
+transitions and zooms. For a reel link in note.txt, download it if the link allows (otherwise work
+from the notes and say so). Write what differs from house style as overrides in the edit spec and
+in NOTES.md ("Reference match"), choosing the closest catalog blocks (see CATALOG BLOCKS). Anything
+the reference doesn't show stays house style.
 
 ## Layout
-- `inbox/<job-slug>/` — media pulled down for a job in progress.
-- `projects/<job-slug>/` — the editable HyperFrames project (compositions, assets,
-  transcripts, mattes, `NOTES.md` with decisions, edit log and QA notes).
-- `done/<job-slug>/` — sources once finished, plus `<job-slug>.mp4` and
-  `<job-slug>_hook-A..D.mp4`.
+- `inbox/<job-slug>/` — media pulled for a job in progress (git-ignored).
+- `projects/<job-slug>/` — the editable project: `plan.json` (chosen lines), `cuts.json`,
+  `edit.json` (spec), `index.html` + `compositions/`, `assets/`, transcript, tracking, `NOTES.md`.
+- `done/<job-slug>/` — originals (Git LFS) + sha256; renders live in `projects/<job-slug>/renders/`.
 
-## Job workflow ("process the inbox")
-1. List `1 Drop Clips` (and queued artifact jobs). One subfolder = one job.
-2. Pull clips + `note.txt` into `inbox/<job-slug>/`. ffprobe everything, snapshot keyframes,
-   transcribe with faster-whisper (word timestamps), hand-check the names list.
-3. Decide video type (skit / teaching), hook, structure, chapters, hero word, B-roll plan
-   (pull matching clips from `B-Roll`). Write the plan to `NOTES.md`.
-4. Copy `templates/ovs-vertical/` to `projects/<job-slug>/` and build from its restyled catalog
-   blocks (see CATALOG BLOCKS) and `style.json`. Prefer a catalog block over hand-building.
-5. Run the DELIVERY CHECKLIST. Fix anything that fails before rendering.
-6. Render the main cut + 4 alternate hooks.
-7. Upload the renders to `2 For Review`, move sources to `done/<job-slug>/`, commit + push.
-8. Write the QA note in `NOTES.md` and report the Drive link(s) plus a short summary.
+## Job workflow
+1. Pull the subfolder (`drive.sh pull`), sort clips into A-roll / B-roll / reference, read note.txt.
+2. Transcribe A-roll (`scripts/transcribe.py`), track the speaker (`scripts/subject_track.py`),
+   analyse any reference (`scripts/analyze_ref.py`).
+3. Pick the lines → `plan.json`; `scripts/cutlist.py` makes word-accurate takes (pauses > 0.28s and
+   fillers cut). `scripts/build_aroll.py` reframes 9:16 and levels the voice (peaks −6 dBFS).
+4. Write `edit.json` (hook text, chapters, punch-ins/settles, key words, B-roll, lower third, hero
+   word + `scripts/matte.py` cutout, reference overrides); `scripts/build_comp.py` generates the
+   HyperFrames project from the restyled catalog blocks. Lint, snapshot, look.
+5. `scripts/qa_check.py` (DELIVERY CHECKLIST) must pass before rendering for delivery.
+6. Render `<Video Name>_v1.mp4`, then `scripts/build_hooks.sh` for the 4 alternate hooks (hooks.json).
+7. `drive.sh push` all five to 2 For Review; commit originals (LFS) + project + renders; push.
+8. QA note in NOTES.md; report the Drive link(s).
 
-Only ask when truly blocked (missing critical asset, unclear must-keep moment).
+No music until licensed tracks exist: ship without it and say so. Only ask when truly blocked.
 
 ## Feedback iterations
-"Tighter", "change caption style", etc. → edit `projects/<job-slug>/`, re-render, re-upload
-to `2 For Review` as a new version (`_v2`, `_v3`…), log the change in `NOTES.md`.
-No Studio needed.
+"Tighter", "change caption style"… → edit `plan.json` / `edit.json`, rebuild, re-render as the next
+version (`_v2`, `_v3`), push to 2 For Review, log the change in NOTES.md, update the job card.
 
 ## STYLE
 North star: Chris Boustedt (@chriss.boustedt). Values below are mirrored in `style.json`.
@@ -177,5 +203,6 @@ per line), anything that needed judgement, Drive link(s).
 - Cloud container is ephemeral: always commit + push finished work. `scripts/setup.sh`
   reinstalls the toolchain (runs from the SessionStart hook in `.claude/settings.json`).
 - MP4/MOV/media are tracked with Git LFS (`.gitattributes`).
+- Drive token: `RCLONE_DRIVE_TOKEN` (environment setting, loads at session start).
 - Toolchain: HyperFrames CLI + headless Chrome, ffmpeg, faster-whisper (word timestamps),
   rembg with `u2net_human_seg` (subject mattes).
