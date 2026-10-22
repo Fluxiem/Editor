@@ -3,3 +3,8 @@ node_modules/
 **/.hyperframes/cache/
 **/renders/tmp/
 __pycache__/
+inbox/*/
+projects/*/hooks/
+projects/*/assets/aroll.mp4
+projects/*/.hyperframes/
+projects/*/*.log
