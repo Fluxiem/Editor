@@ -18,10 +18,43 @@
       #captions { z-index: 10; }
       .broll { position: absolute; inset: 0; width: 1080px; height: 1920px; object-fit: cover; z-index: 5; }
       #flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 20; }
+      .card { position: absolute; inset: 0; z-index: 9; display: flex; align-items: center; justify-content: center; padding: 0 120px; }
+      .cardline { position: absolute; left: 120px; right: 120px; visibility: hidden; }
       #hook { position: absolute; left: 120px; right: 120px; top: 1010px; height: 300px; display: flex; align-items: center; justify-content: center; z-index: 12; }
       .hf-catalog-focus-blur-resolve { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 18px; max-width: 840px; text-align: center; color: #fff; font: 900 92px/1.02 "Inter", sans-serif; letter-spacing: -0.02em; transform-origin: 50% 50%; -webkit-text-stroke: 3px rgba(0,0,0,0.85); paint-order: stroke fill; text-shadow: 0 4px 18px rgba(0,0,0,0.45); }
       .hf-catalog-focus-blur-resolve span { display: inline-block; filter: blur(calc(var(--hf-word-blur, 0px))); }
       .hf-catalog-focus-blur-resolve span.key { background: var(--accent); color: var(--accent-ink); -webkit-text-stroke: 0; text-shadow: none; border-radius: 10px; padding: 0 14px; }
+      .scene { position: absolute; left: 120px; right: 120px; display: flex; justify-content: center; z-index: 7; pointer-events: none; }
+      .scene.top { top: 240px; align-items: flex-start; }
+      .scene.middle, .scene.lower { bottom: 830px; align-items: flex-end; }
+      .scene.hero { left: 0; right: 0; top: 360px; height: 520px; align-items: center; }
+      .scene.behind { z-index: 2; }  .scene.left { justify-content: flex-start; }
+      .sc-in { display: flex; flex-direction: column; align-items: center; gap: 22px; max-width: 100%; transform-origin: 50% 50%; }  .scene.left .sc-in { align-items: flex-start; transform-origin: 0% 50%; }
+      .num { display: inline-block; white-space: nowrap; line-height: 1; }
+      .srow, .src { display: flex; align-items: center; gap: 30px; text-align: left; }  .slab { font-size: 40px; max-width: 320px; line-height: 1.1; }  .scol { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+      .tiles { display: grid; gap: 28px; justify-content: center; }  .tile { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+      .rows { display: flex; flex-direction: column; gap: 16px; width: 840px; }  .grow, .hrow { display: flex; align-items: center; gap: 24px; }
+      .stack { position: relative; width: 840px; }  .stack > .note { position: absolute; left: 0; right: 0; top: 0; display: flex; gap: 22px; align-items: center; padding: 22px 26px; }
+      .nicon { flex: 0 0 76px; height: 76px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font: 800 38px/1 "Inter", sans-serif; }
+      .ntext { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }  .nhead { display: flex; justify-content: space-between; }
+      .ntitle { font: 700 34px/1.15 "Inter", sans-serif; color: #0D0E0C; }  .nbody { font: 500 31px/1.2 "Inter", sans-serif; color: #5F5D57; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .yr { display: flex; align-items: center; line-height: 1; }  .caret { display: inline-block; width: 0.07em; height: 0.8em; margin-left: 0.05em; vertical-align: -0.08em; }
+      .tyrow { display: flex; align-items: flex-end; gap: 22px; width: 100%; }  .tyline { flex: 1; min-height: 1.35em; text-align: left; white-space: pre-wrap; }
+      .send { flex: 0 0 68px; height: 68px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }  .typed { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+      .quote { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 0.24em; text-align: center; line-height: 1.04; }  .quote.one { flex-wrap: nowrap; white-space: nowrap; }  .qw { display: inline-block; }
+      .lt { display: flex; align-items: stretch; gap: 24px; padding: 26px 44px 26px 26px; }  .ltcol { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+      .logo { display: block; object-fit: contain; }
+      .hblock { background: #FFD400; color: #000000; border-radius: 16px; padding: 14px 30px; font-family: "Inter", sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; line-height: 1; }
+      .hcap { font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-transform: uppercase; line-height: 1.05; text-align: center; -webkit-text-stroke: 3px rgba(0,0,0,0.85); paint-order: stroke fill; text-shadow: 0 4px 18px rgba(0,0,0,0.45); }
+      .hcard { background: #FFFFFF; color: #0D0E0C; border-radius: 26px; box-shadow: 0 22px 50px rgba(0,0,0,0.35); padding: 30px 40px; }
+      .hbig { font-family: "Archivo", "Arial Black", sans-serif; font-weight: 900; font-stretch: 125%; color: #FFD400; text-transform: uppercase; line-height: 1; white-space: nowrap; }
+      .htile { display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px; }
+      .hrow { font-size: 46px; padding: 18px 28px; }  .hidx { display: inline-flex; align-items: center; justify-content: center; width: 1.3em; height: 1.3em; border-radius: 50%; background: #0D0E0C; color: #FFD400; font-size: 0.62em; }
+      .hcard .nicon { background: #FFD400; color: #000000; }  .hcard .nhead { font: 800 22px/1.2 "Inter", sans-serif; letter-spacing: 0.06em; text-transform: uppercase; color: #8A877F; }  .note.hcard { padding: 22px 26px; border-radius: 28px; }
+      .hpill { background: #FFD400; color: #000000; border-radius: 10px; padding: 8px 16px; font: 900 22px/1 "Inter", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+      .src .stitle { font: 900 44px/1.05 "Inter", sans-serif; text-transform: uppercase; }  .src .ssub { font: 700 28px/1.2 "Inter", sans-serif; color: #5F5D57; }  .src .yr { font: 900 112px/1 "Inter", sans-serif; }  .srow .slab { font-size: 48px; text-align: left; }
+      .caret { background: #000000; }  .tyline { font: 700 42px/1.35 "Inter", sans-serif; color: #0D0E0C; }  .send { background: #FFD400; color: #000000; }  .hcard.notes { background: #EFEAE0; }
+      .ltname { font-size: 50px; }  .hrole { background: #0D0E0C; color: #FFFFFF; border-radius: 10px; padding: 10px 18px; font: 800 26px/1 "Inter", sans-serif; letter-spacing: 0.04em; text-transform: uppercase; }
     </style>
   </head>
   <body>
@@ -30,8 +63,10 @@
       <div id="cam">
         <video id="aroll" class="clip" src="assets/aroll.mp4" data-start="0" data-media-start="0" data-duration="31.54" data-has-audio="true" data-track-index="1" playsinline></video>
         <div id="hero" class="clip" data-start="4.86" data-duration="2.56" data-track-index="2"><span id="heroWord" style="font-size: 109.2px">DRIFTABILITY</span></div>
-        <video id="cutout" class="clip" src="assets/cutout.webm" data-start="4.86" data-media-start="0" data-duration="2.56" data-track-index="3" muted playsinline data-layout-allow-occlusion></video>
+        <video id="cutout" class="clip" src="assets/cutout_0.webm" data-start="4.86" data-media-start="0" data-duration="2.56" data-track-index="3" muted playsinline data-layout-allow-occlusion></video>
       </div>
+
+      <div id="sc0" class="clip scene middle" data-start="8.24" data-duration="2.6" data-track-index="6"><div id="sc0in" class="sc-in"><div class="srow"><div id="sc0num" class="num hblock" style="font-size: 150px"><span class=""><span id="sc0n">2</span>nd</span></div><div class="hcap slab">November, sold out</div></div></div></div>
 
       <div id="captions" data-composition-src="compositions/components/caption-highlight.html" data-composition-id="caption-highlight" data-start="0" data-duration="31.54" data-track-index="10"></div>
       <div id="hook" class="clip" data-start="0" data-duration="2.44" data-track-index="13"><div class="hf-catalog-focus-blur-resolve"><span class="">THESE</span><span class="">EVENTS</span><span class="">CAN&#x27;T</span><span class="">HAPPEN</span><span class="">WITHOUT</span><span class="">THE</span><span class="key">HELP</span></div></div>
@@ -46,8 +81,8 @@
       tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.08, duration: 2.420, ease: "none" }, 2.44);
       tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.08, duration: 2.560, ease: "none" }, 4.86);
       tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.08, duration: 1.780, ease: "none" }, 7.42);
-      tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.08, duration: 0.060, ease: "none" }, 9.2);
-      tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.12, duration: 0.35, ease: "power3.out" }, 9.26);
+      tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.0037, duration: 0.060, ease: "none" }, 9.2);
+      tl.fromTo("#cam", { scale: 1.0037 }, { scale: 1.12, duration: 0.35, ease: "power3.out" }, 9.26);
       tl.fromTo("#cam", { scale: 1.12 }, { immediateRender: false, scale: 1.154, duration: 0.890, ease: "none" }, 9.610);
       tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.08, duration: 5.480, ease: "none" }, 10.5);
       tl.fromTo("#cam", { scale: 1.0 }, { scale: 1.08, duration: 2.620, ease: "none" }, 15.98);
@@ -62,8 +97,12 @@
       tl.fromTo(".hf-catalog-focus-blur-resolve", { scale: 2.4 }, { scale: 1, duration: 0.35, ease: "power3.out" }, 0);
       
       
+      
       tl.fromTo("#heroWord", { scale: 1.18, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "power3.out" }, 4.86);
       tl.fromTo("#heroWord", { scale: 1 }, { immediateRender: false, scale: 1.04, duration: 2.21, ease: "none" }, 5.21);
+      tl.fromTo("#sc0in", { opacity: 0, y: 36, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "power3.out" }, 8.24);
+      tl.fromTo("#sc0in", { opacity: 1, y: 0 }, { opacity: 0, y: -16, duration: 0.25, ease: "power2.in", immediateRender: false }, 10.59);
+      tl.fromTo("#sc0num", { y: 24, scale: 0.82, filter: "blur(8px)" }, { y: 0, scale: 1, filter: "blur(0px)", duration: 0.34, ease: "back.out(1.8)" }, 8.24);
       window.__timelines["main"] = tl;
     </script>
   </body>

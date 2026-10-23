@@ -4,7 +4,9 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 HF_VERSION=0.8.185
 
+git lfs install --local >/dev/null 2>&1 && git lfs checkout >/dev/null 2>&1 || true   # template SFX/fonts are LFS files
 python3 -c "import faster_whisper, rembg" 2>/dev/null || pip install -q faster-whisper "rembg[cpu]"
+command -v yt-dlp >/dev/null || pip install -q yt-dlp   # reference reel links in notes (analyze_ref.py)
 npx -y "hyperframes@${HF_VERSION}" browser ensure >/dev/null
 # rclone for Drive transfers (scripts/drive.sh): streams any file size, resumable
 if ! command -v rclone >/dev/null; then

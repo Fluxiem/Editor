@@ -1,7 +1,9 @@
 <title>OVS Video Editor</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Inter:wght@700;800;900&family=Montserrat:wght@700;800;900&family=Anton&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Inter:wght@500;600;700;800;900&family=Montserrat:wght@700;800;900&family=Anton&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;500;700&display=swap">
 <style>
 /* Layout: an editor's bench. Settings run down the left like a style sheet; the monitor stays pinned on the right. */
 :root {
@@ -69,7 +71,7 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
 .btn.danger { color: var(--danger); background: transparent; border-color: transparent; padding-inline: 6px; }
 .btn.small { padding: 4px 10px; font-size: 12px; }
 .switch { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
-.switch input { appearance: none; width: 34px; height: 20px; border-radius: 99px; background: var(--line); position: relative; cursor: pointer; transition: background .15s; margin: 0; }
+.switch input { appearance: none; flex: 0 0 34px; width: 34px; height: 20px; border-radius: 99px; background: var(--line); position: relative; cursor: pointer; transition: background .15s; margin: 0; }
 .switch input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--fg); transition: transform .15s; }
 .switch input:checked { background: var(--accent); }
 .switch input:checked::after { transform: translateX(14px); background: var(--accent-ink); }
@@ -101,6 +103,7 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
 .tracks { display: grid; gap: 6px; }
 .tracks label { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel-2); cursor: pointer; min-width: 0; }
 .tracks label span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tracks input { accent-color: var(--accent); margin: 0; }
 .cmd { font: 500 12px var(--f-mono); background: var(--panel-2); border: 1px solid var(--line); border-radius: 6px; padding: 2px 7px; white-space: nowrap; }
 
 /* monitor */
@@ -124,11 +127,88 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
 .ctl { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .time { margin-left: auto; font: 400 12px var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
 .tabs { display: flex; flex-wrap: wrap; gap: 6px; }
-.tabs button { font: 500 10px var(--f-mono); letter-spacing: .12em; text-transform: uppercase; padding: 6px 10px; border-radius: 99px; border: 1px solid var(--line); background: transparent; cursor: pointer; color: var(--muted); }
+.tabs button { font: 500 10px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; padding: 6px 9px; border-radius: 99px; border: 1px solid var(--line); background: transparent; cursor: pointer; color: var(--muted); }
 .tabs button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
 .howto ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; color: var(--muted); font-size: 13px; }
 .howto ol b { color: var(--fg); }
 .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--fg); color: var(--bg); padding: 9px 16px; border-radius: 99px; font-weight: 600; font-size: 13px; z-index: 50; }
+[hidden] { display: none !important; }
+
+/* colour inputs (look) */
+.cin { display: flex; align-items: center; gap: 8px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 4px 8px 4px 4px; min-width: 0; }
+.cin input[type=color] { flex: 0 0 34px; width: 34px; height: 28px; border: 0; padding: 0; background: none; cursor: pointer; }
+.cin input[type=color]::-webkit-color-swatch-wrapper { padding: 0; }
+.cin input[type=color]::-webkit-color-swatch { border: 1px solid var(--line); border-radius: 6px; }
+.cin input[type=color]::-moz-color-swatch { border: 1px solid var(--line); border-radius: 6px; }
+.cin .range-val { font-size: 12px; color: var(--fg); }
+.gradbar { height: 10px; border-radius: 99px; border: 1px solid var(--line); }
+.look-prev { position: relative; border-radius: 10px; border: 1px solid var(--line); overflow: hidden; min-height: 132px; display: grid; place-items: center; text-align: center; padding: 22px 16px; }
+.look-prev .lp-line { font: 600 clamp(18px, 3.2vw, 24px)/1.1 "Inter", sans-serif; display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 0 .3em; }
+.look-prev .lp-key { font-style: italic; font-weight: 400; font-size: 1.8em; line-height: .95; -webkit-background-clip: text; background-clip: text; color: transparent; padding: 0 .1em; }
+.look-prev .lp-lab { margin-top: 10px; font-size: 11px; letter-spacing: .24em; text-transform: uppercase; }
+.sub { border-top: 1px dashed var(--line); padding-top: 14px; display: grid; gap: 12px; }
+
+/* motion graphics: kind chips */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips button { border: 1px solid var(--line); background: transparent; border-radius: 99px; padding: 6px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer; color: var(--muted); }
+.chips button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.chips button:hover { border-color: var(--muted); }
+
+/* transitions: overlay file + mark-frame strip */
+.ovl { display: grid; gap: 10px; border-top: 1px dashed var(--line); padding-top: 12px; }
+.fstrip { width: 100%; height: 72px; display: block; background: var(--panel); border-radius: 6px; border: 1px solid var(--line); cursor: pointer; }
+.duck { font: 400 12px var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* monitor: overlays above the empty stage for the self-contained scenes */
+.empty-stage { z-index: 1; }
+.trov { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; opacity: 0; overflow: hidden; }
+.stage[data-scene="card"] .ov, .stage[data-scene="gfx"] .ov, .stage[data-scene="trans"] .trov, .stage[data-scene="trans"] .flash { z-index: 2; }
+.stage[data-scene="card"] .empty-stage > div, .stage[data-scene="gfx"] .empty-stage > div { visibility: hidden; }
+
+/* monitor: motion-graphics preview, authored in composition pixels (1080 wide) and scaled to the stage */
+.gfx-root { position: absolute; left: 0; top: 0; transform-origin: 0 0; font-family: "Inter", sans-serif; }
+.gx-band { position: absolute; background: repeating-linear-gradient(135deg, rgba(255,255,255,.06) 0 10px, rgba(255,255,255,0) 10px 20px); border: 2px dashed rgba(255,255,255,.18); }
+.gx-band span { position: absolute; font: 500 22px/1 "JetBrains Mono", monospace; letter-spacing: .14em; color: rgba(255,255,255,.45); padding: 10px 14px; }
+.gx-scene { position: absolute; display: flex; justify-content: center; }
+.gx-in { display: flex; flex-direction: column; align-items: center; gap: 22px; max-width: 100%; transform-origin: 50% 50%; }
+.gx-left .gx-in { align-items: flex-start; transform-origin: 0% 50%; }
+.gx-row { display: flex; align-items: center; gap: 30px; text-align: left; }
+.gx-col { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.gx-tiles { display: grid; gap: 28px; justify-content: center; }
+.gx-tile { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.gx-stack { position: relative; }
+.gx-stack > .gx-note { position: absolute; left: 0; right: 0; top: 0; display: flex; gap: 22px; align-items: center; padding: 22px 26px; }
+.gx-nicon { flex: 0 0 76px; height: 76px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font: 800 38px/1 "Inter", sans-serif; }
+.gx-ntext { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; text-align: left; }
+.gx-nhead { display: flex; justify-content: space-between; }
+.gx-ntitle { font: 700 34px/1.15 "Inter", sans-serif; }
+.gx-nbody { font: 500 31px/1.2 "Inter", sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gx-yr { display: flex; align-items: center; line-height: 1; }
+.gx-caret { display: inline-block; width: .07em; height: .8em; margin-left: .05em; }
+.gx-quote { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 .24em; text-align: center; line-height: 1.04; max-width: 100%; }
+.gx-lt { display: flex; align-items: stretch; gap: 24px; padding: 26px 44px 26px 26px; }
+/* Soft Glow theme: near-black glass with a warm glow, gradient accents, mono labels, serif italic hero text */
+.gx-gcard { position: relative; background: linear-gradient(180deg, var(--lk-bg90), var(--lk-bg82)); border: 1.5px solid rgba(255,255,255,.1); border-radius: 34px; box-shadow: 0 30px 70px rgba(0,0,0,.45), 0 0 120px var(--lk-glow20); color: var(--lk-text); padding: 36px 48px; }
+.gx-glabel { font: 500 24px/1.25 var(--lk-label), monospace; letter-spacing: .24em; text-transform: uppercase; color: var(--lk-muted); }
+.gx-in > .gx-glabel, .gx-tile .gx-glabel { color: var(--lk-text); font-weight: 700; font-size: 26px; text-shadow: 0 2px 12px rgba(0,0,0,.8); }
+.gx-gserif { font-family: var(--lk-key), Georgia, serif; font-style: italic; font-weight: 400; line-height: 1; background: var(--lk-grad); -webkit-background-clip: text; background-clip: text; color: transparent; padding: 0 .1em; }
+.gx-gsans { font-family: "Inter", sans-serif; font-weight: 600; color: var(--lk-text); letter-spacing: -.01em; line-height: 1.15; }
+.gx-gicon { position: relative; display: flex; align-items: center; justify-content: center; border-radius: 28%; background: linear-gradient(160deg, rgba(255,255,255,.1), rgba(255,255,255,.02)), var(--lk-bg); border: 1.5px solid rgba(255,255,255,.12); box-shadow: 0 20px 50px rgba(0,0,0,.45), 0 0 80px var(--lk-glow18); }
+.gx-gring { position: absolute; inset: -8px; border-radius: 30%; box-shadow: 0 0 0 3px var(--lk-g1), 0 0 44px var(--lk-g1a); }
+.gx-gcard .gx-nicon { background: var(--lk-grad); color: var(--lk-bg); }
+.gx-gcard .gx-nhead { font: 500 22px/1.2 var(--lk-label), monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--lk-muted); }
+.gx-gcard .gx-ntitle { color: var(--lk-text); } .gx-gcard .gx-nbody { color: var(--lk-muted); }
+.gx-ltbar { width: 8px; border-radius: 4px; background: var(--lk-gradv); }
+/* House theme: yellow blocks, black Inter Black, white cards */
+.gx-hblock { background: var(--hk-accent); color: var(--hk-ink); border-radius: 16px; padding: 14px 30px; font-family: "Inter", sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: -.01em; line-height: 1; }
+.gx-hcap { font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-transform: uppercase; line-height: 1.05; -webkit-text-stroke: 3px rgba(0,0,0,.85); paint-order: stroke fill; text-shadow: 0 4px 18px rgba(0,0,0,.5); }
+.gx-hcard { background: #fff; color: #0D0E0C; border-radius: 26px; box-shadow: 0 22px 50px rgba(0,0,0,.35); padding: 30px 40px; }
+.gx-hcard .gx-nicon { background: var(--hk-accent); color: var(--hk-ink); }
+.gx-hcard .gx-nhead { font: 800 22px/1.2 "Inter", sans-serif; letter-spacing: .06em; text-transform: uppercase; color: #8A877F; }
+.gx-hcard .gx-ntitle { color: #0D0E0C; } .gx-hcard .gx-nbody { color: #5F5D57; }
+.gx-hpill { background: var(--hk-accent); color: var(--hk-ink); border-radius: 10px; padding: 8px 16px; font: 900 22px/1 "Inter", sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+.gx-hrole { background: #0D0E0C; color: #fff; border-radius: 10px; padding: 10px 18px; font: 800 26px/1 "Inter", sans-serif; letter-spacing: .04em; text-transform: uppercase; }
+.gfx-note { position: absolute; left: 50%; top: 14%; transform: translateX(-50%); background: rgba(0,0,0,.6); color: #eceae2; font: 500 11px var(--f-mono); letter-spacing: .1em; text-transform: uppercase; padding: 6px 10px; border-radius: 99px; white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 
@@ -151,7 +231,7 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
     <div class="main">
 
       <section class="card" id="look">
-        <div class="card-head"><h2>Name and look <small>style</small></h2></div>
+        <div class="card-head"><h2>Name <small>style</small></h2></div>
         <div class="row">
           <label class="f" style="flex:1 1 260px"><span>Style</span><select id="styleSel"></select></label>
           <div class="row" style="align-self:end"><button class="btn small" id="dupBtn">Duplicate</button><button class="btn danger small" id="delBtn">Delete</button></div>
@@ -169,7 +249,7 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
         <div class="row"><span class="cmd">edit &lt;video name&gt;</span><span class="cmd">&lt;video name&gt;: tighter, new hook…</span><span class="cmd">approved &lt;video name&gt;</span></div>
         <div class="grid wide">
           <div class="f"><span class="lbl">Finished edits go to</span><span class="mono">OVS Claude Edit / 2 For Review / &lt;video&gt;_v1.mp4 + &lt;video&gt;_project/</span></div>
-          <div class="f"><span class="lbl">LUTs, sounds, music, fonts, logos</span><span class="mono">OVS Claude Edit / Library / LUTs · Sounds · Music · Fonts · Logos</span></div>
+          <div class="f"><span class="lbl">LUTs, sounds, music, fonts, logos, transitions</span><span class="mono">OVS Claude Edit / Library / LUTs · Sounds · Music · Fonts · Logos · Transitions</span></div>
         </div>
       </section>
 
@@ -200,6 +280,27 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
         </div>
       </section>
 
+      <section class="card" id="lookSec">
+        <div class="card-head"><h2>Look <small>graphics · cards</small></h2><button class="btn small" id="lookToPalette">Add look colours to palette</button></div>
+        <p class="hint">The ground the graphics, text cards and serif key words sit on. <b>Soft Glow</b> is the 5-Pass Reel Edit Kit look: near-black with a soft warm glow and a peach → pink → lilac gradient. Picking a look loads its colours and sets the graphics theme to match.</p>
+        <div class="grid">
+          <label class="f"><span>Look</span><select id="s_look_name"><option value="house">OVS House</option><option value="glow">Soft Glow</option></select></label>
+          <label class="f"><span>Label font</span><select id="s_look_labelFont"><option>JetBrains Mono</option><option>Google Sans Code</option><option>Geist Mono</option></select></label>
+          <label class="f"><span>Background</span><span class="cin"><input type="color" id="s_look_bg"><span class="range-val" data-for="s_look_bg" data-unit=""></span></span></label>
+          <label class="f"><span>Glow</span><span class="cin"><input type="color" id="s_look_glow"><span class="range-val" data-for="s_look_glow" data-unit=""></span></span></label>
+          <label class="f"><span>Text</span><span class="cin"><input type="color" id="s_look_text"><span class="range-val" data-for="s_look_text" data-unit=""></span></span></label>
+          <label class="f"><span>Muted text</span><span class="cin"><input type="color" id="s_look_muted"><span class="range-val" data-for="s_look_muted" data-unit=""></span></span></label>
+        </div>
+        <div class="lbl">Accent gradient</div>
+        <div class="grid">
+          <label class="f"><span>Start</span><span class="cin"><input type="color" id="s_look_gradient_0"><span class="range-val" data-for="s_look_gradient_0" data-unit=""></span></span></label>
+          <label class="f"><span>Middle</span><span class="cin"><input type="color" id="s_look_gradient_1"><span class="range-val" data-for="s_look_gradient_1" data-unit=""></span></span></label>
+          <label class="f"><span>End</span><span class="cin"><input type="color" id="s_look_gradient_2"><span class="range-val" data-for="s_look_gradient_2" data-unit=""></span></span></label>
+        </div>
+        <div class="gradbar" id="gradBar"></div>
+        <div class="look-prev" id="lookPrev"></div>
+      </section>
+
       <section class="card" id="grade">
         <div class="card-head"><h2>Grade <small>lut</small></h2></div>
         <p class="hint">S-Log3 → Rec709 is built in. Load your FOCL or other .cube files from your computer to preview them here. To use one in a delivered edit, drop the same file into Drive: Library / LUTs.</p>
@@ -214,7 +315,7 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
         <div class="card-head"><h2>Captions <small>talking head</small></h2><label class="switch"><input type="checkbox" id="s_captions_on"> On</label></div>
         <div class="grid">
           <label class="f"><span>Font</span><select id="s_captions_font"><option>Inter</option><option>Archivo</option><option>Montserrat</option><option>Anton</option><option>Geist</option></select></label>
-          <label class="f"><span>Weight</span><select id="s_captions_weight"><option value="700">Bold</option><option value="800">Extra bold</option><option value="900">Black</option></select></label>
+          <label class="f"><span>Weight</span><select id="s_captions_weight"><option value="500">Medium</option><option value="600">Semibold</option><option value="700">Bold</option><option value="800">Extra bold</option><option value="900">Black</option></select></label>
           <label class="f"><span>Size</span><input type="range" id="s_captions_size" min="2" max="8" step="0.1"><span class="range-val" data-for="s_captions_size" data-unit="% of height"></span></label>
           <label class="f"><span>Letter spacing</span><input type="range" id="s_captions_spacing" min="-8" max="10" step="0.5"><span class="range-val" data-for="s_captions_spacing" data-unit=""></span></label>
           <label class="f"><span>Across</span><input type="range" id="s_captions_x" min="20" max="80" step="1"><span class="range-val" data-for="s_captions_x" data-unit="%"></span></label>
@@ -222,12 +323,15 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
           <label class="f"><span>Words per caption</span><select id="s_captions_words"><option value="1">1</option><option value="2">1–2</option><option value="3">Up to 3</option><option value="5">Up to 5</option></select></label>
           <label class="f"><span>Case</span><select id="s_captions_case"><option value="upper">UPPERCASE</option><option value="lower">lowercase</option><option value="none">As spoken</option></select></label>
           <label class="f"><span>Colour</span><select id="s_captions_color" data-palette></select></label>
-          <label class="f"><span>Key words</span><select id="s_captions_keyStyle"><option value="block">Accent block</option><option value="colour">Accent colour</option><option value="none">Plain</option></select></label>
-          <label class="f"><span>Accent</span><select id="s_captions_accent" data-palette></select></label>
+          <label class="f"><span>Key words</span><select id="s_captions_keyStyle"><option value="block">Accent block</option><option value="colour">Accent colour</option><option value="serif">Serif italic (big key word)</option><option value="none">Plain</option></select></label>
+          <label class="f" data-show="serif"><span>Key font</span><select id="s_captions_keyFont"><option>Instrument Serif</option><option>Playfair Display</option><option>DM Serif Display</option></select></label>
+          <label class="f" data-show="serif"><span>Key word size</span><input type="range" id="s_captions_keyScale" min="1.2" max="2.4" step="0.05"><span class="range-val" data-for="s_captions_keyScale" data-unit="× caption size"></span></label>
+          <label class="f" data-show="accent"><span>Accent</span><select id="s_captions_accent" data-palette></select></label>
           <label class="f"><span>Outline</span><select id="s_captions_outline"><option value="0">None</option><option value="2">Thin</option><option value="4">Medium</option></select></label>
           <label class="f"><span>Shadow</span><select id="s_captions_shadow"><option value="none">None</option><option value="soft">Soft</option><option value="hard">Hard</option></select></label>
           <label class="f"><span>Pop in</span><select id="s_captions_anim"><option value="pop">Pop (0.14s)</option><option value="blur">Blur in</option><option value="none">Cut on</option></select></label>
         </div>
+        <p class="hint" data-show="serif">Serif italic: one key word a line, set in the key font, italic and bigger, filled with the Look gradient. The support words stay in the caption font. Max 3 words on screen, never over the face.</p>
         <label class="switch"><input type="checkbox" id="s_hook_on"> Hook title in the first 2s: the first spoken line, big, resolving from a blur</label>
       </section>
 
@@ -253,8 +357,8 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
           <label class="f"><span>Text on A</span><select id="s_cards_inkA" data-palette></select></label>
           <label class="f"><span>Colour B</span><select id="s_cards_bgB" data-palette></select></label>
           <label class="f"><span>Text on B</span><select id="s_cards_inkB" data-palette></select></label>
-          <label class="f"><span>Font</span><select id="s_cards_font"><option value="same">Same as captions</option><option>Archivo</option><option>Inter</option><option>Montserrat</option><option>Anton</option></select></label>
-          <label class="f"><span>Weight</span><select id="s_cards_weight"><option value="700">Bold</option><option value="800">Extra bold</option><option value="900">Black</option></select></label>
+          <label class="f"><span>Font</span><select id="s_cards_font"><option value="same">Same as captions</option><option>Archivo</option><option>Inter</option><option>Montserrat</option><option>Anton</option><option>Instrument Serif</option><option>Playfair Display</option><option>DM Serif Display</option></select></label>
+          <label class="f"><span>Weight</span><select id="s_cards_weight"><option value="400">Regular</option><option value="700">Bold</option><option value="800">Extra bold</option><option value="900">Black</option></select></label>
           <label class="f"><span>Size</span><input type="range" id="s_cards_size" min="3" max="12" step="0.1"><span class="range-val" data-for="s_cards_size" data-unit="% of height"></span></label>
           <label class="f"><span>Letter spacing</span><input type="range" id="s_cards_spacing" min="-8" max="6" step="0.5"><span class="range-val" data-for="s_cards_spacing" data-unit=""></span></label>
           <label class="f"><span>Align</span><select id="s_cards_align"><option value="center">Centre</option><option value="left">Left</option></select></label>
@@ -266,40 +370,72 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
           <label class="f"><span>Case</span><select id="s_cards_case"><option value="lower">lowercase</option><option value="upper">UPPERCASE</option><option value="none">As spoken</option></select></label>
           <label class="f"><span>Punctuation</span><select id="s_cards_punct"><option value="hide">Hide</option><option value="keep">Keep</option></select></label>
         </div>
+        <label class="switch"><input type="checkbox" id="s_cards_italic"> Italic (for the serif fonts)</label>
         <div class="lbl">Rules</div>
         <ol class="rules" id="cardsRules"></ol>
         <button class="btn small ghost" data-add-rule="cards" style="justify-self:start">+ Add a rule</button>
       </section>
 
+      <section class="card" id="motion">
+        <div class="card-head"><h2>Motion graphics <small>scenes</small></h2><label class="switch"><input type="checkbox" id="s_motion_on"> On</label></div>
+        <p class="hint">Graphics Claude builds in HTML for a line that needs showing: a number counting up, app tiles tapped one by one, a notification stack, a source card typing its year, a big quote, a logo, typed text, a name title. Each one is planned (trigger word, time, what appears, why), fires on its word and sits above the speaker or behind them in the cutout.</p>
+        <div class="grid">
+          <label class="f"><span>Theme</span><select id="s_motion_theme"><option value="house">OVS House</option><option value="glow">Soft Glow</option></select></label>
+          <label class="f"><span>Fast in</span><input type="range" id="s_motion_inSec" min="0.15" max="0.6" step="0.05"><span class="range-val" data-for="s_motion_inSec" data-unit="s"></span></label>
+          <label class="f"><span>Clean out</span><input type="range" id="s_motion_outSec" min="0.1" max="0.6" step="0.05"><span class="range-val" data-for="s_motion_outSec" data-unit="s"></span></label>
+          <label class="f"><span>Shortest hold</span><input type="range" id="s_motion_holdMinSec" min="0.6" max="3" step="0.1"><span class="range-val" data-for="s_motion_holdMinSec" data-unit="s"></span></label>
+          <label class="f"><span>Max push-in</span><input type="range" id="s_motion_pushMaxPct" min="0" max="12" step="1"><span class="range-val" data-for="s_motion_pushMaxPct" data-unit="%"></span></label>
+        </div>
+        <div class="lbl">Graphics Claude may use</div>
+        <div class="chips" id="motionKinds" role="group" aria-label="Allowed graphics"></div>
+        <div class="lbl">Rules</div>
+        <ol class="rules" id="motionRules"></ol>
+        <div class="row"><button class="btn small ghost" data-add-rule="motion">+ Add a rule</button><button class="btn small" id="gfxPreviewBtn">Preview on the monitor</button></div>
+      </section>
+
       <section class="card" id="transitions">
         <div class="card-head"><h2>Transitions <small>every cut</small></h2><label class="switch"><input type="checkbox" id="s_transitions_on"> On</label></div>
-        <p class="hint">Pick a look and where it goes, then load its sound and line up the loudest point with the cut. Hard cuts stay the default wherever no transition is set.</p>
+        <p class="hint">Pick a look and where it goes, then load its sound and line up the loudest point with the cut. Hard cuts stay the default wherever no transition is set. <b>Overlay file</b> lays a clip (light leak, film burn, flash) over the cut: load it here to preview, and put the same file in Drive: Library / Transitions. Already there: flash-soft, light-leak-warm, light-leak-lilac, film-burn, whip-streak (.webm).</p>
         <div id="trList" style="display:grid;gap:10px"></div>
         <button class="btn small" id="addTr" style="justify-self:start">+ Add a transition</button>
       </section>
 
       <section class="card" id="audio">
         <div class="card-head"><h2>Audio <small>voice · music · sfx</small></h2></div>
-        <div class="grid">
-          <label class="f"><span>Voice peaks</span><input type="range" id="s_audio_voicePeak" min="-12" max="-1" step="0.5"><span class="range-val" data-for="s_audio_voicePeak" data-unit=" dBFS"></span></label>
-          <label class="f"><span>Music under voice</span><input type="range" id="s_audio_musicLevel" min="-30" max="-10" step="1"><span class="range-val" data-for="s_audio_musicLevel" data-unit=" dB"></span></label>
-          <label class="f"><span>Music low-pass under speech</span><select id="s_audio_lowpass"><option value="off">Off</option><option value="on">On</option></select></label>
+        <div class="grid wide">
+          <label class="f"><span>Voice peak ceiling (at −14 LUFS)</span><input type="range" id="s_audio_voicePeak" min="-6" max="-1" step="0.5"><span class="range-val" data-for="s_audio_voicePeak" data-unit=" dBTP"></span></label>
           <label class="f"><span>Voice clean-up</span><select id="s_audio_voiceClean"><option value="off">Off</option><option value="light">Light: rumble cut, light denoise</option><option value="strong">Strong: + de-ess, firmer compression</option></select></label>
+          <label class="f"><span>Sound effects</span><select id="s_audio_sfxPalette"><option value="house">House: whoosh + pop</option><option value="kit">Kit: hit, tap, whoosh, chime</option></select></label>
         </div>
-        <div class="row"><label class="switch"><input type="checkbox" id="s_audio_whoosh"> Whoosh on whips and punch-ins</label><label class="switch"><input type="checkbox" id="s_audio_pop"> Pop on key words</label></div>
-        <div class="lbl">Music track</div>
-        <p class="hint">Licensed tracks only. Load tracks from your computer to try them under your clip; the chosen track's file goes in Drive: Library / Music.</p>
-        <div class="tracks" id="tracks"></div>
-        <div class="row"><label class="btn small" for="musicFile">Load tracks</label><input type="file" id="musicFile" accept="audio/*" multiple hidden></div>
+        <div class="row" data-show="house-sfx"><label class="switch"><input type="checkbox" id="s_audio_whoosh"> Whoosh on whips and punch-ins</label><label class="switch"><input type="checkbox" id="s_audio_pop"> Pop on key words</label></div>
+        <p class="hint" data-show="kit-sfx">Kit palette: a hit on the hook, a tap on each list item or notification, a whoosh on every scene change and a chime to close. Voice always on top.</p>
+        <div class="row"><button class="btn small" id="hearPalette">Hear the palette</button><span class="mono">A quick sketch of the sounds; the edit uses the real files.</span></div>
+        <div class="sub">
+          <div class="lbl">Background music</div>
+          <p class="hint">Licensed tracks only. Load tracks from your computer to try them under your clip; the chosen track's file goes in Drive: Library / Music. With the clip's sound on, the music dips while you talk.</p>
+          <div class="tracks" id="tracks"></div>
+          <div class="row"><label class="btn small" for="musicFile">Load tracks</label><input type="file" id="musicFile" accept="audio/*" multiple hidden><span class="duck" id="duckInfo"></span></div>
+          <div class="grid">
+            <label class="f"><span>Music level</span><input type="range" id="s_audio_musicLevel" min="-30" max="-10" step="1"><span class="range-val" data-for="s_audio_musicLevel" data-unit=" dB"></span></label>
+            <label class="f"><span>Duck amount</span><input type="range" id="s_audio_duckDb" min="0" max="18" step="1"><span class="range-val" data-for="s_audio_duckDb" data-unit=" dB under speech"></span></label>
+            <label class="f"><span>Fade in</span><input type="range" id="s_audio_fadeIn" min="0" max="4" step="0.1"><span class="range-val" data-for="s_audio_fadeIn" data-unit="s"></span></label>
+            <label class="f"><span>Fade out</span><input type="range" id="s_audio_fadeOut" min="0" max="6" step="0.1"><span class="range-val" data-for="s_audio_fadeOut" data-unit="s"></span></label>
+            <label class="f"><span>Start the track at</span><input type="number" id="s_audio_musicStart" min="0" max="900" step="0.5"></label>
+            <label class="f"><span>Low-pass under speech</span><select id="s_audio_lowpass"><option value="off">Off</option><option value="on">On</option></select></label>
+          </div>
+          <label class="switch"><input type="checkbox" id="s_audio_duck"> Duck under voice: dip the music while someone speaks</label>
+        </div>
       </section>
     </div>
 
     <aside class="side">
       <div class="monitor">
-        <div class="stage-wrap"><div class="stage" id="stage">
+        <div class="stage-wrap"><div class="stage" id="stage" data-scene="head">
           <canvas id="glc"></canvas>
-          <video id="vid" class="fallback" playsinline preload="auto"></video>
+          <video id="vid" class="fallback" playsinline preload="auto" muted></video>
           <div class="ov" id="scenes"></div>
+          <video id="trOv" class="trov" muted playsinline preload="auto"></video>
+          <div id="trStand" class="trov"></div>
           <div class="ov" id="safeOv"><div class="safe" id="safeBox"></div></div>
           <div class="flash" id="flash"></div>
           <div class="empty-stage" id="emptyStage"><div><b>Load a clip</b>Pick any video on this computer. It plays here with your grade, captions and transitions. Nothing is uploaded.</div></div>
@@ -316,8 +452,9 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
         <div class="mono" id="clipInfo">No clip loaded. Captions show sample words until you load the transcript.json from a project folder.</div>
         <div class="tabs" role="group" aria-label="Preview scene">
           <button data-scene="head" aria-pressed="true">Talking head</button>
-          <button data-scene="broll" aria-pressed="false">B-roll scene</button>
-          <button data-scene="card" aria-pressed="false">Text scene</button>
+          <button data-scene="broll" aria-pressed="false">B-roll</button>
+          <button data-scene="card" aria-pressed="false">Text card</button>
+          <button data-scene="gfx" aria-pressed="false">Graphics</button>
           <button data-scene="trans" aria-pressed="false">Transitions</button>
         </div>
       </div>
@@ -335,12 +472,22 @@ input[type=range] { width: 100%; accent-color: var(--accent); }
   </div>
 </div>
 <div class="toast" id="toast" hidden></div>
+<datalist id="ovNames"><option value="flash-soft.webm"><option value="light-leak-warm.webm"><option value="light-leak-lilac.webm"><option value="film-burn.webm"><option value="whip-streak.webm"></datalist>
 
 <script>
 (() => {
 "use strict";
 const $ = (id) => document.getElementById(id);
 const clone = (o) => JSON.parse(JSON.stringify(o));
+const isObj = (v) => !!v && typeof v === "object" && !Array.isArray(v);
+/* over merged into base: objects key by key (so new default keys survive in old saved styles), arrays and values replaced */
+function deepMerge(base, over) {
+  if (!isObj(over)) return over === undefined ? base : over;
+  const out = isObj(base) ? Object.assign({}, base) : {};
+  Object.keys(over).forEach((k) => { out[k] = isObj(over[k]) && isObj(out[k]) ? deepMerge(out[k], over[k]) : over[k]; });
+  return out;
+}
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 
 /* ---------------- styles ---------------- */
 const BROLL_RULES = [
@@ -356,18 +503,46 @@ const CARD_RULES = [
   "Caption it like my normal captions: one line, a few words at a time. Never more than one line on screen.",
   "Alternate the two card colours (A then B)."
 ];
+const MOTION_RULES = [
+  "One idea on screen at a time.",
+  "Each graphic fires on its trigger word: fast in, hold, clean out.",
+  "Graphics never cover the speaker's face; put big words behind the speaker.",
+  "Only add a graphic when it shows what is said or drives the point home."
+];
+const KINDS = { stat: "Number counts up", list: "List tiles", notifications: "Notification stack", source: "Source card", quote: "Big quote", logo: "Logo", typed: "Typed text", lowerthird: "Name title" };
+const LOOK_DEFAULTS = {
+  house: { name: "house", bg: "#0D0E0C", glow: "#FFD400", gradient: ["#FFD400", "#FFD400", "#FFD400"], text: "#FFFFFF", muted: "#A9A79E", labelFont: "JetBrains Mono" },
+  glow: { name: "glow", bg: "#09090A", glow: "#FFDCCB", gradient: ["#FFDCCB", "#F6BDD8", "#C9B9FF"], text: "#F5F5F4", muted: "#A3A3AB", labelFont: "JetBrains Mono" }
+};
 const BASE = {
   name: "OVS House", madeBy: "Justin", purpose: "One Vox Studio talking-head reels: hook on frame 1, jump cuts on every breath, bold captions with yellow key words.",
   reel: { size: "9x16", safe: 11, focus: 50, alsoWide: false, perSpeaker: true },
   palette: [ { name: "Key yellow", hex: "#FFD400" }, { name: "Ink", hex: "#0D0E0C" }, { name: "Caption white", hex: "#FFFFFF" }, { name: "Cream paper", hex: "#EFEAE0" }, { name: "Olive brown", hex: "#303423" } ],
+  look: clone(LOOK_DEFAULTS.house),
   grade: { lut: "none", strength: 100 },
-  captions: { on: true, font: "Inter", weight: "900", size: 4.0, spacing: 1, x: 50, y: 62, words: "3", case: "upper", color: "#FFFFFF", keyStyle: "block", accent: "#FFD400", outline: "2", shadow: "soft", anim: "pop" },
+  captions: { on: true, font: "Inter", weight: "900", size: 4.0, spacing: 1, x: 50, y: 62, words: "3", case: "upper", color: "#FFFFFF", keyStyle: "block", keyFont: "Instrument Serif", keyScale: 1.7, accent: "#FFD400", outline: "2", shadow: "soft", anim: "pop" },
   hook: { on: true },
   broll: { on: true, push: 1.5, minShot: 2.5, library: "ovs", rules: BROLL_RULES.slice() },
-  cards: { on: true, bg: "alternate", bgA: "#EFEAE0", inkA: "#0D0E0C", bgB: "#303423", inkB: "#EFEAE0", font: "same", weight: "800", size: 5.4, spacing: -5.5, align: "center", x: 50, y: 50, shows: "line", words: "2", maxLetters: 13, case: "lower", punct: "hide", rules: CARD_RULES.slice() },
+  cards: { on: true, bg: "alternate", bgA: "#EFEAE0", inkA: "#0D0E0C", bgB: "#303423", inkB: "#EFEAE0", font: "same", italic: false, weight: "800", size: 5.4, spacing: -5.5, align: "center", x: 50, y: 50, shows: "line", words: "2", maxLetters: 13, case: "lower", punct: "hide", rules: CARD_RULES.slice() },
+  motion: { on: true, theme: "house", inSec: 0.3, outSec: 0.25, holdMinSec: 1.2, pushMaxPct: 6, kinds: Object.keys(KINDS), rules: MOTION_RULES.slice() },
   transitions: { on: true, list: [ { name: "Flash", look: "flash2", where: "broll", frames: 2, strength: 58, sound: "", landsMs: 0, level: -12 } ] },
-  audio: { voicePeak: -6, musicLevel: -20, lowpass: "off", voiceClean: "light", whoosh: true, pop: false, track: "" }
+  audio: { voicePeak: -1.5, musicLevel: -20, lowpass: "off", voiceClean: "light", whoosh: true, pop: false, track: "", duck: true, duckDb: 8, fadeIn: 0.5, fadeOut: 1.5, musicStart: 0, sfxPalette: "house" }
 };
+/* Soft Glow: the Reel Style Rules from Zeeshan's 5-Pass Reel Edit Kit (same values as style.json -> looks.glow) */
+const GLOW = deepMerge(clone(BASE), {
+  name: "Soft Glow", madeBy: "Justin",
+  purpose: "The 5-Pass Reel Edit Kit look: near-black with a soft warm glow, one key word a line in a big serif italic gradient, small clean sans support words, mono labels. Text behind the speaker (cutout) for the hook and big words. One idea on screen at a time, each graphic fired on its word. Kit sounds: hit on the hook, tap on clicks, whoosh on scene changes, chime to close.",
+  look: clone(LOOK_DEFAULTS.glow),
+  palette: [ { name: "Near black", hex: "#09090A" }, { name: "Peach", hex: "#FFDCCB" }, { name: "Pink", hex: "#F6BDD8" }, { name: "Lilac", hex: "#C9B9FF" }, { name: "Text", hex: "#F5F5F4" }, { name: "Muted", hex: "#A3A3AB" } ],
+  captions: { on: true, font: "Inter", weight: "600", size: 3.4, spacing: 0, x: 50, y: 62, words: "3", case: "none", color: "#F5F5F4", keyStyle: "serif", keyFont: "Instrument Serif", keyScale: 1.7, accent: "#F6BDD8", outline: "0", shadow: "soft", anim: "pop" },
+  hook: { on: true },
+  cards: { on: true, bg: "flat", bgA: "#09090A", inkA: "#F5F5F4", bgB: "#09090A", inkB: "#F5F5F4", font: "Instrument Serif", italic: true, weight: "400", size: 7.2, spacing: -1, align: "center", x: 50, y: 50, shows: "line", words: "2", maxLetters: 13, case: "none", punct: "hide",
+    rules: [ "Only cut to text for a line that lands: a claim, the lesson, a punchline or a number.", "Near-black with a soft warm glow; the line in the serif italic, its key word in the gradient.", "One line, a few words at a time; max 3 words on screen." ] },
+  motion: { on: true, theme: "glow", inSec: 0.3, outSec: 0.25, holdMinSec: 1.2, pushMaxPct: 6, kinds: Object.keys(KINDS),
+    rules: MOTION_RULES.concat([ "Max 3 words and 2 fonts on screen; no white sticker outline, no emoji, no rainbow colours.", "Plan one scene per idea (trigger word, time, what appears, why) before building." ]) },
+  transitions: { on: true, list: [ { name: "Light leak + whoosh", look: "overlay", where: "scenes", frames: 24, strength: 100, sound: "whoosh.wav", landsMs: 120, level: -14, file: "light-leak-warm.webm", markFrame: 11, blend: "screen" } ] },
+  audio: { voicePeak: -1.5, musicLevel: -20, lowpass: "off", voiceClean: "light", whoosh: true, pop: false, track: "", duck: true, duckDb: 8, fadeIn: 0.5, fadeOut: 1.5, musicStart: 0, sfxPalette: "kit" }
+});
 const PRESETS = {
   "preset:ovs": BASE,
   "preset:mudex": Object.assign(clone(BASE), { name: "Mudex Clean", purpose: "Clean, professional client pieces: S-Log3 converted, Inter Black captions, the event logo behind the subjects, hard cuts only.",
@@ -378,11 +553,22 @@ const PRESETS = {
     reel: { size: "4x3", safe: 6, focus: 50, alsoWide: false, perSpeaker: false },
     captions: Object.assign(clone(BASE.captions), { font: "Inter", weight: "800", case: "lower", x: 30, y: 72, keyStyle: "none", outline: "0", words: "2" }), hook: { on: false } }),
   "preset:iphone": Object.assign(clone(BASE), { name: "iPhone Style", purpose: "Hook title on top, bold centred captions, pure talking head.",
-    broll: Object.assign(clone(BASE.broll), { on: false }), cards: Object.assign(clone(BASE.cards), { on: false }), transitions: { on: false, list: [] } })
+    broll: Object.assign(clone(BASE.broll), { on: false }), cards: Object.assign(clone(BASE.cards), { on: false }), transitions: { on: false, list: [] } }),
+  "preset:glow": GLOW
 };
 const SIZES = { "9x16": [1080, 1920], "4x5": [1080, 1350], "1x1": [1080, 1080], "4x3": [1440, 1080], "16x9": [1920, 1080] };
-const LOOKS = { cut: "Hard cut", flash2: "2-frame flash", whiteflash: "Flash to white", punch: "Punch-in 1.00 → 1.12", whip: "Whip pan", zoomblur: "Zoom blur (accent)" };
-const WHERE = { every: "Every cut", broll: "Into and out of b-roll", cards: "Into and out of text cards", speaker: "When the speaker changes" };
+const LOOKS = { cut: "Hard cut", flash2: "2-frame flash", whiteflash: "Flash to white", punch: "Punch-in 1.00 → 1.12", whip: "Whip pan", zoomblur: "Zoom blur (accent)", overlay: "Overlay file (light leak, burn…)" };
+const WHERE = { every: "Every cut", broll: "Into and out of b-roll", cards: "Into and out of text cards", speaker: "When the speaker changes", scenes: "On each graphic (scenes)" };
+/* the starter overlays in Drive Library/Transitions (scripts/make_overlays.py) and their sidecar <name>.json */
+const OVERLAYS = {
+  "flash-soft.webm": { markFrame: 5, blend: "screen", frames: 12 },
+  "light-leak-warm.webm": { markFrame: 11, blend: "screen", frames: 24 },
+  "light-leak-lilac.webm": { markFrame: 11, blend: "screen", frames: 24 },
+  "film-burn.webm": { markFrame: 9, blend: "screen", frames: 20 },
+  "whip-streak.webm": { markFrame: 4, blend: "screen", frames: 10 }
+};
+const BUILTIN_SFX = ["whoosh.wav", "pop.wav", "hit.wav", "tap.wav", "chime.wav"];  // templates/ovs-vertical/assets/sfx
+const SERIFS = ["Instrument Serif", "Playfair Display", "DM Serif Display"];
 
 let mine = {};           // id -> saved style (db or local)
 let activeId = "preset:ovs";
@@ -422,9 +608,20 @@ function loadStyle(id) {
   const src = mine[id] || PRESETS[id];
   if (!src) { id = "preset:ovs"; }
   activeId = mine[id] || PRESETS[id] ? id : "preset:ovs";
-  S = Object.assign(clone(BASE), clone(mine[activeId] || PRESETS[activeId]));
+  S = normalise(deepMerge(clone(BASE), clone(mine[activeId] || PRESETS[activeId])));
   renderAll();
   dirty = false;
+}
+
+/* shapes the page relies on, whatever an old or hand-edited style says */
+function normalise(st) {
+  Object.keys(BASE).forEach((k) => { if (isObj(BASE[k]) && !isObj(st[k])) st[k] = clone(BASE[k]); });
+  if (!Array.isArray(st.palette)) st.palette = clone(BASE.palette);
+  if (!Array.isArray(st.look.gradient) || st.look.gradient.length < 3) st.look.gradient = clone(LOOK_DEFAULTS[st.look.name] || LOOK_DEFAULTS.house).gradient;
+  if (!Array.isArray(st.motion.kinds)) st.motion.kinds = Object.keys(KINDS);
+  ["broll", "cards", "motion"].forEach((k) => { if (!Array.isArray(st[k].rules)) st[k].rules = []; });
+  if (!Array.isArray(st.transitions.list)) st.transitions.list = [];
+  return st;
 }
 
 async function save() {
@@ -456,14 +653,22 @@ function setP(p, v) { let o = S; p.slice(0, -1).forEach((k) => { o[k] = o[k] || 
 function bindFields() {
   document.querySelectorAll("[id^=s_]").forEach((el) => {
     const p = path(el.id);
-    const ev = el.type === "range" || el.type === "text" || el.tagName === "TEXTAREA" || el.type === "number" ? "input" : "change";
+    const ev = el.type === "range" || el.type === "text" || el.tagName === "TEXTAREA" || el.type === "number" || el.type === "color" ? "input" : "change";
     el.addEventListener(ev, () => {
       let v = el.type === "checkbox" ? el.checked : el.value;
-      if (el.type === "range" || el.type === "number") v = parseFloat(v);
+      if (el.type === "range" || el.type === "number") { v = parseFloat(v); if (isNaN(v)) v = 0; }
+      if (el.type === "color") v = v.toUpperCase();
       setP(p, v); dirty = true; status("Unsaved changes");
-      updateRangeVals(); if (p[0] === "palette") renderPalette();
+      if (el.id === "s_look_name") {  // a look brings its colours, and the graphics theme follows it
+        S.look = Object.assign(clone(LOOK_DEFAULTS[v] || LOOK_DEFAULTS.house), { labelFont: S.look.labelFont || "JetBrains Mono" });
+        S.motion.theme = v; fillFields();
+      }
+      updateRangeVals(); syncUI(); if (p[0] === "palette") renderPalette();
       if (el.id === "s_grade_lut") setLut(v);
       if (el.id === "s_name") renderStyleSel();
+      if (el.tagName === "TEXTAREA") fitAreas();
+      if (p[0] === "motion") gfxStart = performance.now();
+      if (p[0] === "audio") syncMusic();
       layoutStage();
     });
   });
@@ -473,12 +678,46 @@ function fillFields() {
   document.querySelectorAll("[id^=s_]").forEach((el) => {
     const v = getP(path(el.id));
     if (v === undefined) return;
-    if (el.type === "checkbox") el.checked = !!v; else el.value = v;
+    if (el.type === "checkbox") el.checked = !!v; else if (el.type === "color") el.value = toHex6(v); else el.value = v;
   });
-  updateRangeVals();
+  updateRangeVals(); syncUI(); renderKinds(); requestAnimationFrame(fitAreas);
 }
+function fitAreas() { document.querySelectorAll("textarea[id^=s_]").forEach((ta) => { ta.style.height = "auto"; ta.style.height = ta.scrollHeight + 2 + "px"; }); }
 function updateRangeVals() {
-  document.querySelectorAll(".range-val").forEach((s) => { const el = $(s.dataset.for); s.textContent = el.value + s.dataset.unit; });
+  document.querySelectorAll(".range-val").forEach((s) => { const el = $(s.dataset.for); s.textContent = (el.type === "color" ? el.value.toUpperCase() : el.value) + s.dataset.unit; });
+}
+/* controls that only matter for some settings */
+function syncUI() {
+  const show = { serif: S.captions.keyStyle === "serif", accent: S.captions.keyStyle === "block" || S.captions.keyStyle === "colour",
+                 "house-sfx": S.audio.sfxPalette !== "kit", "kit-sfx": S.audio.sfxPalette === "kit" };
+  document.querySelectorAll("[data-show]").forEach((el) => { el.hidden = !show[el.dataset.show]; });
+}
+function renderKinds() {
+  const box = $("motionKinds"); box.innerHTML = "";
+  Object.entries(KINDS).forEach(([k, label]) => {
+    const b = document.createElement("button"); b.type = "button"; b.textContent = label;
+    b.setAttribute("aria-pressed", String(S.motion.kinds.includes(k)));
+    b.addEventListener("click", () => {
+      const on = !S.motion.kinds.includes(k);
+      S.motion.kinds = Object.keys(KINDS).filter((x) => x === k ? on : S.motion.kinds.includes(x));
+      b.setAttribute("aria-pressed", String(on)); gfxStart = performance.now(); changed();
+    });
+    box.append(b);
+  });
+}
+/* the look's gradient as CSS, and its colours with alpha */
+function lookGrad(deg = 100) { const g = S.look.gradient; return `linear-gradient(${deg}deg, ${g[0]} 0%, ${g[1]} 50%, ${g[2]} 100%)`; }
+function rgba(hex, a) { const c = toHex6(hex); return `rgba(${parseInt(c.slice(1, 3), 16)}, ${parseInt(c.slice(3, 5), 16)}, ${parseInt(c.slice(5, 7), 16)}, ${a})`; }
+function glowBg(bg) { return `radial-gradient(70% 48% at 50% 34%, ${rgba(S.look.glow, 0.26)}, ${rgba(S.look.glow, 0.07)} 55%, ${rgba(S.look.glow, 0)} 78%), ${bg}`; }
+function renderLookPrev() {
+  const Lk = S.look; const glow = Lk.name === "glow";
+  $("gradBar").style.background = lookGrad(90);
+  const lp = $("lookPrev");
+  lp.style.background = glow ? glowBg(Lk.bg) : Lk.bg;
+  const key = `<span class="lp-key" style="font-family:'${S.captions.keyFont}',Georgia,serif;background-image:${lookGrad()}">easy</span>`;
+  const house = `<span style="background:${Lk.glow};color:${inkFor(Lk.glow)};padding:.06em .2em;border-radius:.12em;font-weight:900;text-transform:uppercase">easy</span>`;
+  lp.innerHTML = `<div><div class="lp-line" style="color:${Lk.text}">what we do is the ${glow ? key : house} part</div>
+    <div class="lp-lab" style="font-family:'${Lk.labelFont}',monospace;color:${Lk.muted}">Source · Harvard Medical School · 2023</div></div>`;
 }
 
 function renderStyleSel() {
@@ -540,72 +779,213 @@ function renderRules(key) {
 }
 
 /* ---------------- transitions ---------------- */
-const trAudio = {};   // index -> {buffer, name}
+/* sounds and overlay clips loaded on this computer, by file name, so every style naming the file can use them */
+const soundCache = {};    // name -> {buffer, peakMs}
+const overlayCache = {};  // name -> {url, frames, thumbs: [canvas]}
+function peakMs(buf) { const ch = buf.getChannelData(0); let pk = 0, pi = 0; for (let j = 0; j < ch.length; j++) { const v = Math.abs(ch[j]); if (v > pk) { pk = v; pi = j; } } return pi / buf.sampleRate * 1000; }
+function soundFor(t) {
+  const n = t && t.sound; if (!n) return null;
+  if (!soundCache[n] && BUILTIN_SFX.includes(n)) { try { const buf = synthSfx(n.replace(/\.wav$/, "")); soundCache[n] = { buffer: buf, peakMs: peakMs(buf), sketch: true }; } catch (e) { return null; } }
+  return soundCache[n] || null;
+}
+function applyOverlayDefaults(t) {
+  const d = OVERLAYS[t.file] || {}; const c = overlayCache[t.file];
+  t.frames = c ? c.frames : d.frames || t.frames || 24;
+  t.markFrame = Math.min(t.frames - 1, d.markFrame ?? Math.floor(t.frames / 2));
+  t.blend = d.blend || t.blend || "screen";
+}
 function renderTransitions() {
   const box = $("trList"); box.innerHTML = "";
   S.transitions.list.forEach((t, i) => {
     const d = document.createElement("div"); d.className = "tr";
+    const ov = t.look === "overlay";
     d.innerHTML = `<div class="grid">
         <label class="f"><span>Name</span><input type="text" data-k="name"></label>
         <label class="f"><span>Look</span><select data-k="look">${Object.entries(LOOKS).map(([k, v]) => `<option value="${k}">${v}</option>`).join("")}</select></label>
         <label class="f"><span>Where</span><select data-k="where">${Object.entries(WHERE).map(([k, v]) => `<option value="${k}">${v}</option>`).join("")}</select></label>
-        <label class="f"><span>Frames</span><input type="number" min="1" max="30" data-k="frames"></label>
-        <label class="f"><span>Strength %</span><input type="number" min="0" max="100" data-k="strength"></label>
+        <label class="f"><span>${ov ? "Overlay length (frames)" : "Frames"}</span><input type="number" min="1" max="${ov ? 240 : 30}" data-k="frames"></label>
+        <label class="f"><span>${ov ? "Overlay opacity %" : "Strength %"}</span><input type="number" min="0" max="100" data-k="strength"></label>
         <label class="f"><span>Sound level dB</span><input type="number" min="-40" max="0" data-k="level"></label>
       </div>
+      ${ov ? `<div class="ovl">
+        <div class="grid wide">
+          <label class="f"><span>Overlay file</span><input type="text" data-k="file" list="ovNames" placeholder="light-leak-warm.webm" spellcheck="false"></label>
+          <label class="f"><span>Blend</span><select data-k="blend"><option value="screen">Screen: only the light shows</option><option value="lighten">Lighten</option><option value="normal">Normal: the file's own alpha</option></select></label>
+        </div>
+        <div class="lbl">Mark frame: the overlay frame that lands on the cut</div>
+        <canvas class="fstrip" width="800" height="72" aria-label="Overlay frames; click to set the mark frame"></canvas>
+        <input type="range" min="0" max="23" step="1" aria-label="Mark frame" data-mark>
+        <div class="mono" data-ovinfo></div>
+        <div class="row"><label class="btn small">Load overlay<input type="file" accept="video/*,.webm,.mov,.mp4" hidden data-ovfile></label>
+          <button class="btn small" type="button" data-preview>Preview on clip</button></div>
+      </div>` : ""}
       <div class="lbl">Sound</div>
       <canvas class="wave" width="800" height="64"></canvas>
       <input type="range" min="0" max="1000" value="0" aria-label="Where the sound lands on the cut" data-land>
       <div class="mono" data-info>No sound loaded.</div>
       <div class="row"><label class="btn small">Load sound<input type="file" accept="audio/*" hidden data-file></label>
+        <select data-builtin aria-label="Built-in sound" class="btn small" style="width:auto"><option value="">Built-in sound…</option>${BUILTIN_SFX.map((n) => `<option value="${n}">${n.replace(".wav", "")}</option>`).join("")}<option value="-">No sound</option></select>
         <button class="btn small" type="button" data-snap>Snap to loudest point</button>
         <button class="btn small" type="button" data-hear>Hear it</button>
-        <button class="btn small" type="button" data-preview>Preview on clip</button>
+        ${ov ? "" : `<button class="btn small" type="button" data-preview>Preview on clip</button>`}
         <button class="btn danger small" type="button" data-remove>Remove</button></div>`;
     d.querySelectorAll("[data-k]").forEach((el) => {
-      el.value = t[el.dataset.k];
-      el.addEventListener("input", () => { t[el.dataset.k] = el.type === "number" ? parseFloat(el.value) : el.value; changed(); });
+      el.value = t[el.dataset.k] ?? "";
+      el.addEventListener("input", () => {
+        const k = el.dataset.k;
+        t[k] = el.type === "number" ? parseFloat(el.value) || 0 : el.value;
+        if (k === "look") {  // overlay items carry file / markFrame / blend; other looks drop them
+          if (t.look === "overlay") { t.file = t.file || "light-leak-warm.webm"; if (t.strength === 58 || !t.strength) t.strength = 100; applyOverlayDefaults(t); }
+          else { delete t.file; delete t.markFrame; delete t.blend; }
+          renderTransitions(); changed(); return;
+        }
+        if (k === "file" && (OVERLAYS[t.file] || overlayCache[t.file])) { applyOverlayDefaults(t); d.querySelector('[data-k="frames"]').value = t.frames; d.querySelector('[data-k="blend"]').value = t.blend; }
+        if (k === "frames" && ov) t.markFrame = Math.min(t.markFrame || 0, Math.max(0, t.frames - 1));
+        if (ov) drawStrip();
+        changed();
+      });
     });
-    const cv = d.querySelector("canvas"), land = d.querySelector("[data-land]"), info = d.querySelector("[data-info]");
+    const cv = d.querySelector("canvas.wave"), land = d.querySelector("[data-land]"), info = d.querySelector("[data-info]");
+    const css = (v, f) => getComputedStyle(document.documentElement).getPropertyValue(v).trim() || f;
     const draw = () => {
-      const a = trAudio[i]; const ctx = cv.getContext("2d"); const w = cv.width, h = cv.height;
+      const a = soundFor(t); const ctx = cv.getContext("2d"); const w = cv.width, h = cv.height;
       ctx.clearRect(0, 0, w, h);
-      const fg = getComputedStyle(document.documentElement).getPropertyValue("--muted").trim() || "#888";
-      if (!a) { ctx.fillStyle = fg; ctx.globalAlpha = .35; ctx.fillRect(0, h / 2, w, 1); ctx.globalAlpha = 1; return; }
+      const fg = css("--muted", "#888");
+      if (!a) { ctx.fillStyle = fg; ctx.globalAlpha = .35; ctx.fillRect(0, h / 2, w, 1); ctx.globalAlpha = 1;
+        info.textContent = t.sound ? `${t.sound} (load it again to hear it on this computer): lands at ${t.landsMs} ms` : "No sound."; return; }
       const data = a.buffer.getChannelData(0), step = Math.max(1, Math.floor(data.length / w));
       ctx.fillStyle = fg;
       for (let x = 0; x < w; x++) { let m = 0; for (let j = 0; j < step; j++) m = Math.max(m, Math.abs(data[x * step + j] || 0)); ctx.fillRect(x, h / 2 - m * h / 2, 1, Math.max(1, m * h)); }
       const ms = t.landsMs || 0, px = ms / 1000 / a.buffer.duration * w;
-      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim(); ctx.fillRect(px - 1, 0, 2, h);
+      ctx.fillStyle = css("--accent", "#ffd400"); ctx.fillRect(px - 1, 0, 2, h);
       land.value = Math.round(ms / 1000 / a.buffer.duration * 1000);
-      info.textContent = `${a.name}: lands on the cut at ${Math.round(ms)} ms into the sound` + (Math.abs(ms - a.peakMs) < 5 ? " (its loudest point)" : "");
+      info.textContent = `${t.sound}: lands on the cut at ${Math.round(ms)} ms into the sound` + (Math.abs(ms - a.peakMs) < 5 ? " (its loudest point)" : "") + (a.sketch ? ". Built in; this is a sketch of it." : "");
     };
+    /* overlay: frame strip with the mark frame on the cut */
+    const strip = d.querySelector(".fstrip"), mark = d.querySelector("[data-mark]"), ovinfo = d.querySelector("[data-ovinfo]");
+    const drawStrip = () => {
+      if (!strip) return;
+      const fr = Math.max(2, Math.round(t.frames || 24)), mk = clamp(Math.round(t.markFrame ?? fr / 2), 0, fr - 1);
+      mark.max = fr - 1; mark.value = mk;
+      const ctx = strip.getContext("2d"), w = strip.width, h = strip.height, n = Math.min(fr, 48), cw = w / n;
+      ctx.clearRect(0, 0, w, h);
+      const c = overlayCache[t.file], fg = css("--muted", "#888"), acc = css("--accent", "#ffd400");
+      for (let k = 0; k < n; k++) {
+        const f = Math.round(k * (fr - 1) / Math.max(1, n - 1)), x = k * cw;
+        ctx.fillStyle = k % 2 ? "#1b1b19" : "#232320"; ctx.fillRect(x, 0, cw, h - 14);
+        if (c && c.thumbs && c.thumbs[f]) ctx.drawImage(c.thumbs[f], x + 1, 1, cw - 2, h - 16);
+        else { const e = standInLevel(f, fr, mk); ctx.fillStyle = rgba(S.look.glow, 0.25 + 0.6 * e); ctx.fillRect(x + 2, (h - 14) * (1 - e), cw - 4, (h - 14) * e); }
+        if (f % 5 === 0 || n <= 12) { ctx.fillStyle = fg; ctx.font = "10px ui-monospace, monospace"; ctx.fillText(String(f), x + 2, h - 3); }
+      }
+      const k = Math.round(mk * (n - 1) / Math.max(1, fr - 1));
+      ctx.strokeStyle = acc; ctx.lineWidth = 3; ctx.strokeRect(k * cw + 1.5, 1.5, cw - 3, h - 17);
+      ctx.font = "bold 10px ui-monospace, monospace"; const tw = ctx.measureText("CUT").width + 8, tx = clamp(k * cw + cw / 2 - tw / 2, 0, w - tw);
+      ctx.fillStyle = acc; ctx.fillRect(tx, 0, tw, 14); ctx.fillStyle = "#0d0e0c"; ctx.fillText("CUT", tx + 4, 11);
+      const known = OVERLAYS[t.file];
+      ovinfo.textContent = `Frame ${mk} of ${fr} lands on the cut: the overlay starts ${(mk / 30).toFixed(2)} s before it and runs ${((fr - mk) / 30).toFixed(2)} s after.` +
+        (c ? ` Loaded: ${t.file}.` : known ? " The preview draws a stand-in for this built-in file; load it to see the real one." : t.file ? " Load the file to preview it." : " Name the file or load one.");
+    };
+    if (strip) {
+      mark.addEventListener("input", () => { t.markFrame = parseInt(mark.value, 10); drawStrip(); changed(); });
+      strip.addEventListener("click", (e) => {
+        const r = strip.getBoundingClientRect(), fr = Math.max(2, Math.round(t.frames || 24)), n = Math.min(fr, 48);
+        const k = clamp(Math.floor((e.clientX - r.left) / r.width * n), 0, n - 1);
+        t.markFrame = Math.round(k * (fr - 1) / Math.max(1, n - 1)); drawStrip(); changed();
+      });
+      d.querySelector("[data-ovfile]").addEventListener("change", async (e) => {
+        const f = e.target.files[0]; if (!f) return;
+        const url = URL.createObjectURL(f);
+        try {
+          const info = await probeOverlay(url);
+          overlayCache[f.name] = { url, frames: info.frames, thumbs: null };
+          t.file = f.name; applyOverlayDefaults(t);
+          d.querySelector('[data-k="file"]').value = t.file; d.querySelector('[data-k="frames"]').value = t.frames; d.querySelector('[data-k="blend"]').value = t.blend;
+          drawStrip(); changed(); ovinfo.textContent += " Reading its frames…";
+          overlayCache[f.name].thumbs = await grabFrames(url, info.frames); drawStrip();
+          setScene("trans"); previewTransition(i);
+        } catch (err) { ovinfo.textContent = `${f.name} can't play in this browser. A VP9 .webm with alpha or an H.264 .mp4 works best.`; }
+      });
+    }
     d.querySelector("[data-file]").addEventListener("change", async (e) => {
       const f = e.target.files[0]; if (!f) return;
       try {
         const buf = await audioCtx().decodeAudioData(await f.arrayBuffer());
-        const ch = buf.getChannelData(0); let pk = 0, pi = 0; for (let j = 0; j < ch.length; j++) { const v = Math.abs(ch[j]); if (v > pk) { pk = v; pi = j; } }
-        trAudio[i] = { buffer: buf, name: f.name, peakMs: pi / buf.sampleRate * 1000 };
-        t.sound = f.name; t.landsMs = Math.round(trAudio[i].peakMs); changed(); draw();
+        soundCache[f.name] = { buffer: buf, peakMs: peakMs(buf) };
+        t.sound = f.name; t.landsMs = Math.round(soundCache[f.name].peakMs); changed(); draw();
       } catch (err) { info.textContent = "That file could not be read as audio. Try a WAV or MP3."; }
     });
-    land.addEventListener("input", () => { const a = trAudio[i]; if (!a) return; t.landsMs = Math.round(land.value / 1000 * a.buffer.duration * 1000); changed(); draw(); });
-    d.querySelector("[data-snap]").addEventListener("click", () => { const a = trAudio[i]; if (!a) return; t.landsMs = Math.round(a.peakMs); changed(); draw(); });
-    d.querySelector("[data-hear]").addEventListener("click", () => playSound(i));
-    d.querySelector("[data-preview]").addEventListener("click", () => { setScene("trans"); previewTransition(i); });
-    d.querySelector("[data-remove]").addEventListener("click", () => { S.transitions.list.splice(i, 1); delete trAudio[i]; renderTransitions(); changed(); });
-    if (t.sound && !trAudio[i]) info.textContent = `${t.sound} (load it again to hear it on this computer): lands at ${t.landsMs} ms`;
-    box.append(d); draw();
+    d.querySelector("[data-builtin]").addEventListener("change", (e) => {
+      const v = e.target.value; e.target.value = ""; if (!v) return;
+      t.sound = v === "-" ? "" : v; const a = soundFor(t);
+      t.landsMs = a ? Math.round(a.peakMs) : 0; changed(); draw(); if (a) playItemSound(t);
+    });
+    land.addEventListener("input", () => { const a = soundFor(t); if (!a) return; t.landsMs = Math.round(land.value / 1000 * a.buffer.duration * 1000); changed(); draw(); });
+    d.querySelector("[data-snap]").addEventListener("click", () => { const a = soundFor(t); if (!a) return; t.landsMs = Math.round(a.peakMs); changed(); draw(); });
+    d.querySelector("[data-hear]").addEventListener("click", () => playItemSound(t));
+    d.querySelector("[data-preview]").addEventListener("click", () => { setScene("trans"); previewTransition(i); showMonitor(); });
+    d.querySelector("[data-remove]").addEventListener("click", () => { S.transitions.list.splice(i, 1); renderTransitions(); changed(); });
+    box.append(d); draw(); drawStrip();
   });
 }
-let _ac = null;
-function audioCtx() { _ac = _ac || new (window.AudioContext || window.webkitAudioContext)(); return _ac; }
-function playSound(i, when = 0) {
-  const a = trAudio[i]; if (!a) return;
-  const ac = audioCtx(), src = ac.createBufferSource(), g = ac.createGain();
-  g.gain.value = Math.pow(10, (S.transitions.list[i].level || 0) / 20);
-  src.buffer = a.buffer; src.connect(g).connect(ac.destination); src.start(ac.currentTime + when);
+/* overlay clip: its length in frames, then a thumbnail per frame for the strip */
+function probeOverlay(url) {
+  return new Promise((res, rej) => {
+    const v = document.createElement("video"); v.muted = true; v.preload = "auto"; v.src = url;
+    v.onloadedmetadata = () => { const d = isFinite(v.duration) && v.duration > 0 ? v.duration : 0.8; res({ frames: Math.max(2, Math.round(d * 30)), duration: d }); };
+    v.onerror = () => rej(new Error("unplayable"));
+  });
 }
+async function grabFrames(url, frames) {
+  const v = document.createElement("video"); v.muted = true; v.preload = "auto"; v.src = url;
+  await new Promise((r, j) => { v.onloadeddata = r; v.onerror = j; });
+  const out = [], n = Math.min(frames, 48);
+  for (let k = 0; k < n; k++) {
+    const f = Math.round(k * (frames - 1) / Math.max(1, n - 1));
+    await new Promise((r) => { const done = () => { v.removeEventListener("seeked", done); r(); }; v.addEventListener("seeked", done); v.currentTime = Math.min(v.duration - 0.001, (f + 0.5) / 30); setTimeout(done, 600); });
+    const c = document.createElement("canvas"); c.width = 48; c.height = Math.round(48 * (v.videoHeight || 1920) / (v.videoWidth || 1080));
+    try { c.getContext("2d").drawImage(v, 0, 0, c.width, c.height); } catch (e) {}
+    out[f] = c;
+  }
+  return out;
+}
+/* how bright the drawn stand-in is at frame f: up to full on the mark frame, then down */
+function standInLevel(f, fr, mk) { return f <= mk ? Math.pow(f / Math.max(1, mk), 1.6) : Math.pow(1 - (f - mk) / Math.max(1, fr - 1 - mk), 1.3); }
+let _ac = null;
+function audioCtx() { _ac = _ac || new (window.AudioContext || window.webkitAudioContext)(); if (_ac.state === "suspended") _ac.resume().catch(() => {}); return _ac; }
+function playBuffer(buf, when = 0, db = 0) {
+  const ac = audioCtx(), src = ac.createBufferSource(), g = ac.createGain();
+  g.gain.value = Math.pow(10, db / 20);
+  src.buffer = buf; src.connect(g).connect(ac.destination); src.start(ac.currentTime + Math.max(0, when));
+}
+function playItemSound(t, when = 0) { const a = soundFor(t); if (a) playBuffer(a.buffer, when, t.level || 0); }
+/* sketches of the built-in sounds for previewing on this computer (the edit uses the real files) */
+function synthSfx(name) {
+  const ac = audioCtx(), sr = ac.sampleRate;
+  const len = { whoosh: 0.5, pop: 0.12, hit: 0.42, tap: 0.08, chime: 1.2 }[name] || 0.3;
+  const buf = ac.createBuffer(1, Math.round(len * sr), sr), d = buf.getChannelData(0);
+  let seed = 7; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 1073741823.5 - 1; };
+  let lp = 0, ph = 0, ph2 = 0;
+  for (let i = 0; i < d.length; i++) {
+    const t = i / sr, x = t / len;
+    if (name === "whoosh") {  // filtered noise swelling to its loudest about 0.2 s in
+      const env = Math.pow(Math.sin(Math.PI * Math.pow(x, 0.75)), 2), cut = 0.02 + 0.25 * env;
+      lp += cut * (rnd() - lp); d[i] = lp * env * 2.4;
+    } else if (name === "pop") {
+      ph += 2 * Math.PI * (700 - 380 * x) / sr; d[i] = Math.sin(ph) * Math.exp(-t / 0.025) * (t < 0.002 ? t / 0.002 : 1);
+    } else if (name === "hit") {
+      ph += 2 * Math.PI * (50 + 110 * Math.exp(-t / 0.05)) / sr; d[i] = Math.sin(ph) * Math.exp(-t / 0.13) + (t < 0.01 ? rnd() * (1 - t / 0.01) * 0.6 : 0);
+    } else if (name === "tap") {
+      ph += 2 * Math.PI * 1500 / sr; d[i] = (Math.sin(ph) * 0.6 + rnd() * 0.4) * Math.exp(-t / 0.012);
+    } else {  // chime: A5 then E6
+      ph += 2 * Math.PI * 880 / sr; ph2 += 2 * Math.PI * 1318.5 / sr;
+      d[i] = Math.sin(ph) * Math.exp(-t / 0.35) * 0.6 + (t > 0.12 ? Math.sin(ph2) * Math.exp(-(t - 0.12) / 0.45) * 0.6 : 0);
+    }
+  }
+  let pk = 0; for (let i = 0; i < d.length; i++) pk = Math.max(pk, Math.abs(d[i]));
+  const g = pk ? 0.7 / pk : 1; for (let i = 0; i < d.length; i++) d[i] *= g * Math.min(1, (d.length - i) / (0.01 * sr));
+  return buf;
+}
+function sfxNow(name, db = -6) { try { playBuffer(soundFor({ sound: name + ".wav" }).buffer, 0, db); } catch (e) {} }
 
 /* ---------------- music ---------------- */
 const tracks = [];  // {name, url}
@@ -625,12 +1005,48 @@ function renderTracks() {
     r.addEventListener("change", () => { S.audio.track = r.value; changed(); syncMusic(); });
   });
 }
-function syncMusic() {
+function syncMusic(seek) {
   const t = tracks.find((x) => x.name === S.audio.track);
-  if (!t) { music.pause(); music.removeAttribute("src"); return; }
-  if (music.dataset.name !== t.name) { music.src = t.url; music.dataset.name = t.name; }
-  music.volume = Math.min(1, Math.pow(10, S.audio.musicLevel / 20) * 2.2);
-  if (!vid.paused && !vid.muted) music.play().catch(() => {});
+  if (!t) { music.pause(); music.removeAttribute("src"); delete music.dataset.name; $("duckInfo").textContent = ""; return; }
+  if (music.dataset.name !== t.name) { music.src = t.url; music.dataset.name = t.name; seek = true; }
+  const playing = hasClip && !vid.paused && !vid.muted;
+  if (seek || (playing && music.paused)) alignMusic();
+  music.volume = musicVol();
+  if (playing) music.play().catch(() => {}); else music.pause();
+  if (!playing) $("duckInfo").textContent = "Play the clip with sound on to hear the music under it.";
+}
+/* the track runs from musicStart, in step with the clip (looped when it is shorter) */
+function alignMusic() {
+  const d = music.duration, at = (+S.audio.musicStart || 0) + (vid.currentTime || 0);
+  try { music.currentTime = isFinite(d) && d > 0 ? at % d : at; } catch (e) {}
+}
+music.addEventListener("loadedmetadata", alignMusic);
+/* ducking: the clip's own audio goes through an analyser; while it is loud the music dips by duckDb */
+let vAn = null, vBuf = null, duckNow = 0, voiceUntil = 0;
+function ensureAnalyser() {
+  if (vAn !== null || !hasClip) return;
+  try {
+    const ac = audioCtx(), src = ac.createMediaElementSource(vid), an = ac.createAnalyser();
+    an.fftSize = 1024; src.connect(an); an.connect(ac.destination); vAn = an; vBuf = new Float32Array(an.fftSize);
+  } catch (e) { vAn = false; }  // no analyser here: duck on a fixed talk / pause pattern instead (1.6 s on, 0.8 s off)
+}
+function musicVol() {
+  const A = S.audio, ct = vid.currentTime || 0, du = vid.duration || 0;
+  const fi = A.fadeIn > 0 ? clamp(ct / A.fadeIn) : 1, fo = A.fadeOut > 0 && du ? clamp((du - ct) / A.fadeOut) : 1;
+  return clamp(Math.pow(10, (A.musicLevel - duckNow) / 20) * 2.2 * fi * fo);
+}
+function updateDuck(now) {
+  if (!music.dataset.name || music.paused) return;
+  let voice;
+  if (vAn) {
+    vAn.getFloatTimeDomainData(vBuf); let e = 0; for (let i = 0; i < vBuf.length; i++) e += vBuf[i] * vBuf[i];
+    if (10 * Math.log10(e / vBuf.length + 1e-12) > -42) voiceUntil = now + 250;   // hold 250 ms so it doesn't pump between words
+    voice = now < voiceUntil;
+  } else voice = (vid.currentTime % 2.4) < 1.6;
+  const target = S.audio.duck && voice ? +S.audio.duckDb || 0 : 0;
+  duckNow += (target - duckNow) * (target > duckNow ? 0.35 : 0.06);
+  music.volume = musicVol();
+  $("duckInfo").textContent = `Music now ${Math.round(S.audio.musicLevel - duckNow)} dB` + (duckNow > 1 ? ", ducked under the voice" : "") + (vAn === false ? " (demo pattern)" : "");
 }
 
 /* ---------------- LUTs (WebGL2 3D texture) ---------------- */
@@ -728,10 +1144,10 @@ function layoutStage() {
   Object.assign($("safeBox").style, { left: m * 100 + "%", right: m * 100 + "%", top: mv + "%", bottom: mv + "%" });
   $("safeOv").hidden = !S.reel.safe;
   stage.dataset.h = h;
-  drawOverlays();
+  drawOverlays(); renderLookPrev();
 }
 
-function capFamily(f) { return f === "same" ? capFamily(S.captions.font) : `"${f}", "Arial Black", sans-serif`; }
+function capFamily(f) { return f === "same" ? capFamily(S.captions.font) : SERIFS.includes(f) ? `'${f}', Georgia, serif` : `'${f}', 'Arial Black', sans-serif`; }  // single quotes: it goes inside style="…"
 function txtCase(t, c) { return c === "upper" ? t.toUpperCase() : c === "lower" ? t.toLowerCase() : t; }
 function groupWords(ws, n) {
   const out = []; let cur = [];
@@ -747,45 +1163,165 @@ function currentGroup(t, n) {
   return { g: null, tt };
 }
 const isKey = (w) => /\d/.test(w) || (words === null && /sold|easy|hard|event/i.test(w));
+/* a serif key word: the key font, italic, keyScale x the caption size, filled with the look gradient */
+function serifKey(txt) {
+  return `<span class="w" style="font-family:'${S.captions.keyFont}',Georgia,serif;font-style:italic;font-weight:400;font-size:${S.captions.keyScale}em;line-height:.95;letter-spacing:0;text-transform:none;` +
+    `background-image:${lookGrad()};-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:0;text-shadow:none;filter:drop-shadow(0 .05em .12em rgba(0,0,0,.45));padding:0 .1em">${esc(txt)}</span>`;
+}
+
+function captionHTML(t, h) {
+  const C = S.captions; if (!C.on) return "";
+  const { g, tt } = currentGroup(t, +C.words); if (!g) return "";
+  const since = tt - g[0].start; const pop = C.anim === "pop" ? Math.min(1, since / 0.14) : 1;
+  const sc = C.anim === "pop" ? 0.6 + 0.4 * easeBack(pop) : 1; const bl = C.anim === "blur" ? Math.max(0, 1 - since / 0.2) * 10 : 0;
+  const fs = h * C.size / 100;
+  const sh = C.shadow === "soft" ? "0 .06em .25em rgba(0,0,0,.5)" : C.shadow === "hard" ? ".04em .06em 0 rgba(0,0,0,.85)" : "none";
+  const st = +C.outline ? `-webkit-text-stroke:${C.outline * fs / 76}px rgba(0,0,0,.85);paint-order:stroke fill;` : "";
+  const ww = g.map((w) => {
+    const k = C.keyStyle !== "none" && isKey(w.word); const txt = txtCase(w.word, C.case);
+    if (k && C.keyStyle === "serif") return serifKey(C.case === "upper" ? txt.toLowerCase() : txt);
+    const style = k && C.keyStyle === "block" ? `background:${C.accent};color:${inkFor(C.accent)};-webkit-text-stroke:0;text-shadow:none` : k ? `color:${C.accent}` : "";
+    return `<span class="w" style="${style}">${esc(txt)}</span>`;
+  }).join("");
+  const left = C.x - 50;
+  return `<div class="cap" style="top:calc(${C.y}% - ${fs * 0.6}px);transform:translateX(${left}%) scale(${sc});filter:blur(${bl}px);padding:0 ${S.reel.safe}%;font-family:${capFamily(C.font)};font-weight:${C.weight};font-size:${fs}px;letter-spacing:${C.spacing / 100}em;color:${C.color};text-shadow:${sh};${st}${C.keyStyle === "serif" ? "align-items:baseline;" : ""}">${ww}</div>`;
+}
+function hookHTML(h) {
+  const C = S.captions, glow = S.look.name === "glow";
+  const ws = (words || sampleWords).filter((w) => w.start < 2.2).map((w) => w.word);
+  const blur = Math.max(0, 1 - (vid.currentTime || 0) / 0.35);
+  const anim = `filter:blur(${blur * 16}px);opacity:${0.35 + 0.65 * (1 - blur)};transform:scale(${1 + 1.4 * blur})`;
+  if (glow) {  // Soft Glow: support words in the caption sans, the key word in the serif italic gradient
+    const inner = ws.map((w) => isKey(w) ? serifKey(w) : `<span>${esc(txtCase(w, C.case))}</span>`).join(" ");
+    return `<div class="hookt" style="top:${C.y - 14}%;padding:0 ${S.reel.safe + 2}%;font-size:${h * 0.043}px;font-family:${capFamily(C.font)};font-weight:${C.weight};text-transform:none;color:${S.look.text};align-items:baseline;text-shadow:0 .1em .5em rgba(0,0,0,.5);${anim}">${inner}</div>`;
+  }
+  return `<div class="hookt" style="top:${C.y - 14}%;padding:0 ${S.reel.safe + 2}%;font-size:${h * 0.055}px;${anim}">${ws.map(esc).join(" ")}</div>`;
+}
 
 function drawOverlays() {
   const box = $("scenes"); const h = +stage.dataset.h || 400; const t = hasClip ? vid.currentTime : performance.now() / 1000;
-  const C = S.captions; let html = "";
+  let html = "";
   if (scene === "head" || scene === "trans") {
     const hookOn = S.hook.on && hasClip && (vid.currentTime || 0) < 2.2 && scene === "head";
-    if (hookOn) {
-      const ws = (words || sampleWords).filter((w) => w.start < 2.2).map((w) => w.word);
-      const blur = Math.max(0, 1 - (vid.currentTime || 0) / 0.35);
-      html += `<div class="hookt" style="top:${C.y - 14}%;padding:0 ${S.reel.safe + 2}%;font-size:${h * 0.055}px;filter:blur(${blur * 16}px);opacity:${0.35 + 0.65 * (1 - blur)};transform:scale(${1 + 1.4 * blur})">${ws.map(esc).join(" ")}</div>`;
-    } else if (C.on) {
-      const { g, tt } = currentGroup(t, +C.words);
-      if (g) {
-        const since = tt - g[0].start; const pop = C.anim === "pop" ? Math.min(1, since / 0.14) : 1;
-        const sc = C.anim === "pop" ? 0.6 + 0.4 * easeBack(pop) : 1; const bl = C.anim === "blur" ? Math.max(0, 1 - since / 0.2) * 10 : 0;
-        const fs = h * C.size / 100;
-        const sh = C.shadow === "soft" ? "0 .06em .25em rgba(0,0,0,.5)" : C.shadow === "hard" ? ".04em .06em 0 rgba(0,0,0,.85)" : "none";
-        const st = +C.outline ? `-webkit-text-stroke:${C.outline * fs / 76}px rgba(0,0,0,.85);paint-order:stroke fill;` : "";
-        const ww = g.map((w) => {
-          const k = C.keyStyle !== "none" && isKey(w.word);
-          const style = k && C.keyStyle === "block" ? `background:${C.accent};color:${inkFor(C.accent)};-webkit-text-stroke:0;text-shadow:none` : k ? `color:${C.accent}` : "";
-          return `<span class="w" style="${style}">${esc(txtCase(w.word, C.case))}</span>`;
-        }).join("");
-        const left = C.x - 50;
-        html += `<div class="cap" style="top:calc(${C.y}% - ${fs * 0.6}px);transform:translateX(${left}%) scale(${sc});filter:blur(${bl}px);padding:0 ${S.reel.safe}%;font-family:${capFamily(C.font)};font-weight:${C.weight};font-size:${fs}px;letter-spacing:${C.spacing / 100}em;color:${C.color};text-shadow:${sh};${st}">${ww}</div>`;
-      }
-    }
+    html += hookOn ? hookHTML(h) : captionHTML(t, h);
+  } else if (scene === "gfx") {
+    html += gfxHTML(h) + captionHTML(t, h);
   } else if (scene === "card") {
-    const K = S.cards; const n = Math.floor((t % 6) / 3); const bg = K.bg === "flat" || n === 0 ? K.bgA : K.bgB; const ink = K.bg === "flat" || n === 0 ? K.inkA : K.inkB;
+    const K = S.cards, glow = S.look.name === "glow"; const n = Math.floor((t % 6) / 3); const bg = K.bg === "flat" || n === 0 ? K.bgA : K.bgB; const ink = K.bg === "flat" || n === 0 ? K.inkA : K.inkB;
     const { g } = currentGroup(t, +K.words);
-    let line = g ? g.map((w) => w.word).join(" ") : "the easy part";
-    if (K.punct === "hide") line = line.replace(/[.,!?;:]/g, "");
-    if (line.length > K.maxLetters && K.shows === "line") line = line.slice(0, K.maxLetters).replace(/\s+\S*$/, "") || line.slice(0, K.maxLetters);
+    let ws = g ? g.map((w) => w.word) : ["the", "easy", "part"];
+    if (K.punct === "hide") ws = ws.map((w) => w.replace(/[.,!?;:]/g, ""));
+    let line = ws.join(" ");
+    if (line.length > K.maxLetters && K.shows === "line") { line = line.slice(0, K.maxLetters).replace(/\s+\S*$/, "") || line.slice(0, K.maxLetters); ws = line.split(" "); }
     const fs = h * K.size / 100;
-    const bgCss = K.bg === "footage" ? "rgba(0,0,0,.55)" : bg;
+    const bgCss = K.bg === "footage" ? "rgba(0,0,0,.55)" : glow ? glowBg(bg) : bg;
+    const inner = ws.map((w) => glow && isKey(w) ? `<span style="background-image:${lookGrad()};-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 .08em">${esc(txtCase(w, K.case))}</span>` : esc(txtCase(w, K.case))).join(" ");
     html += `<div class="card-scene" style="background:${bgCss};justify-content:${K.align === "left" ? "flex-start" : "center"};align-items:center">
-      <div class="txt" style="position:absolute;left:${K.x}%;top:${K.y}%;transform:translate(-50%,-50%);width:84%;text-align:${K.align};font-family:${capFamily(K.font)};font-weight:${K.weight};font-size:${fs}px;letter-spacing:${K.spacing / 100}em;color:${K.bg === "footage" ? "#fff" : ink}">${esc(txtCase(line, K.case))}</div></div>`;
+      <div class="txt" style="position:absolute;left:${K.x}%;top:${K.y}%;transform:translate(-50%,-50%);width:84%;text-align:${K.align};font-family:${capFamily(K.font)};font-style:${K.italic ? "italic" : "normal"};font-weight:${K.weight};font-size:${fs}px;letter-spacing:${K.spacing / 100}em;color:${K.bg === "footage" ? "#fff" : ink}">${inner}</div></div>`;
   }
   box.innerHTML = html;
+}
+
+/* ---------------- motion graphics preview: a looping sample, one idea at a time ---------------- */
+let gfxStart = performance.now(), gfxPrev = -1;
+const eOut = (x) => 1 - Math.pow(1 - clamp(x), 3);                      // power3.out
+const eIn = (x) => Math.pow(clamp(x), 2);                               // power2.in
+const eBack = (x, s = 2) => { x = clamp(x); const c = s + 1; return 1 + c * Math.pow(x - 1, 3) + s * Math.pow(x - 1, 2); };
+const GFX_DEMOS = [
+  { kind: "stat", busy: 1.0 },
+  { kind: "list", busy: 3 * 0.45, items: ["Walking", "Cleaning", "Showering"] },
+  { kind: "notifications", busy: 3 * 0.5, items: [["Messages", "Sam", "can we talk later?"], ["Notes", "Reminder", "Reply to Sam before 5"], ["Calendar", "3 meetings", "Starting in 5 minutes"]] },
+  { kind: "source", busy: 0.1 + 4 * 0.14 + 0.3 },
+  { kind: "quote", busy: 0.4 },
+  { kind: "lowerthird", busy: 0.2 }
+];
+function gfxPlan() {
+  const M = S.motion, IN = clamp(+M.inSec || 0.3, 0.1, 1), OUT = clamp(+M.outSec || 0.25, 0.1, 1), HOLD = Math.max(0.6, +M.holdMinSec || 1.2);
+  let at = 0; const seq = [];
+  GFX_DEMOS.filter((d) => M.kinds.includes(d.kind)).forEach((d) => { const dur = IN + d.busy + HOLD + OUT; seq.push(Object.assign({ t0: at, dur }, d)); at += dur + 0.4; });
+  return { seq, total: at, IN, OUT };
+}
+/* sound palette events in the loop: whoosh on each scene, tap on each item, chime to close (kit); whoosh only (house) */
+function gfxEvents(P) {
+  const kit = S.audio.sfxPalette === "kit", ev = [];
+  P.seq.forEach((d, i) => {
+    if (kit && i === 0) ev.push([d.t0, "hit"]); else if (kit || S.audio.whoosh) ev.push([Math.max(0, d.t0 - 0.12), "whoosh"]);
+    if (kit && d.kind === "list") d.items.forEach((_, k) => ev.push([d.t0 + P.IN + k * 0.45, "tap"]));
+    if (kit && d.kind === "notifications") d.items.forEach((_, k) => ev.push([d.t0 + P.IN * 0.5 + k * 0.5, "tap"]));
+  });
+  if (kit && P.seq.length) ev.push([P.total - 0.9, "chime"]);
+  return ev;
+}
+function gfxHTML(h) {
+  const M = S.motion, Lk = S.look, G = (M.theme || Lk.name) === "glow";
+  if (!M.on) return `<div class="gfx-note">Motion graphics are off</div>`;
+  const P = gfxPlan(); if (!P.seq.length) return `<div class="gfx-note">No sample for the graphics picked</div>`;
+  const [W, H] = SIZES[S.reel.size] || SIZES["9x16"], k = (parseFloat(stage.style.width) || 300) / W;
+  const tg = ((performance.now() - gfxStart) / 1000) % P.total;
+  if (!vid.muted && gfxPrev >= 0) {  // the palette, when the clip's sound is on
+    gfxEvents(P).forEach(([et, n]) => { if ((gfxPrev <= tg && et > gfxPrev && et <= tg) || (gfxPrev > tg && (et > gfxPrev || et <= tg))) sfxNow(n, n === "tap" ? -10 : -8); });
+  }
+  gfxPrev = tg;
+  const d = P.seq.find((x) => tg >= x.t0 && tg < x.t0 + x.dur);
+  const vars = `--lk-bg:${Lk.bg};--lk-bg90:${rgba(Lk.bg, 0.9)};--lk-bg82:${rgba(Lk.bg, 0.82)};--lk-glow20:${rgba(Lk.glow, 0.2)};--lk-glow18:${rgba(Lk.glow, 0.18)};--lk-text:${Lk.text};--lk-muted:${Lk.muted};` +
+    `--lk-grad:${lookGrad()};--lk-gradv:linear-gradient(180deg, ${Lk.gradient.join(", ")});--lk-g1:${Lk.gradient[1]};--lk-g1a:${rgba(Lk.gradient[1], 0.6)};--lk-label:'${Lk.labelFont}';--lk-key:'${S.captions.keyFont}';` +
+    `--hk-accent:${Lk.glow};--hk-ink:${inkFor(Lk.glow)}`;
+  const mx = Math.round(W * (W > H ? 0.08 : 0.13)), BW = W - 2 * mx, top = Math.round(240 * H / 1920);
+  const C = S.captions, sbot = Math.round(H * (C.y / 100 - C.size / 100 * 1.3));
+  let bands = "";
+  if (S.reel.size === "9x16") bands = `<div class="gx-band" style="left:0;right:0;top:0;height:220px"><span>Instagram UI</span></div><div class="gx-band" style="left:0;right:0;bottom:0;height:380px"><span>Instagram UI</span></div><div class="gx-band" style="right:0;top:220px;bottom:380px;width:140px"></div>`;
+  let body = "";
+  if (d) {
+    const lt = tg - d.t0, pin = eOut(lt / P.IN), pout = eIn((lt - (d.dur - P.OUT)) / P.OUT);
+    const lower = d.kind === "lowerthird";
+    const tf = lower ? `translateX(${(1 - pin) * -48 + pout * -16}px)` : `translateY(${(1 - pin) * 36 + pout * -16}px)`;
+    const host = `opacity:${pin * (1 - pout)};transform:${tf} scale(${0.96 + 0.04 * pin})`;
+    const card = G ? "gx-gcard" : "gx-hcard";
+    let inner = "";
+    if (d.kind === "stat") {
+      const n = Math.round(200 * eOut((lt - 0.08) / 0.9)), np = eBack((lt) / 0.34, 1.8);
+      const num = `<div style="display:inline-block;line-height:1;white-space:nowrap;font-size:${G ? 170 : 150}px;transform:translateY(${(1 - np) * 24}px) scale(${0.82 + 0.18 * np});filter:blur(${Math.max(0, 1 - lt / 0.34) * 8}px)" class="${G ? "" : "gx-hblock"}"><span class="${G ? "gx-gserif" : ""}">${n}+</span></div>`;
+      inner = `<div class="${G ? "gx-gcard " : ""}gx-row">${num}<div class="${G ? "gx-gsans" : "gx-hcap"}" style="font-size:${G ? 40 : 48}px;max-width:320px;line-height:1.1">cars on the day</div></div>`;
+    } else if (d.kind === "list") {
+      const tw = Math.round(Math.min(G ? 180 : 260, (BW - 56) / 3));
+      inner = `<div class="gx-tiles" style="grid-template-columns:repeat(3, ${tw}px)">` + d.items.map((txt, i) => {
+        const bt = lt - (P.IN + i * 0.45), p = eBack(bt / 0.32), o = clamp(bt / 0.12), ring = clamp((bt - 0.1) / 0.5);
+        const st = `opacity:${o};transform:scale(${0.6 + 0.4 * p})`;
+        return G ? `<div class="gx-tile" style="${st}"><div class="gx-gicon" style="width:${tw}px;height:${tw}px"><span class="gx-gserif" style="font-size:${Math.round(tw * 0.5)}px">${txt[0]}</span>` +
+            `<i class="gx-gring" style="opacity:${bt > 0.1 ? 0.95 * (1 - eOut(ring)) : 0};transform:scale(${1 + 0.16 * eOut(ring)})"></i></div><div class="gx-glabel">${txt}</div></div>`
+          : `<div class="gx-hblock" style="${st};width:${tw}px;height:${Math.round(tw * 0.5)}px;display:flex;align-items:center;justify-content:center;font-size:${Math.min(50, Math.round((tw - 28) / (txt.length * 0.66)))}px">${txt}</div>`;
+      }).join("") + `</div>`;
+    } else if (d.kind === "notifications") {
+      const step = 172, times = d.items.map((_, i) => P.IN * 0.5 + i * 0.5);
+      inner = `<div class="gx-stack" style="width:${BW}px;height:${3 * step - 18}px">` + d.items.map((it, i) => {
+        const bt = lt - times[i]; if (bt < 0) return "";
+        const p = eOut(bt / 0.32); let y = (1 - p) * -50, op = p;
+        times.forEach((tj, j) => { if (j > i && lt >= tj) y += step * eOut((lt - tj) / 0.3); });
+        return `<div class="gx-note ${card}" style="opacity:${op};transform:translateY(${y}px) scale(${0.94 + 0.06 * p});z-index:${10 + i}"><div class="gx-nicon">${it[0][0]}</div>` +
+          `<div class="gx-ntext"><div class="gx-nhead"><span>${it[0]}</span><span>now</span></div><div class="gx-ntitle">${it[1]}</div><div class="gx-nbody">${it[2]}</div></div></div>`;
+      }).join("") + `</div>`;
+    } else if (d.kind === "source") {
+      const yr = "2023", ty0 = P.IN + 0.1, nch = clamp(Math.floor((lt - ty0) / 0.14) + 1, 0, yr.length) * (lt >= ty0 ? 1 : 0);
+      const typedEnd = ty0 + yr.length * 0.14, caretOn = lt < typedEnd || Math.floor((lt - typedEnd) / 0.53) % 2 === 0;
+      const caret = `<i class="gx-caret" style="background:${G ? Lk.gradient[2] : "#0D0E0C"};opacity:${caretOn ? 1 : 0}"></i>`;
+      inner = G ? `<div class="gx-gcard gx-row"><div class="gx-col"><div class="gx-glabel">Source</div><div class="gx-gsans" style="font-size:46px">Harvard Medical School</div><div class="gx-glabel">Study</div></div>` +
+          `<div class="gx-yr" style="font-size:124px"><span class="gx-gserif">${yr.slice(0, nch) || "&#8203;"}</span>${caret}</div></div>`
+        : `<div class="gx-hcard gx-row"><div class="gx-col"><div class="gx-hpill">Source</div><div style="font:900 44px/1.05 Inter,sans-serif;text-transform:uppercase">Harvard Medical School</div><div style="font:700 28px/1.2 Inter,sans-serif;color:#5F5D57">Study</div></div>` +
+          `<div class="gx-yr" style="font:900 112px/1 Inter,sans-serif">${yr.slice(0, nch) || "&#8203;"}${caret}</div></div>`;
+    } else if (d.kind === "quote") {
+      const qw = ["the", "easy", "part"];
+      inner = `<div class="gx-quote ${G ? "" : "gx-hblock"}" style="font-size:${G ? 150 : 96}px">` + qw.map((w, i) => {
+        const p = eOut((lt - i * 0.06) / P.IN);
+        return `<span style="display:inline-block;opacity:${p};transform:translateY(${(1 - p) * 30}px);filter:blur(${(1 - p) * 12}px)"><span class="${G ? "gx-gserif" : ""}">${w}</span></span>`;
+      }).join("") + `</div>`;
+    } else {
+      inner = G ? `<div class="gx-gcard gx-lt"><i class="gx-ltbar"></i><div><div class="gx-gsans" style="font-size:46px;margin-bottom:6px">Darren</div><div class="gx-glabel">Driftability</div></div></div>`
+        : `<div class="gx-col"><div class="gx-hblock" style="font-size:50px">Darren</div><div class="gx-hrole">Driftability</div></div>`;
+    }
+    const pos = lower ? `left:${mx}px;right:${mx}px;bottom:${H - sbot}px;align-items:flex-end;justify-content:flex-start` : `left:${mx}px;right:${mx}px;top:${top}px;align-items:flex-start`;
+    body = `<div class="gx-scene${lower ? " gx-left" : ""}" style="${pos}"><div class="gx-in" style="${host}">${inner}</div></div>`;
+  }
+  return `<div class="gfx-root" style="width:${W}px;height:${H}px;transform:scale(${k});${vars}">${bands}${body}</div>`;
 }
 function easeBack(x) { const c1 = 1.70158 * 1.4, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }
 function inkFor(hex) { const c = toHex6(hex); const r = parseInt(c.slice(1, 3), 16), g = parseInt(c.slice(3, 5), 16), b = parseInt(c.slice(5, 7), 16); return (r * 299 + g * 587 + b * 114) / 1000 > 140 ? "#0D0E0C" : "#FFFFFF"; }
@@ -814,48 +1350,92 @@ function frame() {
     $("scrub").value = vid.duration ? Math.round(vid.currentTime / vid.duration * 1000) : 0;
     $("time").textContent = fmt(vid.currentTime) + " / " + fmt(vid.duration || 0);
   }
-  drawOverlays();
+  drawOverlays(); updateDuck(performance.now());
   requestAnimationFrame(frame);
 }
 function fmt(s) { s = s || 0; const m = Math.floor(s / 60); return m + ":" + (s - m * 60).toFixed(1).padStart(4, "0"); }
 
 function setScene(s) {
-  scene = s; brollStart = performance.now();
-  document.querySelectorAll("[data-scene]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.scene === s)));
+  scene = s; brollStart = gfxStart = performance.now(); gfxPrev = -1; stage.dataset.scene = s;
+  document.querySelectorAll(".tabs [data-scene]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.scene === s)));
+  stopTransPreview();
   if (s === "trans") previewTransition(0);
 }
-let transTimer = null;
+function showMonitor() { if (window.innerWidth <= 980) stage.scrollIntoView({ behavior: "smooth", block: "center" }); }
+let transTimer = null, transPending = [];
+const later = (sec, fn) => transPending.push(setTimeout(fn, Math.max(0, sec) * 1000));
+function stopTransPreview() {
+  clearTimeout(transTimer); transPending.forEach(clearTimeout); transPending = [];
+  const o = $("trOv"); o.pause(); o.style.opacity = 0; $("trStand").innerHTML = ""; $("trStand").style.opacity = 0;
+}
+/* one transition on a loop: the overlay starts markFrame/30 s before the cut, the sound landsMs before it, the clip jumps on the cut */
 function previewTransition(i) {
-  clearInterval(transTimer);
+  stopTransPreview();
   const run = () => {
-    if (scene !== "trans") { clearInterval(transTimer); return; }
+    if (scene !== "trans") { stopTransPreview(); return; }
+    transPending.forEach(clearTimeout); transPending = [];
     const t = S.transitions.list[i] || { look: "flash2", frames: 2, strength: 58 };
-    const fl = $("flash"); const dur = Math.max(1, t.frames || 2) / 30;
-    if (trAudio[i]) playSound(i, 0);
-    const delay = trAudio[i] ? (t.landsMs || 0) / 1000 : 0;
-    setTimeout(() => {
-      if (t.look === "flash2" || t.look === "whiteflash") {
-        fl.style.transition = "none"; fl.style.opacity = (t.strength || 58) / 100;
-        requestAnimationFrame(() => { fl.style.transition = `opacity ${t.look === "whiteflash" ? dur * 3 : dur}s linear`; fl.style.opacity = 0; });
-      } else if (t.look === "punch") {
-        cv.style.transition = "none"; cv.style.transform = "scale(1)";
-        requestAnimationFrame(() => { cv.style.transition = "transform .35s cubic-bezier(.22,1,.36,1)"; cv.style.transform = "scale(1.12)"; setTimeout(() => cv.style.transform = "", 1200); });
-      } else if (t.look === "whip") {
-        cv.style.transition = "transform .18s ease-in, filter .18s"; cv.style.transform = "translateX(-30%)"; cv.style.filter = "blur(8px)";
-        setTimeout(() => { cv.style.transition = "none"; cv.style.transform = "translateX(30%)"; requestAnimationFrame(() => { cv.style.transition = "transform .18s ease-out, filter .18s"; cv.style.transform = ""; cv.style.filter = ""; }); }, 180);
-      } else if (t.look === "zoomblur") {
-        cv.style.transition = "transform .2s ease-in, filter .2s"; cv.style.transform = "scale(1.4)"; cv.style.filter = "blur(10px)";
-        setTimeout(() => { cv.style.transition = "transform .25s ease-out, filter .25s"; cv.style.transform = ""; cv.style.filter = ""; }, 200);
-      }
-    }, delay * 1000);
+    const snd = soundFor(t), lands = snd ? (t.landsMs || 0) / 1000 : 0;
+    const ovl = t.look === "overlay", pre = ovl ? (t.markFrame || 0) / 30 : 0, post = ovl ? Math.max(2, t.frames || 24) / 30 - pre : 0.6;
+    const cut = Math.max(lands, pre) + 0.05;
+    if (snd) playBuffer(snd.buffer, cut - lands, t.level || 0);
+    if (ovl) later(cut - pre, () => startOverlay(t));
+    later(cut, () => { cutClip(); lookAtCut(t); });
+    transTimer = setTimeout(run, Math.max(2.2, cut + post + 1) * 1000);
   };
-  run(); transTimer = setInterval(run, 2200);
+  run();
+}
+function cutClip() { if (hasClip && vid.duration > 4) { try { vid.currentTime = (vid.currentTime + 1.4) % (vid.duration - 0.5); } catch (e) {} } }
+function lookAtCut(t) {
+  const fl = $("flash"); const dur = Math.max(1, t.frames || 2) / 30;
+  if (t.look === "flash2" || t.look === "whiteflash") {
+    fl.style.transition = "none"; fl.style.opacity = (t.strength || 58) / 100;
+    requestAnimationFrame(() => { fl.style.transition = `opacity ${t.look === "whiteflash" ? dur * 3 : dur}s linear`; fl.style.opacity = 0; });
+  } else if (t.look === "punch") {
+    cv.style.transition = "none"; cv.style.transform = "scale(1)";
+    requestAnimationFrame(() => { cv.style.transition = "transform .35s cubic-bezier(.22,1,.36,1)"; cv.style.transform = "scale(1.12)"; setTimeout(() => cv.style.transform = "", 1200); });
+  } else if (t.look === "whip") {
+    cv.style.transition = "transform .18s ease-in, filter .18s"; cv.style.transform = "translateX(-30%)"; cv.style.filter = "blur(8px)";
+    setTimeout(() => { cv.style.transition = "none"; cv.style.transform = "translateX(30%)"; requestAnimationFrame(() => { cv.style.transition = "transform .18s ease-out, filter .18s"; cv.style.transform = ""; cv.style.filter = ""; }); }, 180);
+  } else if (t.look === "zoomblur") {
+    cv.style.transition = "transform .2s ease-in, filter .2s"; cv.style.transform = "scale(1.4)"; cv.style.filter = "blur(10px)";
+    setTimeout(() => { cv.style.transition = "transform .25s ease-out, filter .25s"; cv.style.transform = ""; cv.style.filter = ""; }, 200);
+  }
+}
+/* the loaded overlay file over the clip, or a drawn stand-in for the built-in files */
+function startOverlay(t) {
+  const c = overlayCache[t.file], dur = Math.max(2, t.frames || 24) / 30, op = (t.strength ?? 100) / 100;
+  if (c) {
+    const o = $("trOv");
+    if (o.dataset.name !== t.file) { o.src = c.url; o.dataset.name = t.file; }
+    o.style.mixBlendMode = t.blend || "screen"; o.style.opacity = op;
+    try { o.currentTime = 0; } catch (e) {}
+    o.play().catch(() => {});
+    later(dur + 0.05, () => { o.style.opacity = 0; });
+    return;
+  }
+  const L = {
+    "flash-soft": { bg: "radial-gradient(circle at 50% 50%, #fff 0, rgba(255,255,255,.8) 30%, rgba(255,255,255,0) 70%)", from: "scale(.7)", to: "scale(1.5)" },
+    "light-leak-warm": { bg: "radial-gradient(45% 70% at 50% 45%, #FFF1E8 0, rgba(255,196,170,.9) 32%, rgba(246,189,216,.5) 55%, rgba(246,189,216,0) 76%)", from: "translateX(-80%) scale(1.3)", to: "translateX(80%) scale(1.3)" },
+    "light-leak-lilac": { bg: "radial-gradient(45% 70% at 50% 55%, #F3EEFF 0, rgba(201,185,255,.9) 32%, rgba(246,189,216,.5) 55%, rgba(246,189,216,0) 76%)", from: "translateX(80%) scale(1.3)", to: "translateX(-80%) scale(1.3)" },
+    "film-burn": { bg: "radial-gradient(60% 85% at 100% 50%, #FFF6DD 0, rgba(255,170,70,.95) 30%, rgba(200,70,20,.6) 55%, rgba(200,70,20,0) 80%)", from: "translateX(60%)", to: "translateX(-30%) scale(1.6)" },
+    "whip-streak": { bg: "repeating-linear-gradient(0deg, rgba(255,255,255,0) 0 5%, rgba(255,255,255,.6) 6.5%, rgba(255,255,255,0) 8% 13%)", from: "translateX(-100%) scaleX(1.6)", to: "translateX(100%) scaleX(1.6)", blur: 5 }
+  }[String(t.file || "").replace(/\.\w+$/, "")] || { bg: "radial-gradient(circle, rgba(255,255,255,.9), rgba(255,255,255,0) 70%)", from: "scale(.8)", to: "scale(1.3)" };
+  const st = $("trStand"), fr = Math.max(2, t.frames || 24), m = clamp((t.markFrame ?? fr / 2) / (fr - 1), 0.05, 0.95);
+  st.style.mixBlendMode = t.blend || "screen"; st.style.opacity = op;
+  st.innerHTML = `<i style="position:absolute;inset:-10%;background:${L.bg};filter:blur(${L.blur || 0}px);opacity:0"></i>`;
+  const el = st.firstChild;
+  if (el.animate) {
+    el.animate([{ transform: L.from }, { transform: L.to }], { duration: dur * 1000, easing: "linear", fill: "forwards" });
+    el.animate([{ opacity: 0 }, { opacity: 1, offset: m }, { opacity: 0 }], { duration: dur * 1000, easing: "linear", fill: "forwards" });
+  }
+  later(dur + 0.05, () => { st.innerHTML = ""; });
 }
 
 /* ---------------- render everything from S ---------------- */
 function renderAll() {
   renderStyleSel(); renderLutSel(); renderPalette(); fillFields();
-  renderRules("broll"); renderRules("cards"); renderTransitions(); renderTracks();
+  renderRules("broll"); renderRules("cards"); renderRules("motion"); renderTransitions(); renderTracks();
   setLut(S.grade.lut || "none"); layoutStage();
 }
 
@@ -887,7 +1467,7 @@ function wire() {
   });
   $("importFile").addEventListener("change", async (e) => {
     const f = e.target.files[0]; if (!f) return;
-    try { const j = JSON.parse(await f.text()); const st = j.style || j.studio || j; S = Object.assign(clone(BASE), st); activeId = "mine:" + Date.now().toString(36); mine[activeId] = clone(S); renderAll(); changed(); toast("Style opened. Save to keep it."); }
+    try { const j = JSON.parse(await f.text()); const st = j.style || j.studio || j; S = normalise(deepMerge(clone(BASE), st)); activeId = "mine:" + Date.now().toString(36); mine[activeId] = clone(S); renderAll(); changed(); toast("Style opened. Save to keep it."); }
     catch (err) { toast("That file is not a style.json"); }
   });
   $("addColour").addEventListener("click", () => { S.palette.push({ name: "New colour", hex: "#888888" }); renderPalette(); fillPaletteSelects(); changed(); });
@@ -897,6 +1477,18 @@ function wire() {
     $("pasteColours").value = ""; renderPalette(); fillPaletteSelects(); changed(); toast(m.length ? `Added ${m.length} colour${m.length > 1 ? "s" : ""}` : "No colours found in that text");
   });
   document.querySelectorAll("[data-add-rule]").forEach((b) => b.addEventListener("click", () => { const k = b.dataset.addRule; S[k].rules.push(""); renderRules(k); changed(); }));
+  $("lookToPalette").addEventListener("click", () => {
+    const L = S.look, names = { bg: "Look background", glow: "Look glow", text: "Look text", muted: "Look muted" };
+    const add = [[L.bg, names.bg], [L.glow, names.glow], [L.gradient[0], "Gradient start"], [L.gradient[1], "Gradient middle"], [L.gradient[2], "Gradient end"], [L.text, names.text], [L.muted, names.muted]];
+    let n = 0;
+    add.forEach(([hex, name]) => { if (!S.palette.some((c) => c.hex.toUpperCase() === String(hex).toUpperCase())) { S.palette.push({ name, hex: String(hex).toUpperCase() }); n++; } });
+    renderPalette(); fillPaletteSelects(); changed(); toast(n ? `Added ${n} colour${n > 1 ? "s" : ""}` : "They are all in the palette already");
+  });
+  $("gfxPreviewBtn").addEventListener("click", () => { setScene("gfx"); showMonitor(); });
+  $("hearPalette").addEventListener("click", () => {
+    const seq = S.audio.sfxPalette === "kit" ? [[0, "hit"], [0.55, "tap"], [0.8, "tap"], [1.05, "tap"], [1.45, "whoosh"], [2.1, "chime"]] : [[0, "whoosh"], [0.7, "pop"], [1.0, "pop"]];
+    seq.forEach(([at, n]) => setTimeout(() => sfxNow(n, -6), at * 1000));
+  });
   $("addTr").addEventListener("click", () => { S.transitions.list.push({ name: "Transition " + (S.transitions.list.length + 1), look: "flash2", where: "every", frames: 2, strength: 58, sound: "", landsMs: 0, level: -12 }); renderTransitions(); changed(); });
 
   $("lutFile").addEventListener("change", async (e) => {
@@ -911,7 +1503,7 @@ function wire() {
 
   $("clipFile").addEventListener("change", (e) => {
     const f = e.target.files[0]; if (!f) return;
-    vid.src = URL.createObjectURL(f); vid.muted = true; hasClip = true; $("emptyStage").hidden = true;
+    vid.src = URL.createObjectURL(f); vid.muted = true; vid.loop = true; hasClip = true; $("emptyStage").hidden = true; $("muteBtn").textContent = "Sound on";
     vid.onloadedmetadata = () => { $("clipInfo").textContent = `${f.name}: ${vid.videoWidth}×${vid.videoHeight}, ${fmt(vid.duration)}, ${(f.size / 1048576).toFixed(0)} MB. Plays from this computer.`; };
     vid.onerror = () => { $("clipInfo").textContent = `${f.name} can't play in this browser (often HEVC or ProRes). Claude can still edit it from Drive.`; };
     vid.play().catch(() => {}); $("playBtn").textContent = "Pause";
@@ -922,12 +1514,23 @@ function wire() {
       $("clipInfo").textContent = `${words.length} words from ${f.name}. Captions now follow the clip.`; }
     catch (err) { toast("That file is not a transcript.json"); }
   });
-  $("playBtn").addEventListener("click", () => { if (!hasClip) { $("clipFile").click(); return; } if (vid.paused) { vid.play(); $("playBtn").textContent = "Pause"; syncMusic(); } else { vid.pause(); music.pause(); $("playBtn").textContent = "Play"; } });
-  $("muteBtn").addEventListener("click", () => { vid.muted = !vid.muted; $("muteBtn").textContent = vid.muted ? "Sound on" : "Sound off"; if (vid.muted) music.pause(); else syncMusic(); });
-  $("scrub").addEventListener("input", (e) => { if (vid.duration) vid.currentTime = e.target.value / 1000 * vid.duration; });
+  $("playBtn").addEventListener("click", () => {
+    if (!hasClip) { $("clipFile").click(); return; }
+    if (vid.paused) { if (!vid.muted) ensureAnalyser(); vid.play().then(() => syncMusic(true)).catch(() => {}); $("playBtn").textContent = "Pause"; }
+    else { vid.pause(); syncMusic(); $("playBtn").textContent = "Play"; }
+  });
+  $("muteBtn").addEventListener("click", () => {
+    vid.muted = !vid.muted; $("muteBtn").textContent = vid.muted ? "Sound on" : "Sound off";
+    if (!vid.muted) { audioCtx(); ensureAnalyser(); }
+    syncMusic(true);
+  });
+  vid.addEventListener("play", () => { $("playBtn").textContent = "Pause"; });
+  vid.addEventListener("pause", () => { $("playBtn").textContent = "Play"; syncMusic(); });
+  vid.addEventListener("seeked", () => { if (!music.paused && vid.currentTime < 0.3) alignMusic(); });  // the clip looped: the track starts over with it
+  $("scrub").addEventListener("input", (e) => { if (vid.duration) { vid.currentTime = e.target.value / 1000 * vid.duration; if (!music.paused) alignMusic(); } });
   $("fsBtn").addEventListener("click", () => { const p = stage.requestFullscreen ? stage.requestFullscreen() : null; if (p && p.catch) p.catch(() => toast("Full screen isn't available here")); });
   document.addEventListener("keydown", (e) => { if (e.key === "f" && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) $("fsBtn").click(); });
-  document.querySelectorAll("[data-scene]").forEach((b) => b.addEventListener("click", () => setScene(b.dataset.scene)));
+  document.querySelectorAll(".tabs [data-scene]").forEach((b) => b.addEventListener("click", () => setScene(b.dataset.scene)));
 
   const drop = $("brollDrop");
   const addFiles = (files) => {

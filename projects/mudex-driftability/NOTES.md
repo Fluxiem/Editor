@@ -34,3 +34,19 @@ staff in hi-vis (left, right) and the Driftability organiser (middle, black tee)
 ### QA
 - 9:16 and 16:9: 1080×1920 / 1920×1080 @ 30 fps, H.264 yuv420p, 31.6s, audio peak −5.7 dBFS, hook on
   frame 1; frames at 0s, 2s, middle, end checked (`qa/`).
+
+## v2 (2026-10-23)
+
+Same cut (31.5s, 12 takes). Changes:
+- "2nd · November, sold out" stat (house yellow block, chest height, lands on "2nd", holds through
+  "sold out event already"). The only graphic besides DRIFTABILITY, per the note's "clean and simple".
+- Camera: the punch-ins on "sold" and "easy" now start from where the take's slow push had got to (v1
+  squeezed the push into 0.06s and jumped).
+- Captions: removed the per-word brightness pulse, which rendered words grey for a frame or two (in v1 too).
+- Audio: light voice clean-up (rumble high-pass, light denoise, gentle compression), mastered to −14.0 LUFS,
+  true peak −1.4 dBTP (v1 was about −17 LUFS).
+- Cover frame: `qa/mudex-driftability_v2_9x16_cover.jpg`.
+
+QA (both formats): size/fps, H.264 yuv420p, 31.6s, peak −1.5 dBFS, hook on frame 1: pass. Frames read at
+0.1, 1.2, 5.6, 8.6, 9.6, 21.5, 25.5, 31.3s.
+Still open: Driftability logo file (wordmark stands in), "both users" → "Mudex" and "do AI" → "see why" captions.

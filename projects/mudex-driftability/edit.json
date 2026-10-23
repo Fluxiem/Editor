@@ -1,13 +1,52 @@
 {
- "formats": ["9x16", "16x9"],
+ "formats": [
+  "9x16",
+  "16x9"
+ ],
  "lut": "luts/slog3_to_709.cube",
  "hookText": "These events can't happen without the help",
- "hookKeys": ["help"],
- "keys": ["Mudex", "driftability", "November", "sold", "nominations", "everybody", "proud", "hard", "couple", "cards"],
- "punch": ["soldout@sold", "easy"],
- "settle": ["bigger"],
- "hero": {"word": "Driftability", "seg": "intro"},
- "transition": {"look": "cut"},
+ "hookKeys": [
+  "help"
+ ],
+ "keys": [
+  "Mudex",
+  "driftability",
+  "November",
+  "sold",
+  "nominations",
+  "everybody",
+  "proud",
+  "hard",
+  "couple",
+  "cards"
+ ],
+ "punch": [
+  "soldout@sold",
+  "easy"
+ ],
+ "settle": [
+  "bigger"
+ ],
+ "hero": {
+  "word": "Driftability",
+  "seg": "intro"
+ },
+ "transition": {
+  "look": "cut"
+ },
  "sfx": false,
- "tail": 0.35
+ "tail": 0.35,
+ "scenes": [
+  {
+   "id": "soldout",
+   "kind": "stat",
+   "at": "soldout@2nd",
+   "value": "2",
+   "suffix": "nd",
+   "label": "November, sold out",
+   "pos": "middle",
+   "punch": false,
+   "dur": 2.6
+  }
+ ]
 }

@@ -7,7 +7,11 @@ inbox/*/
 library/
 projects/*/renders/
 projects/*/*/assets/aroll.mp4
-projects/*/*/assets/cutout.webm
-projects/*/*/assets/cutout.span
+projects/*/*/assets/cutout*.webm
+projects/*/*/assets/cutout*.span
+projects/*/*/assets/music.m4a
+projects/*/*/assets/music.args
+projects/*/*/assets/transitions/
+projects/*/*/assets/logos/
 projects/*/*/.work-*/
 projects/*/*.log

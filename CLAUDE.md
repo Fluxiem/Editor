@@ -43,6 +43,30 @@ edit is the one Claude plans.
 Commit + push `projects/<slug>/` (plans, specs, compositions, notes) after each version. Media
 never goes in git: raw clips stay in Drive / `inbox/`, renders and A-rolls live in Drive.
 
+## Looks, motion graphics, transitions, music
+
+- **Looks**: `style.json` → `looks.house` (default) and `looks.glow` ("Soft Glow", the 5-Pass Reel Edit Kit:
+  near-black glass, warm glow, gradient serif-italic key words, mono labels, push-ins ≤ 6 %, kit SFX).
+  One job can use another look with `edit.json` → `"studio": "glow"` (or a partial studio object); the
+  studio page has the same presets. A third look, "Explainer" (lime data graphics), is next:
+  `references/claude-edit-explainer/NOTES.md`.
+- **Motion graphics**: `edit.json` → `scenes` (stat, list, notifications, source, quote, logo, typed,
+  lowerthird), each fired on its trigger word (`at: "take@word"`), one idea at a time, `pos` top | middle,
+  `layer` behind = between the footage and a people cutout. Plan them as a table first (Craft notes).
+  Small numbers and ordinals don't count up (`"count": true` forces it).
+- **Transition files**: overlay clips in Drive `Library/Transitions` (+ sidecar `<name>.json`
+  {markFrame, blend, frames}); built-ins from `scripts/make_overlays.py`: flash-soft, light-leak-warm,
+  light-leak-lilac, film-burn, whip-streak. Use `transitions: [{look: "overlay", file, where, sound,
+  landsMs}]`; the mark frame lands on each cut.
+- **Background music**: licensed tracks only, in Drive `Library/Music`. `edit.json` → `music: {file, level,
+  duck, duckDb, start, fadeIn, fadeOut}` (or the studio's audio.track). Step e runs `scripts/music.py`:
+  looped/cut to length, faded, ducked under the voice (sidechain), mounted as `assets/music.m4a`.
+  No track supplied → ship without music and say so.
+- **SFX**: `templates/ovs-vertical/assets/sfx` (pop, whoosh, hit, tap, chime; `scripts/make_sfx.py`).
+  `audio.sfxPalette` house = whoosh on punch-ins + pop on key words; kit = hit on the hook, tap on items,
+  whoosh on scene changes, chime at the end. They are Git LFS files: `scripts/setup.sh` checks them out.
+- **Loudness**: voice −14 LUFS, true peak ≤ −1.5 dBTP (`studio.audio.voicePeak`), light voice clean-up.
+
 ## Large files
 
 - rclone streams Drive ↔ container with no size limit and resumes (`--transfers 4`, 64 MB chunks);
@@ -74,15 +98,16 @@ Files the style names (LUTs, transition sounds, music, fonts, logos) come from
   speech (`clipRoles.brollMaxWordsPerMin`); `OVS Edit/B-Roll` may also be read.
 - `2 For Review/`: `<video name>_vN.mp4`, `<video name>_vN_<format>.mp4`, `<video name>_project/`.
 - `3 Approved/`: approved renders.
-- `Library/`: LUTs, Sounds, Music, Fonts, Logos.
+- `Library/`: LUTs, Sounds, Music, Fonts, Logos, Transitions.
 - **Never touch the Grok team's "OVS Edit"** (only `OVS Edit/B-Roll`, read-only). Ignore `IMG_0400`.
 
 ## Files
 
 - `scripts/edit.sh`: steps a–g. `scripts/drive.sh`: list / pull / next / push / push-project /
   approve / library. `transcribe.py`, `plan_cuts.py`, `build_aroll.py`, `build_comp.py`, `matte.py`
-  (people cutout for text or a logo behind them), `qa.py`, `analyze_ref.py` (reference reel: cut
-  rate, hook, text styles), `make_lut.py`, `setup.sh` (toolchain, runs at session start).
+  (people cutout for text or a logo behind them), `music.py` (ducked music bed), `qa.py`,
+  `analyze_ref.py` (reference reel: cut rate, hook, text styles; `yt-dlp` fetches reel links),
+  `make_lut.py`, `make_overlays.py`, `make_sfx.py`, `setup.sh` (toolchain, runs at session start).
 - `projects/<slug>/`: `note.txt`, `transcript.json`, `plan.json`, `cuts.json`, `edit.json`,
   `NOTES.md`, `<format>/` (HyperFrames project: `index.html`, `compositions/`, `assets/`), `qa/`.
 - `templates/ovs-vertical/`: the 34 HyperFrames catalog blocks restyled to the house style
@@ -115,7 +140,7 @@ North star: Chris Boustedt (@chriss.boustedt).
 - **Safe zone**: text inside x 120–960, y 240–1260; keep the bottom third clear.
 - **Effects**: bold effects at most every 5–10s, never two at once, at most 2 accent moments.
   Banned: dissolves, crossfades, spins, glitch packs (unless Justin asks by name).
-- **Audio**: voice peaks ≈ −6 dBFS (loudnorm −14 LUFS). Music −18 to −22 dB under voice, licensed
+- **Audio**: voice −14 LUFS, peaks ≤ −1.5 dBTP. Music −18 to −22 dB under voice (ducked), licensed
   only; if none is supplied, ship without music and say so. SFX: whoosh on whips, pop on key words
   (off for clean corporate pieces).
 

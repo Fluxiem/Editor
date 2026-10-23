@@ -1,0 +1,27 @@
+[
+ {
+  "label": "Size and frame rate",
+  "pass": true,
+  "note": "1080x1920 @ 30/1"
+ },
+ {
+  "label": "H.264 yuv420p",
+  "pass": true,
+  "note": "h264 yuv420p"
+ },
+ {
+  "label": "Length inside target",
+  "pass": true,
+  "note": "31.6s (target 30-45s)"
+ },
+ {
+  "label": "Audio present, peaks <= -1 dBFS",
+  "pass": true,
+  "note": "peak -1.5 dBFS"
+ },
+ {
+  "label": "Hook text from frame 1",
+  "pass": true,
+  "note": "\u201cThese events can't happen without the help\u201d"
+ }
+]

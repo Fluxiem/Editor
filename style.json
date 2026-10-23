@@ -245,7 +245,7 @@
     "maxAccentMoments": 2
   },
   "audio": {
-    "voicePeakDbfs": -6,
+    "voicePeakDbfs": -1.5,
     "musicUnderVoiceDb": [
       -22,
       -18
@@ -255,6 +255,11 @@
     "sfx": {
       "whip": "whoosh",
       "keyword": "pop"
+    },
+    "loudness": {
+      "integratedLufs": -14,
+      "truePeakDbtp": -1.5,
+      "$comment": "Platform standard. build_aroll.py levels the voice to this (studio.audio.voicePeak sets the true-peak ceiling)."
     }
   },
   "deliveryChecklist": [
@@ -340,7 +345,7 @@
     }
   },
   "studio": {
-    "$comment": "Written by Claude from the OVS Video Editor page (artifact db: settings/active -> styles/<id>). These defaults = the 'OVS House' preset.",
+    "$comment": "Written by Claude from the OVS Video Editor page (artifact db: settings/active -> styles/<id>). These defaults = the 'OVS House' preset. edit.json \"studio\" deep-merges over this for one video; naming another look there (\"glow\", or {\"look\": {\"name\": \"glow\"}}) starts from looks.<name>.",
     "name": "OVS House",
     "reel": {
       "size": "9x16",
@@ -371,6 +376,19 @@
         "hex": "#303423"
       }
     ],
+    "look": {
+      "name": "house",
+      "bg": "#0D0E0C",
+      "glow": "#FFD400",
+      "gradient": [
+        "#FFD400",
+        "#FFD400",
+        "#FFD400"
+      ],
+      "text": "#FFFFFF",
+      "muted": "#A9A79E",
+      "labelFont": "JetBrains Mono"
+    },
     "grade": {
       "lut": "none",
       "strength": 100
@@ -387,6 +405,8 @@
       "case": "upper",
       "color": "#FFFFFF",
       "keyStyle": "block",
+      "keyFont": "Instrument Serif",
+      "keyScale": 1.7,
       "accent": "#FFD400",
       "outline": "2",
       "shadow": "soft",
@@ -434,6 +454,30 @@
         "Alternate the two card colours (A then B)."
       ]
     },
+    "motion": {
+      "on": true,
+      "theme": "house",
+      "inSec": 0.3,
+      "outSec": 0.25,
+      "holdMinSec": 1.2,
+      "pushMaxPct": 6,
+      "kinds": [
+        "stat",
+        "list",
+        "notifications",
+        "source",
+        "quote",
+        "logo",
+        "typed",
+        "lowerthird"
+      ],
+      "rules": [
+        "One idea on screen at a time.",
+        "Each graphic fires on its trigger word: fast in, hold, clean out.",
+        "Graphics never cover the speaker's face; put big words behind the speaker.",
+        "Only add a graphic when it shows what is said or drives the point home."
+      ]
+    },
     "transitions": {
       "on": true,
       "list": [
@@ -447,16 +491,291 @@
           "landsMs": 0,
           "level": -12
         }
-      ]
+      ],
+      "$comment": "Items: {name, look: cut|flash2|whiteflash|punch|whip|zoomblur|overlay, where: every|broll|cards|speaker|scenes, frames, strength, sound, landsMs, level}; overlay adds {file (Library/Transitions), markFrame (overlay frame that lands on the cut), blend: screen|normal|lighten}, defaults from the sidecar <file>.json."
     },
     "audio": {
-      "voicePeak": -6,
+      "voicePeak": -1.5,
       "musicLevel": -20,
       "lowpass": "off",
       "whoosh": true,
       "pop": false,
       "track": "",
-      "voiceClean": "light"
+      "voiceClean": "light",
+      "duck": true,
+      "duckDb": 8,
+      "fadeIn": 0.5,
+      "fadeOut": 1.5,
+      "musicStart": 0,
+      "sfxPalette": "house",
+      "$comment": "track: file name in Library/Music (\"\" = no music); musicLevel dB under full scale; duck dB under speech. sfxPalette house = whoosh on punch-ins + pop on key words; kit = hit on the hook, tap on list items / notifications, whoosh on scene changes, chime at the end."
+    }
+  },
+  "looks": {
+    "$comment": "Named looks Claude can apply to one video through edit.json \"studio\" (see studio.$comment).",
+    "house": {
+      "$comment": "The OVS House look, for one video while another look is the active style: \"studio\": \"house\" in edit.json.",
+      "name": "OVS House",
+      "look": {
+        "name": "house",
+        "bg": "#0D0E0C",
+        "glow": "#FFD400",
+        "gradient": [
+          "#FFD400",
+          "#FFD400",
+          "#FFD400"
+        ],
+        "text": "#FFFFFF",
+        "muted": "#A9A79E",
+        "labelFont": "JetBrains Mono"
+      },
+      "palette": [
+        {
+          "name": "Key yellow",
+          "hex": "#FFD400"
+        },
+        {
+          "name": "Ink",
+          "hex": "#0D0E0C"
+        },
+        {
+          "name": "Caption white",
+          "hex": "#FFFFFF"
+        },
+        {
+          "name": "Cream paper",
+          "hex": "#EFEAE0"
+        },
+        {
+          "name": "Olive brown",
+          "hex": "#303423"
+        }
+      ],
+      "captions": {
+        "on": true,
+        "font": "Inter",
+        "weight": "900",
+        "size": 4.0,
+        "spacing": 2,
+        "x": 50,
+        "y": 62,
+        "words": "3",
+        "case": "upper",
+        "color": "#FFFFFF",
+        "keyStyle": "block",
+        "keyFont": "Instrument Serif",
+        "keyScale": 1.7,
+        "accent": "#FFD400",
+        "outline": "2",
+        "shadow": "soft",
+        "anim": "pop"
+      },
+      "cards": {
+        "on": true,
+        "bg": "alternate",
+        "bgA": "#EFEAE0",
+        "inkA": "#0D0E0C",
+        "bgB": "#303423",
+        "inkB": "#EFEAE0",
+        "font": "same",
+        "weight": "800",
+        "size": 5.4,
+        "spacing": -5.5,
+        "align": "center",
+        "x": 50,
+        "y": 50,
+        "shows": "line",
+        "words": "2",
+        "maxLetters": 13,
+        "case": "lower",
+        "punct": "hide",
+        "italic": false
+      },
+      "motion": {
+        "on": true,
+        "theme": "house",
+        "inSec": 0.3,
+        "outSec": 0.25,
+        "holdMinSec": 1.2,
+        "pushMaxPct": 6
+      },
+      "transitions": {
+        "on": true,
+        "list": [
+          {
+            "name": "Flash",
+            "look": "flash2",
+            "where": "broll",
+            "frames": 2,
+            "strength": 58,
+            "sound": "",
+            "landsMs": 0,
+            "level": -12
+          }
+        ],
+        "$comment": "Items: {name, look: cut|flash2|whiteflash|punch|whip|zoomblur|overlay, where: every|broll|cards|speaker|scenes, frames, strength, sound, landsMs, level}; overlay adds {file (Library/Transitions), markFrame (overlay frame that lands on the cut), blend: screen|normal|lighten}, defaults from the sidecar <file>.json."
+      },
+      "audio": {
+        "voicePeak": -1.5,
+        "musicLevel": -20,
+        "lowpass": "off",
+        "whoosh": true,
+        "pop": false,
+        "track": "",
+        "voiceClean": "light",
+        "duck": true,
+        "duckDb": 8,
+        "fadeIn": 0.5,
+        "fadeOut": 1.5,
+        "musicStart": 0,
+        "sfxPalette": "house"
+      }
+    },
+    "glow": {
+      "$comment": "Soft Glow, from Zeeshan's 5-Pass Reel Edit Kit. For one video put \"studio\": \"glow\" (or this whole object, tweaked) in edit.json; set it as the active style on the OVS Video Editor page to make it the default.",
+      "name": "Soft Glow",
+      "look": {
+        "name": "glow",
+        "bg": "#09090A",
+        "glow": "#FFDCCB",
+        "gradient": [
+          "#FFDCCB",
+          "#F6BDD8",
+          "#C9B9FF"
+        ],
+        "text": "#F5F5F4",
+        "muted": "#A3A3AB",
+        "labelFont": "JetBrains Mono"
+      },
+      "palette": [
+        {
+          "name": "Near black",
+          "hex": "#09090A"
+        },
+        {
+          "name": "Peach",
+          "hex": "#FFDCCB"
+        },
+        {
+          "name": "Pink",
+          "hex": "#F6BDD8"
+        },
+        {
+          "name": "Lilac",
+          "hex": "#C9B9FF"
+        },
+        {
+          "name": "Text",
+          "hex": "#F5F5F4"
+        },
+        {
+          "name": "Muted",
+          "hex": "#A3A3AB"
+        }
+      ],
+      "captions": {
+        "on": true,
+        "font": "Inter",
+        "weight": "600",
+        "size": 3.4,
+        "spacing": 0,
+        "x": 50,
+        "y": 62,
+        "words": "3",
+        "case": "none",
+        "color": "#F5F5F4",
+        "keyStyle": "serif",
+        "keyFont": "Instrument Serif",
+        "keyScale": 1.7,
+        "accent": "#F6BDD8",
+        "outline": "0",
+        "shadow": "soft",
+        "anim": "pop"
+      },
+      "cards": {
+        "on": true,
+        "bg": "flat",
+        "bgA": "#09090A",
+        "inkA": "#F5F5F4",
+        "bgB": "#09090A",
+        "inkB": "#F5F5F4",
+        "font": "Instrument Serif",
+        "italic": true,
+        "weight": "400",
+        "size": 7.2,
+        "spacing": -1,
+        "align": "center",
+        "x": 50,
+        "y": 50,
+        "shows": "line",
+        "words": "2",
+        "maxLetters": 13,
+        "case": "none",
+        "punct": "hide",
+        "rules": [
+          "Only cut to text for a line that lands: a claim, the lesson, a punchline or a number.",
+          "Near-black with a soft warm glow; the line in the serif italic, its key word in the gradient.",
+          "One line, a few words at a time; max 3 words on screen."
+        ]
+      },
+      "motion": {
+        "on": true,
+        "theme": "glow",
+        "inSec": 0.3,
+        "outSec": 0.25,
+        "holdMinSec": 1.2,
+        "pushMaxPct": 6,
+        "kinds": [
+          "stat",
+          "list",
+          "notifications",
+          "source",
+          "quote",
+          "logo",
+          "typed",
+          "lowerthird"
+        ],
+        "rules": [
+          "One idea on screen at a time.",
+          "Each graphic fires on its trigger word: fast in, hold, clean out.",
+          "Graphics never cover the speaker's face; put big words behind the speaker.",
+          "Only add a graphic when it shows what is said or drives the point home.",
+          "Max 3 words and 2 fonts on screen; no white sticker outline, no emoji, no rainbow colours.",
+          "Plan one scene per idea (trigger word, time, what appears, why) before building."
+        ]
+      },
+      "transitions": {
+        "on": true,
+        "list": [
+          {
+            "name": "Light leak",
+            "look": "overlay",
+            "file": "light-leak-warm.webm",
+            "blend": "screen",
+            "where": "scenes",
+            "frames": 2,
+            "strength": 100,
+            "sound": "whoosh.wav",
+            "landsMs": 0,
+            "level": -12
+          }
+        ]
+      },
+      "audio": {
+        "voicePeak": -1.5,
+        "musicLevel": -20,
+        "lowpass": "off",
+        "whoosh": true,
+        "pop": false,
+        "track": "",
+        "voiceClean": "light",
+        "duck": true,
+        "duckDb": 8,
+        "fadeIn": 0.5,
+        "fadeOut": 1.5,
+        "musicStart": 0,
+        "sfxPalette": "kit"
+      }
     }
   }
 }

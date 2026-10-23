@@ -9,7 +9,7 @@ in a work folder next to OUT, then joined with the concat demuxer. Vertical form
 around the take's `focus` (0..1 across the source width; per speaker), wide keeps the frame.
 Audio gets 10 ms fades at every cut, a voice clean-up (rumble high-pass, light FFT denoise,
 gentle compression; style.json studio.audio.voiceClean, default light), then loudnorm to
--14 LUFS, true peak -6 dBFS.
+-14 LUFS, true peak -1.5 dBTP by default (studio.audio.voicePeak; the platform standard; a -6 dB peak ceiling can't reach -14 LUFS on speech).
 """
 import argparse, json, pathlib, shutil, subprocess
 
@@ -21,6 +21,7 @@ ap.add_argument("--voice", choices=["off", "light", "strong"])
 a = ap.parse_args()
 style = json.loads((pathlib.Path(__file__).resolve().parent.parent / "style.json").read_text())
 voice = a.voice or style.get("studio", {}).get("audio", {}).get("voiceClean", "light")
+tp = min(-1.0, max(-6.0, float(style.get("studio", {}).get("audio", {}).get("voicePeak", -1.5))))  # true-peak ceiling, dBTP
 CLEAN = {"off": "",
          "light": "highpass=f=80,afftdn=nr=10:nf=-40,acompressor=threshold=-20dB:ratio=2.5:attack=10:release=150,",
          "strong": "highpass=f=90,afftdn=nr=18:nf=-35,deesser,acompressor=threshold=-22dB:ratio=3.5:attack=8:release=120,"}[voice]
@@ -61,7 +62,7 @@ for i, t in enumerate(takes):
 
 (work / "list.txt").write_text("".join(f"file '{p.name}'\n" for p in parts))
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(work / "list.txt"),
-                "-af", f"{CLEAN}loudnorm=I=-14:TP=-6:LRA=7,aresample=48000", "-c:v", "libx264", "-preset", "medium", "-crf", "16",
+                "-af", f"{CLEAN}loudnorm=I=-14:TP={tp}:LRA=9,aresample=48000", "-c:v", "libx264", "-preset", "medium", "-crf", "16",
                 "-pix_fmt", "yuv420p", "-r", "30", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", str(out)], check=True)
 shutil.rmtree(work)
 print(out)

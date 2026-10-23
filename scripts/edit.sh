@@ -4,12 +4,14 @@
 #   scripts/edit.sh "<video name>" [--from a|b|c|d|e|f|g] [--only X] [--version N] [--no-upload]
 #
 #   a  pull     1 Drop Clips/<video>/ -> inbox/<slug>/ (rclone, resumable), note -> projects/<slug>/note.txt,
-#               Drive Library/ (LUTs, Sounds, Music, Fonts, Logos) -> library/
+#               Drive Library/ (LUTs, Sounds, Music, Fonts, Logos, Transitions) -> library/
 #   b  words    faster-whisper word timestamps for every clip -> transcript.json
 #   c  plan     plan_cuts.py (uses plan.json if Claude wrote one) -> cuts.json
 #   d  a-roll   build_aroll.py per format (seek-only reads, LUT, per-speaker crop, voice levelled)
-#   e  project  build_comp.py per format -> projects/<slug>/<format>/ (+ subject cutout, lint)
-#   f  render   npx hyperframes render, then qa.py (frames at 0s, 2s, middle, end -> qa/*.jpg)
+#   e  project  build_comp.py per format -> projects/<slug>/<format>/: first the music bed (edit.json "music" or
+#               studio.audio.track -> music.py -> assets/music.m4a, ducked under this A-roll), then the build, then a
+#               people cutout per span in cutout.json (hero word + "behind" scenes, matte.py), then lint
+#   f  render   npx hyperframes render, master.py (audio to -14 LUFS), qa.py (frames at 0s, 2s, middle, end -> qa/*.jpg)
 #   g  upload   2 For Review/<video>_vN.mp4 (+ _vN_<format>.mp4) and 2 For Review/<video>_project/
 #
 # Revisions: change plan.json / edit.json, then `edit.sh "<video>" --from c` (or d/e) -> next _vN.
@@ -86,16 +88,34 @@ fi
 if run e; then
   for f in $FORMATS; do
     say "e. HyperFrames project $f"
+    A="$JOB/$f/assets"; mkdir -p "$A"
+    # music bed first, so build_comp mounts it: build_comp resolves the track and prints music.py's arguments ("" = no music)
+    M=$(python3 scripts/build_comp.py "$JOB" --format "$f" --music-args) || M=""
+    if [ -z "$M" ]; then
+      rm -f "$A/music.m4a" "$A/music.args"
+    else
+      eval "MA=($M)"   # shlex-quoted by build_comp: track, voice (this A-roll), out, options
+      if [ -f "$A/music.m4a" ] && [ "$A/music.m4a" -nt "$A/aroll.mp4" ] && [ "$A/music.m4a" -nt "${MA[0]}" ] && [ "$(cat "$A/music.args" 2>/dev/null)" = "$M" ]; then
+        echo "music.m4a is current"
+      elif python3 scripts/music.py "${MA[@]}"; then
+        printf '%s\n' "$M" > "$A/music.args"
+      else
+        echo "warning: music bed failed (see above); going on without music" >&2; rm -f "$A/music.m4a" "$A/music.args"
+      fi
+    fi
     rm -f "$JOB/$f/cutout.json"
     python3 scripts/build_comp.py "$JOB" --format "$f"
-    if [ -f "$JOB/$f/cutout.json" ]; then
-      read -r S E < <(python3 -c "import json;d=json.load(open('$JOB/$f/cutout.json'));print(d['start'],d['end'])")
-      A="$JOB/$f/assets"
-      if [ -f "$A/cutout.webm" ] && [ "$A/cutout.webm" -nt "$A/aroll.mp4" ] && [ "$(cat "$A/cutout.span" 2>/dev/null)" = "$S $E" ]; then
-        echo "cutout.webm is current"
-      else
-        python3 scripts/matte.py "$A/aroll.mp4" "$A/cutout.webm" --start "$S" --end "$E" && echo "$S $E" > "$A/cutout.span"
-      fi
+    if [ -f "$JOB/$f/cutout.json" ]; then  # one cutout per span: cutout_<i>.webm + .span; an old single cutout.webm is reused if it matches
+      while read -r F S E; do
+        stamp="$A/${F%.webm}.span"
+        if [ -f "$A/$F" ] && [ "$A/$F" -nt "$A/aroll.mp4" ] && [ "$(cat "$stamp" 2>/dev/null)" = "$S $E" ]; then
+          echo "$F is current"
+        elif [ "$F" != cutout.webm ] && [ -f "$A/cutout.webm" ] && [ "$A/cutout.webm" -nt "$A/aroll.mp4" ] && [ "$(cat "$A/cutout.span" 2>/dev/null)" = "$S $E" ]; then
+          mv "$A/cutout.webm" "$A/$F" && mv "$A/cutout.span" "$stamp" && echo "$F: reused the old cutout.webm"
+        else
+          python3 scripts/matte.py "$A/aroll.mp4" "$A/$F" --start "$S" --end "$E" </dev/null && echo "$S $E" > "$stamp"
+        fi
+      done < <(python3 -c "import json,sys;d=json.load(open(sys.argv[1]));[print(s.get('file','cutout.webm'),s['start'],s['end']) for s in d.get('spans',[d])]" "$JOB/$f/cutout.json")
     fi
     (cd "$JOB/$f" && npx --yes hyperframes lint)
   done
@@ -110,6 +130,7 @@ if run f; then
   for f in $FORMATS; do
     say "f. render v$VER $f"
     (cd "$JOB/$f" && npx --yes hyperframes render -q delivery -o "../renders/${SLUG}_v${VER}_$f.mp4" --quiet)
+    python3 scripts/master.py "$JOB/renders/${SLUG}_v${VER}_$f.mp4"   # the mix to -14 LUFS / -1.5 dBTP, picture untouched
     python3 scripts/qa.py "$JOB/renders/${SLUG}_v${VER}_$f.mp4" "$JOB" --format "$f" || echo "QA: see failures above"
   done
 fi

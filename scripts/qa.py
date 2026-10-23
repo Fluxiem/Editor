@@ -4,7 +4,9 @@
 Usage: qa.py RENDER.mp4 JOB_DIR [--format 9x16]
 Writes JOB_DIR/qa/<render name>.jpg, a strip of frames at 0s, 2s, the middle and the end
 (Claude reads it before anything is uploaded), JOB_DIR/qa/<render name>_cover.jpg (a cover frame:
-the behind-subject word if there is one, else the resolved hook), and prints/returns these checks:
+0.8s into the first behind-subject span in <format>/cutout.json, the hero word or a "behind" scene,
+else the resolved hook at 0.6s; old single {"start","end"} cutout.json files still work), and
+prints/returns these checks:
 size and fps match the format, H.264 yuv420p, length inside the target, audio present with
 peaks at or under -1 dBFS, and the hook on screen at 0s (hook text set in edit.json).
 Exit 1 if any check fails.
@@ -36,8 +38,9 @@ subprocess.run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex",
                 "".join(f"[{i}:v]scale=-2:{th},drawtext=text='{t:.1f}s':x=12:y=12:fontsize=28:fontcolor=white:box=1:boxcolor=black@0.6[f{i}];" for i, t in enumerate(times))
                 + "".join(f"[f{i}]" for i in range(len(times))) + f"hstack=inputs={len(times)}", "-frames:v", "1", str(sheet)], check=True)
 
-hero = json.loads((job / a.format / "cutout.json").read_text()) if (job / a.format / "cutout.json").exists() else None
-cover_t = hero["start"] + 0.8 if hero else 0.6
+cj = job / a.format / "cutout.json"   # {"spans": [{start, end, file}]} (or an old single {start, end})
+spans = sorted((lambda d: d.get("spans", [d]))(json.loads(cj.read_text())), key=lambda s: s["start"]) if cj.exists() else []
+cover_t = spans[0]["start"] + 0.8 if spans else 0.6
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{cover_t:.2f}", "-i", a.render, "-frames:v", "1", "-q:v", "2",
                 str(out / (pathlib.Path(a.render).stem + "_cover.jpg"))], check=True)
 
