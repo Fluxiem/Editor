@@ -100,6 +100,9 @@ def restyle(path: pathlib.Path):
     s = re.sub(r"\s*<link[^>]*fonts\.(?:googleapis|gstatic)\.com[^>]*>", "", s, flags=re.S)
     s = re.sub(r"\s*@import url\([\"']https://fonts\.googleapis\.com[^)]*\);", "", s)
 
+    # House rule: no text drop shadows (style.json captions.shadow = none).
+    s = re.sub(r"text-shadow\s*:[^;{}]+;", "text-shadow: none;", s)
+
     # Tokens go first in <head> (components without <head> get them at the top).
     s = s.replace("<head>", "<head>\n    " + TOKENS, 1) if "<head>" in s else TOKENS + s
     s = viewport(FIXES.get(name, lambda t: t)(s))

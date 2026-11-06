@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Run the house DELIVERY CHECKLIST against a built edit.
 
-Usage: qa_check.py PROJECT_DIR RENDER.mp4 [--kind teaching|skit] [--hooks N] [--out qa.json]
+Usage: qa_check.py PROJECT_DIR RENDER.mp4 [--min-sec S] [--max-sec S] [--hooks N] [--out qa.json]
+--min-sec/--max-sec override style.json length.targetSec when the notes ask for another length.
+--hooks is only checked when alternate hooks were requested.
 Reads PROJECT_DIR/cuts.json, edit.json and index.html. Prints and writes
 [{label, pass, note}] in checklist order; exit code 1 if any item fails.
 """
@@ -12,7 +14,8 @@ STYLE = json.loads((ROOT / "style.json").read_text())
 norm = lambda s: re.sub(r"[^a-z0-9 ]", "", s.lower()).split()
 
 ap = argparse.ArgumentParser()
-ap.add_argument("project"); ap.add_argument("render"); ap.add_argument("--kind", default="teaching")
+ap.add_argument("project"); ap.add_argument("render")
+ap.add_argument("--min-sec", type=float); ap.add_argument("--max-sec", type=float)
 ap.add_argument("--hooks", type=int, default=0); ap.add_argument("--out")
 a = ap.parse_args()
 P = pathlib.Path(a.project)
@@ -33,8 +36,9 @@ add("Hook on frame 1 (visual = text = first line)", shared >= 0.8 and first_word
 # 2. length
 dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", a.render], capture_output=True, text=True).stdout)
 L = STYLE["length"]
-lo, hi = (L["teaching"]["minSec"], L["teaching"]["maxSec"]) if a.kind == "teaching" else (0, L["skit"]["maxSec"])
-add("Length within target", lo <= dur <= min(hi, L["hardCapSec"]) and not (L["forbiddenRangeSec"][0] <= dur <= L["forbiddenRangeSec"][1]), f"{dur:.1f}s, {a.kind} target {lo}–{hi}s")
+lo = a.min_sec if a.min_sec is not None else L["targetSec"][0]
+hi = a.max_sec if a.max_sec is not None else min(L["targetSec"][1], L["hardCapSec"])
+add("Length within target", lo <= dur <= hi, f"{dur:.1f}s, target {lo:g}–{hi:g}s" + (" (from the notes)" if a.min_sec is not None or a.max_sec is not None else ""))
 
 # 3. something new on screen at least every 2 s (visual events only, captions not counted)
 ev = {0.0, dur}
@@ -70,8 +74,9 @@ add("At most 2 accent moments", accents <= STYLE["graphics"]["maxAccentMoments"]
 # 6. watermarks
 add("No watermarks", "watermark" not in html.lower(), "no logos or watermarks added; source and B-roll are public-domain NASA media")
 
-# 7. alternate hooks
-add("4 alternate-hook versions exported", a.hooks >= 4, f"{a.hooks} rendered (first 1–3s swapped)")
+# 7. alternate hooks: only when Justin asked for them
+if a.hooks:
+    add(f"{a.hooks} alternate-hook versions exported", (P / "hooks").is_dir(), "first 1–3s swapped")
 
 for r in res:
     print(("PASS " if r["pass"] else "FAIL ") + r["label"] + " — " + r["note"])

@@ -2,22 +2,26 @@
 """Turn chosen lines into a word-accurate cut list.
 
 Usage: cutlist.py TRANSCRIPT.json PLAN.json OUT.json
-PLAN: {"filler": [...], "maxGap": 0.28, "pad": [0.06, 0.10],
+PLAN: {"filler": [...], "maxGap": 0.7, "pad": [0.08, 0.2],
        "segments": [{"id": "hook", "phrase": "the moon is the way to get to Mars",
                      "near": 92, "drop": ["of course"], "role": "hook"|"body"}, ...]}
 Each phrase is matched word-for-word (case/punctuation-insensitive) in the transcript near
 `near` seconds. Within a phrase, dropped words and fillers are removed and any pause longer
-than maxGap becomes a jump cut. OUT lists takes [{seg, in, out, words:[{w,t0,t1}]}] in
-source time plus the output timeline (each word's time in the cut).
+than maxGap becomes a jump cut. Defaults come from style.json cuts (keepPausesUpToSec, padSec,
+fillerWords): natural pauses stay so sentences finish; only long silences are cut.
+OUT lists takes [{seg, in, out, words:[{w,t0,t1}]}] in source time plus the output timeline
+(each word's time in the cut).
 """
-import json, re, sys
+import json, pathlib, re, sys
+
+STYLE = json.loads((pathlib.Path(__file__).resolve().parent.parent / "style.json").read_text())["cuts"]
 
 norm = lambda s: re.sub(r"[^a-z0-9']", "", s.lower())
 
 tr, plan, out = (json.load(open(sys.argv[1])), json.load(open(sys.argv[2])), sys.argv[3])
 W = tr["words"]
-fill = [f.split() for f in plan.get("filler", [])]
-max_gap, (pad_in, pad_out) = plan.get("maxGap", 0.28), plan.get("pad", [0.06, 0.10])
+fill = [f.split() for f in plan.get("filler", STYLE["fillerWords"])]
+max_gap, (pad_in, pad_out) = plan.get("maxGap", STYLE["keepPausesUpToSec"]), plan.get("pad", STYLE["padSec"])
 
 
 def find(phrase, near):

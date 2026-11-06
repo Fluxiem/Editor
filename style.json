@@ -1,6 +1,6 @@
 {
-  "$comment": "OVS house style (north star: Chris Boustedt @chriss.boustedt). Compositions read this file; CLAUDE.md STYLE explains each rule.",
-  "version": 1,
+  "$comment": "OVS house style (north star: Chris Boustedt @chriss.boustedt). Scripts and compositions read this file; the canonical rules are in CLAUDE.md (EDIT WORKFLOW + HOUSE LOOK). If they disagree, update both.",
+  "version": 2,
   "output": {
     "width": 1080,
     "height": 1920,
@@ -10,18 +10,13 @@
     "container": "mp4"
   },
   "length": {
-    "skit": {
-      "maxSec": 20
-    },
-    "teaching": {
-      "minSec": 15,
-      "maxSec": 45
-    },
-    "hardCapSec": 45,
-    "forbiddenRangeSec": [
-      50,
-      70
+    "$comment": "Aim for 30-45s unless note.txt or the inline notes after `edit <folder>` say otherwise. If essential content can't fit, propose the cut or a split in the storyboard; never drop it silently.",
+    "targetSec": [
+      30,
+      45
     ],
+    "hardCapSec": 45,
+    "notesOverride": true,
     "endHandleMaxSec": 2,
     "outro": false
   },
@@ -52,27 +47,39 @@
       ]
     },
     "alternates": {
+      "onRequestOnly": true,
       "count": 4,
       "swapWindowSec": [
         1,
         3
       ],
       "bodyUnchanged": true
-    }
+    },
+    "$comment": "Hook in the first 2-3s: picture + words say the same thing; works muted."
   },
   "cuts": {
-    "jumpCutOn": [
-      "breath",
+    "$comment": "Natural pacing: cut long silences, ums, false starts and repeated takes (keep the best/last complete take). Keep natural pauses so sentences finish. No jittery over-cutting, never retime or atempo the voice.",
+    "cutOut": [
+      "longSilence",
       "filler",
-      "retake"
+      "falseStart",
+      "repeatedTake"
     ],
     "cutOnWordTimings": true,
-    "keepBestTake": true,
+    "keepTake": "best or last complete take",
+    "keepPausesUpToSec": 0.7,
+    "padSec": [
+      0.08,
+      0.2
+    ],
+    "voiceSpeed": "natural (no atempo, no retiming)",
     "fillerWords": [
       "um",
       "uh",
       "erm",
-      "ah",
+      "ah"
+    ],
+    "contextFillers": [
       "like",
       "you know",
       "sort of",
@@ -81,27 +88,31 @@
       "literally",
       "so yeah"
     ],
+    "contextFillersRule": "cut only where clearly filler; keep where they carry meaning",
     "talkingHead": {
-      "jumpCutEverySec": [
-        3,
-        5
-      ],
       "slowZoom": {
         "from": 1.0,
         "to": 1.08,
         "ease": "none"
       }
     },
-    "brollEverySec": [
-      1.5,
-      2.0
-    ],
+    "brollMaxSec": 3,
     "montageEverySec": [
       0.5,
       0.7
     ],
+    "newOnScreenEverySec": [
+      1,
+      2
+    ],
     "maxSecWithoutChange": 2.0,
-    "transitions": "hard-cut",
+    "transitions": {
+      "footage": "hard-cut",
+      "photoChange": "bounce",
+      "prefer": "scale-in",
+      "flash": "avoid (one light flash on a hit only if Justin asks)",
+      "cameraShake": "avoid"
+    },
     "punchIn": {
       "from": 1.0,
       "to": 1.12,
@@ -118,7 +129,9 @@
       "dissolve",
       "crossfade",
       "spin",
-      "glitch-pack"
+      "glitch-pack",
+      "heavy-flash",
+      "camera-shake"
     ]
   },
   "fonts": {
@@ -153,7 +166,7 @@
     "fill": "#FFFFFF",
     "strokePx": 3,
     "strokeColor": "rgba(0,0,0,0.85)",
-    "shadow": "0 4px 18px rgba(0,0,0,0.45)",
+    "shadow": "none",
     "box": false,
     "centerX": 540,
     "centerY": 1190,
@@ -180,7 +193,9 @@
       "Mudex",
       "One Vox Studio",
       "Leederville"
-    ]
+    ],
+    "minWeight": 700,
+    "$comment": "Centred, Inter Bold or heavier (Inter Black 900 for BOLD), no drop shadow. Word captions follow speech; a caption group never spans a cut."
   },
   "chapterPill": {
     "x": 120,
@@ -224,7 +239,8 @@
       "scale": 0.04,
       "ease": "none",
       "untilEndOfShot": true
-    }
+    },
+    "$comment": "perVideo applies to BOLD. In CLEAN it is the main device; the storyboard decides where."
   },
   "safeZone": {
     "xMin": 120,
@@ -242,7 +258,19 @@
       10
     ],
     "maxSimultaneousBoldEffects": 1,
-    "maxAccentMoments": 2
+    "maxAccentMoments": 2,
+    "onScreenTextChangesOnlyOnCut": true,
+    "layered": "hook text, word captions, UI cards, text-behind-subject: dense but tidy",
+    "fullScreenGraphic": {
+      "maxIcons": 3,
+      "headlines": 1,
+      "smallText": false,
+      "durationSec": [
+        2,
+        3
+      ],
+      "brief": "When the video says [exact line], show [what] full-screen, in brand colours/font, max 3 icons, one big headline, no small text, 2-3s, then cut back to the speaker."
+    }
   },
   "audio": {
     "voicePeakDbfs": -6,
@@ -254,20 +282,24 @@
     "musicLicense": "commercial-only",
     "sfx": {
       "whip": "whoosh",
-      "keyword": "pop"
-    }
+      "smallGraphic": "pop",
+      "fullScreenOverlay": null
+    },
+    "musicFadesUnderWords": true
   },
   "deliveryChecklist": [
-    "Hook lands on frame 1 (visual = on-screen text = first spoken line)",
-    "Length within target for the video type, never over 45s",
+    "Storyboard approved by Justin before the render",
+    "Hook in the first 2-3s (picture = on-screen text = first spoken line)",
+    "Length 30-45s (or what the notes asked), never over 45s unless the notes say so",
     "Something changes on screen at least every 2s",
-    "Captions word-checked (incl. Mudex, One Vox Studio, Leederville) and inside the safe zone",
+    "Natural pauses kept, sentences complete, voice at natural speed",
+    "Captions word-checked (incl. Mudex, One Vox Studio, Leederville), centred, inside the safe zone, no drop shadow",
+    "On-screen text changes only on a cut or photo change",
     "No more than 2 accent moments",
-    "No watermarks",
-    "4 alternate-hook versions exported (only the first 1-3s swapped)"
+    "No watermarks"
   ],
   "drive": {
-    "$comment": "Claude's own Drive inbox, separate from the Grok team's 'OVS Edit'. IDs pinned; transfers go through rclone (scripts/drive.sh).",
+    "$comment": "IDs verified with rclone on 2026-11-06. Transfers go through scripts/drive.sh. Drive folders + the `edit <folder name>` chat command are the whole interface.",
     "root": {
       "name": "OVS Claude Edit",
       "id": "13UItvrTqDvxww3rJhD5plq2lgJEOw1Hu"
@@ -275,20 +307,38 @@
     "inbox": {
       "name": "1 Drop Clips",
       "id": "1_TAxCJa9V4eMYVretfStwxBfbI1mVwOQ",
-      "deleteRawAfterApproval": true
+      "keepRaw": true,
+      "deleteRaw": "never by default; only when Justin explicitly says so"
     },
     "review": {
       "name": "2 For Review",
       "id": "10OBWAfflhNE8NmNv3EphOf7ie70gpfBE",
-      "naming": "<video>_v<N>.mp4"
+      "naming": "<folder>_v<N>.mp4 + <folder>_project/"
     },
     "approved": {
       "name": "3 Approved",
       "id": "1JT7bnmH6J2lSA7U8ZONTRs4k6E2c0GYC"
     },
+    "library": {
+      "name": "OVS Claude Edit/Library",
+      "id": "1EEH-aUoZXcMCBInFhcg6aisUyChek-gm",
+      "contents": [
+        "Fonts",
+        "LUTs",
+        "Logos",
+        "Music",
+        "Sounds",
+        "Transitions"
+      ]
+    },
     "sharedBroll": {
       "name": "OVS Edit/B-Roll",
       "id": "128fTy29nYqmCcs12azNBrzJSuRm3dfL6",
+      "readOnly": true
+    },
+    "sharedReferences": {
+      "name": "OVS Edit/References",
+      "id": "1_HFWC73_xQy30vpRXJsFg9DOFngd9h41",
       "readOnly": true
     },
     "doNotTouch": [
@@ -303,11 +353,19 @@
       {
         "name": "OVS Edit/2 For Review (Grok team)",
         "id": "1b3B1NQE-Qh2wN2jH5V-kZSOQ5fk4XwVu"
+      },
+      {
+        "name": "OVS Edit/3 Approved (Grok team)",
+        "id": "1NVOf7tko8-l38VhL0C6eaF16hhiwD2vU"
       }
     ],
     "ignoreJobs": [
-      "IMG_0400"
-    ]
+      "IMG_0400",
+      "DJ Headshots",
+      "Mudex: Driftability",
+      "Driftability"
+    ],
+    "ignoreJobsNote": "IMG_0400 and DJ Headshots CANCELLED (2026-11-05); Driftability / Mudex: Driftability STOPPED. Never restart unless Justin explicitly asks."
   },
   "music": {
     "licensed": [],
@@ -333,5 +391,22 @@
   "clipRoles": {
     "$comment": "A-roll = clips with speech; B-roll = clips without meaningful speech.",
     "brollMaxWordsPerMin": 20
+  },
+  "vibes": {
+    "$comment": "Pick from note.txt or the inline notes; otherwise ask Justin once. One style system: both vibes use the same restyled catalog blocks.",
+    "BOLD": "Inter Black caps captions at y~1190, #FFD400 keyword blocks, chapter pills, text-behind-subject once per video.",
+    "CLEAN": "Minimal captions; giant heading-face text masked behind the subject (Chris Boustedt) is the main device."
+  },
+  "storyboard": {
+    "required": true,
+    "before": "any full render",
+    "stills": "one per moment, text and graphics placed",
+    "fullScreenGraphicPreviewStill": true,
+    "gate": "wait for Justin's notes, apply them, then render"
+  },
+  "hyperframes": {
+    "version": "0.8.185",
+    "plan": "Free",
+    "$comment": "Pinned. Always run `npx -y hyperframes@0.8.185 ...` (bare `npx hyperframes` fetches the latest). No upgrade, Pro skills (reverse-any-video, style-sampling), template pulls, cloud render or publish unless Justin approves a separate trial."
   }
 }
